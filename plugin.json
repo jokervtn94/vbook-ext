@@ -1,0 +1,30 @@
+{
+  "metadata": {
+    "author": "JokerVTN",
+    "description": "🧐"
+  },
+  "data": [
+    {
+      "name": "biqu5200",
+      "author": "JokerVTN",
+      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/main/biqu5200/plugin.zip",
+      "version": 1,
+      "source": "http://www.du11du.com/",
+      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/main/biqu5200/icon.png",
+      "description": "Đọc truyện trên trang http://www.du11du.com",
+      "type": "chinese_novel",
+      "locale": "zh_CN"
+    },
+	{
+      "name": "Nettruyen (Fake)",
+      "author": "JokerVTN",
+      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/main/nettruyenviet/plugin.zip",
+      "version": 1.1,
+      "source": "https://nettruyenww.com/",
+      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/main/nettruyenfake/icon.png",
+      "description": "Đọc truyện trên trang https://nettruyenww.com/",
+      "type": "comic",
+      "locale": "vi_VN"
+    }
+  ]
+}
