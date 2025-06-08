@@ -14,7 +14,7 @@ def main():
             md_file.write("Extensions cho app Vbook App.\n\n\n")
             md_file.write("Tải app tại : [Vbook App Download](https://bit.ly/vbookapp)\n\n")
             md_file.write("## Link extension\n\n")
-            md_file.write("https://raw.githubusercontent.com/nhocconsr/vbook-ext/master/plugin.json\n\n\n")
+            md_file.write("https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/plugin.json\n\n\n")
             md_file.write("##List\n\n")
             md_file.write("| Name | Source | Version | Lang |\n")
             md_file.write("|------|--------|---------|------|\n")
