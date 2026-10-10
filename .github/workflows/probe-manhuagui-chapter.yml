@@ -113,7 +113,7 @@ jobs:
              const block=packed.substring(packed.indexOf(marks[0])+marks[0].length,packed.indexOf(marks[1]));
              const a=block.indexOf("',"),b=block.indexOf(",",a+2),c=block.indexOf(",'");
              const compressed=block.substring(c+2);
-             let unpacked=ctx.unPacker(block.substring(0,a),parseInt(block.substring(a+2,b)),parseInt(block.substring(b+1,c)),ctx.LZString.decompressFromBase64(compressed).split('|'),0,{});
+             let unpacked=vm.runInContext('unPacker',ctx)(block.substring(0,a),parseInt(block.substring(a+2,b)),parseInt(block.substring(b+1,c)),ctx.LZString.decompressFromBase64(compressed).split('|'),0,{});
              console.log('UNPACKED',mode,unpacked.slice(0,180),unpacked.slice(-100));
              const start=unpacked.indexOf(marks[2])+marks[2].length;
              const end=unpacked.indexOf(marks[3]);
