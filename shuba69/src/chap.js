@@ -1,32 +1,44 @@
-// VBook-safe decoder: decode each HTTP response once, refetch only if damaged.
-function shubaSafeHtml(response, target, selector) {
-    var doc = response.html("gbk");
-    if (!doc || typeof doc.select !== "function") return doc;
-    function sample(d) {
-        try {
-            var nodes = d.select(selector);
-            if (!nodes || !nodes.size()) return "";
-            var node = nodes.first();
-            return String((node.attr && node.attr("content")) || (node.text && node.text()) || "");
-        } catch (ignored) { return ""; }
-    }
-    function damage(value) {
-        var text = String(value || "").slice(0, 1500);
-        var marks = text.match(/\uFFFD|锟斤拷|馃|銆|涓|鐨|鍙|宸|璇|鍥|澶|绗|鍐|濡|鍏|鏂|鐩|浣|锛/g);
-        return marks ? marks.length : 0;
-    }
-    var originalScore = damage(sample(doc));
-    if (!originalScore) return doc;
-    // Never parse the same HTTP body twice: VBook's response may be one-shot.
+// Chapter pages and TOC may not share a charset. A valid Han character is
+// never evidence of mojibake. Score only unambiguous corruption markers.
+function shubaChapterEncodingQuality(doc) {
+    var root = shubaContentRoot(doc);
+    if (!root) return {valid: false, score: 1000000, chinese: 0};
+    var chapter = "";
+    var title = "";
     try {
-        var retry = fetch(target);
-        if (retry && retry.ok) {
-            var alternate = retry.html("utf-8");
-            if (alternate && typeof alternate.select === "function" &&
-                damage(sample(alternate)) < originalScore) return alternate;
-        }
+        chapter = String(root.text() || "");
+        if (!chapter.trim()) chapter = String(root.html() || "").replace(/<[^>]+>/g, " ");
     } catch (ignored) {}
-    return doc;
+    try {
+        var titles = doc.select(".txtnav h1, h1");
+        if (titles && titles.size()) title = String(titles.first().text() || "");
+    } catch (ignoredTitle) {}
+    var sample = (title + " " + chapter).slice(0, 6000);
+    if (!sample.trim()) return {valid: false, score: 1000000, chinese: 0};
+    var bad = (sample.match(/\uFFFD/g) || []).length;
+    var unmistakable = (sample.match(/锟斤拷|銆€|鐨勮|鍙戝|宸茬粡|瀛楃|鏂囧/g) || []).length;
+    var han = (sample.match(/[\u3400-\u9fff]/g) || []).length;
+    return {valid: true, score: bad * 100 + unmistakable * 30, chinese: han};
+}
+function shubaSafeHtml(response, target) {
+    // The TOC on 69Shuba is correctly decoded with GBK. Retain GBK for
+    // chapters unless the decoded chapter actually contains broken glyphs.
+    var original = response.html("gbk");
+    if (!original || typeof original.select !== "function") return original;
+    var first = shubaChapterEncodingQuality(original);
+    if (!first.valid || first.score === 0) return original;
+    // VBook HTTP responses are potentially one-shot; use a fresh request.
+    try {
+        var secondResponse = fetch(target);
+        if (!secondResponse || !secondResponse.ok) return original;
+        var alternate = secondResponse.html("utf-8");
+        if (!alternate || typeof alternate.select !== "function") return original;
+        var other = shubaChapterEncodingQuality(alternate);
+        // An empty error/challenge page must not beat a real Chinese chapter.
+        if (other.valid && other.chinese > 0 && other.score < first.score)
+            return alternate;
+    } catch (ignoredRetry) {}
+    return original;
 }
 function shubaContentRoot(doc) {
     if (!doc || typeof doc.select !== "function") return null;
@@ -66,7 +78,7 @@ function execute(url) {
         status = response.status || 0;
         if (response.ok) {
             // Decode chapter by actual charset; WebView uses the browser encoding.
-            doc = shubaSafeHtml(response,url,".txtnav");
+            doc = shubaSafeHtml(response,url);
             root = shubaContentRoot(doc);
             challenged = shubaIsChallenge(doc);
         } else if (status !== 403 && status !== 429) {
