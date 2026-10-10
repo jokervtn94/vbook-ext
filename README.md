@@ -6,7 +6,7 @@ Tải app tại: [Vbook App Download](https://bit.ly/vbookapp)
 
 ## Link extension
 
-https://raw.githubusercontent.com/jokervtn94/vbook-ext/main/plugin.json
+https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/plugin.json
 
 ## Danh sách extension
 
@@ -61,7 +61,7 @@ https://raw.githubusercontent.com/jokervtn94/vbook-ext/main/plugin.json
 3. Thêm URL danh mục dưới đây:
 
 ~~~text
-https://raw.githubusercontent.com/jokervtn94/vbook-ext/main/plugin.json
+https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/plugin.json
 ~~~
 
 ![Mở extension](huongdan/extension.jpg)
