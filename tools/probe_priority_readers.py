@@ -44,6 +44,10 @@ PROBES = [
      {"Content-Type": "application/json"},
      {"language":"Any","sortType":"Name","sortAsc":True,"searchAfter":"0","count":2}),
     ("wuxiaworld_novel", "GET", "https://www.wuxiaworld.com/novel/coiling-dragon", {}, None),
+    ("wuxiaworld_chapter", "GET",
+     "https://www.wuxiaworld.com/novel/coiling-dragon/cd-book-1-chapter-1", {}, None),
+    ("wuxiaworld_toc_api_a", "GET", "https://www.wuxiaworld.com/api/novels/6/chapters", {}, None),
+    ("wuxiaworld_toc_api_b", "GET", "https://www.wuxiaworld.com/api/chapters?novelId=6", {}, None),
     ("sayhentai_chapter", "GET",
      "https://sayhentai.cx/truyen-lop-hoc-bi-mat-khong-che/chuong-7", {}, None),
     ("ciweimao_vip", "GET", "https://www.ciweimao.com/chapter/111827221/vip", {}, None),
@@ -55,6 +59,7 @@ PROBES = [
 ]
 SELECTORS = {
     "wuxiaworld_novel": [".novel-body h2", "ul.list-chapters li", "#chapter-content", "#__NEXT_DATA__", "h1", "h2", "meta[property=\"og:image\"]", "meta[name=description]", "a[href*=\"/novel/coiling-dragon/\"]", "[class*=synopsis]", "[class*=Synopsis]"],
+    "wuxiaworld_chapter": ["#chapter-content", ".chapter-content", ".prose", ".fr-view", "article", "main p", "[class*=chapter] p"],
     "sayhentai_chapter": ["#chapter_content img[id^=image]", "#chapter_content img", "img[data-src]"],
     "ciweimao_vip": [".chapter-content", ".chapter-content p", "#chapter_content"],
     "mangaread_detail": [".summary_image img", ".post-content .post-content_item", ".chapter-item"],
