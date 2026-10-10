@@ -2,10 +2,10 @@
   "metadata": {
     "name": "69Shuba (69书吧)",
     "author": "Jokervtn94",
-    "version": 1,
+    "version": 2,
     "source": "https://www.69shuba.com",
     "regexp": "https?://(?:www\\.)?69shuba\\.com/(?:book/\\d+(?:\\.htm|/)?|txt/\\d+/\\d+(?:\\.html?)?)",
-    "description": "Truyện chữ Trung Quốc giản thể: danh sách, tìm kiếm, thông tin, mục lục và đọc chương.",
+    "description": "69Shuba: sửa lỗi DOM Vbook trong danh sách và tìm kiếm, giữ ảnh bìa theo từng truyện.",
     "locale": "zh_CN",
     "language": "javascript",
     "type": "chinese_novel"

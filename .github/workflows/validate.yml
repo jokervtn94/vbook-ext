@@ -32,6 +32,8 @@ jobs:
         run: node tests/test_reader_repair_batch.js
       - name: Test NovelBuddy TOC and ManhuaVN chapter regressions
         run: node tests/test_vbook_regressions.js
+      - name: Validate 69Shuba Vbook DOM compatibility
+        run: node tests/test_shuba69_vbook_dom.js
       - name: Validate ManhuaVN cover normalization and listing regressions
         run: node tests/test_manhuavn_covers.js
       - name: Verify repaired ZIP contents match source

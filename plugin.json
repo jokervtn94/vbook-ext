@@ -244,10 +244,10 @@
       "name": "69Shuba (69书吧)",
       "author": "Jokervtn94",
       "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/shuba69/plugin.zip",
-      "version": 1,
+      "version": 2,
       "source": "https://www.69shuba.com",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/shuba69/icon.png",
-      "description": "Truyện chữ Trung Quốc giản thể: danh sách, tìm kiếm, thông tin, mục lục và đọc chương.",
+      "description": "69Shuba: sửa lỗi DOM Vbook trong danh sách và tìm kiếm, giữ ảnh bìa theo từng truyện.",
       "type": "chinese_novel",
       "locale": "zh_CN"
     },
