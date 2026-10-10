@@ -3,7 +3,7 @@
 
 Usage:
     python tools/inspect_packages.py                 # all published extensions
-    python tools/inspect_packages.py novelbuddy      # selected extension(s)
+    python tools/inspect_packages.py ciweimao      # selected extension(s)
 """
 import argparse
 import json

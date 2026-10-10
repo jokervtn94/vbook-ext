@@ -1,3 +1,5 @@
+> **Lưu ý:** Báo cáo lịch sử trước khi lọc ngôn ngữ. Danh mục hiện tại chỉ phát hành 17 extension tiếng Việt/tiếng Trung; xem `audits/2026-10-10-language-policy.md`.
+
 # Kiểm tra extension Vbook-Ext — 10/10/2026
 
 Nguồn phát hành: `master`, catalog: `https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/plugin.json`.

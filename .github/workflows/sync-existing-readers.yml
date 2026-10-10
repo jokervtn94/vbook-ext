@@ -13,20 +13,14 @@ on:
       - 'qimao/src/**'
       - 'manhuagui/plugin.json'
       - 'manhuagui/src/**'
-      - 'doujins/plugin.json'
-      - 'doujins/src/**'
-      - 'mangaread/plugin.json'
-      - 'mangaread/src/**'
+      - 'dingdian/plugin.json'
+      - 'dingdian/src/**'
       - 'ciweimao/plugin.json'
       - 'ciweimao/src/**'
-      - 'wuxiaworld/plugin.json'
-      - 'wuxiaworld/src/**'
       - 'bfaloo/plugin.json'
       - 'bfaloo/src/**'
       - 'tadu/plugin.json'
       - 'tadu/src/**'
-      - 'royalroad/plugin.json'
-      - 'royalroad/src/**'
       - '.github/workflows/sync-existing-readers.yml'
   workflow_dispatch:
 permissions:
@@ -43,16 +37,16 @@ jobs:
         with:
           ref: master
       - name: Rebuild stale extension packages
-        run: python tools/build_extensions.py sayhentai bookqq hotruyen qimao manhuagui doujins mangaread ciweimao wuxiaworld bfaloo tadu royalroad --apply
+        run: python tools/build_extensions.py dingdian sayhentai bookqq hotruyen qimao manhuagui ciweimao bfaloo tadu --apply
       - name: Check package integrity
         run: |
-          python tools/check_package_sync.py sayhentai bookqq hotruyen qimao manhuagui doujins mangaread ciweimao wuxiaworld bfaloo tadu royalroad
-          python tools/inspect_packages.py sayhentai bookqq hotruyen qimao manhuagui doujins mangaread ciweimao wuxiaworld bfaloo tadu royalroad
+          python tools/check_package_sync.py dingdian sayhentai bookqq hotruyen qimao manhuagui ciweimao bfaloo tadu
+          python tools/inspect_packages.py dingdian sayhentai bookqq hotruyen qimao manhuagui ciweimao bfaloo tadu
       - name: Commit synchronized archives
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- sayhentai/plugin.zip bookqq/plugin.zip hotruyen/plugin.zip qimao/plugin.zip manhuagui/plugin.zip doujins/plugin.zip mangaread/plugin.zip ciweimao/plugin.zip wuxiaworld/plugin.zip bfaloo/plugin.zip tadu/plugin.zip royalroad/plugin.zip
+          git add -- dingdian/plugin.zip sayhentai/plugin.zip bookqq/plugin.zip hotruyen/plugin.zip qimao/plugin.zip manhuagui/plugin.zip ciweimao/plugin.zip bfaloo/plugin.zip tadu/plugin.zip
           if ! git diff --cached --quiet; then
             git commit -m "build: synchronize 10 existing Vbook reader packages"
             git push origin HEAD:master

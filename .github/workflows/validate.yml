@@ -34,21 +34,17 @@ jobs:
       - name: Check Python syntax
         run: python -m py_compile main.py clean.py tools/validate_extensions.py tools/audit_structure.py tools/inspect_packages.py tools/check_package_sync.py tools/check_published_scripts.py
       - name: Validate migrated JavaScript syntax
-        run: find manhuavn/src tranh18/src novelbuddy/src sayhentai/src -name '*.js' -print0 | xargs -0 -n1 node --check
+        run: find manhuavn/src tranh18/src sayhentai/src -name '*.js' -print0 | xargs -0 -n1 node --check
       - name: Parse every published JavaScript file and validate linked dependencies
         run: python tools/check_published_scripts.py
       - name: Test new reader repair regressions
         run: node tests/test_reader_repair_batch.js
-      - name: Test NovelBuddy TOC and ManhuaVN chapter regressions
+      - name: Test ManhuaVN chapter regressions
         run: node tests/test_vbook_regressions.js
       - name: Validate Qimao author metadata
         run: node tests/test_qimao_detail.js
       - name: Validate Say Hentai domain and chapter handling
         run: node tests/test_sayhentai_reader.js
-      - name: Validate WuxiaWorld full gRPC-Web chapter directory
-        run: node tests/test_wuxiaworld_toc_grpc.js
-      - name: Validate WuxiaWorld current reading contracts
-        run: node tests/test_wuxiaworld_reader.js
       - name: Validate CiWeiMao API decryption inputs and access controls
         run: node tests/test_ciweimao_chap.js
       - name: Validate Book QQ reading contracts
@@ -83,7 +79,9 @@ jobs:
               raise SystemExit('Out-of-sync ZIPs: ' + ', '.join(mismatches))
           PY
       - name: Verify repaired ZIP contents match source
-        run: python tools/check_package_sync.py manhuavn tranh18 novelbuddy sayhentai omegascans acqq bookqq tienvuc myrics sachhayonline dingdian
+        run: python tools/check_package_sync.py manhuavn tranh18 sayhentai acqq bookqq tienvuc myrics sachhayonline dingdian
+      - name: Enforce Vietnamese/Chinese-only reader catalog
+        run: python tools/validate_language_policy.py
       - name: Validate catalog assets
         run: python tools/validate_extensions.py
       - name: Validate generated README

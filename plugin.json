@@ -16,18 +16,6 @@
       "locale": "vi_VN"
     },
     {
-      "name": "Omega Scans",
-      "author": "Jokervtn94",
-      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/omegascans/plugin.zip",
-      "version": 2,
-      "source": "https://omegascans.org",
-      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/omegascans/icon.png",
-      "description": "Đọc truyện trên trang omegascans.org",
-      "type": "comic",
-      "locale": "en_EN",
-      "tag": "nsfw"
-    },
-    {
       "name": "Tiên Vực",
       "author": "Jokervtn94",
       "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/tienvuc/plugin.zip",
@@ -107,18 +95,6 @@
       "locale": "zh_CN"
     },
     {
-      "name": "DouJins",
-      "author": "Jokervtn94",
-      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/doujins/plugin.zip",
-      "version": 6,
-      "source": "https://doujins.com",
-      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/doujins/icon.png",
-      "description": "Đọc truyện trên trang doujins.com",
-      "type": "comic",
-      "locale": "en_EN",
-      "tag": "nsfw"
-    },
-    {
       "name": "Book QQ",
       "author": "Jokervtn94",
       "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/bookqq/plugin.zip",
@@ -141,18 +117,6 @@
       "locale": "zh_CN"
     },
     {
-      "name": "Manga Read",
-      "author": "Jokervtn94",
-      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/mangaread/plugin.zip",
-      "version": 3,
-      "source": "https://www.mangaread.org",
-      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/mangaread/icon.png",
-      "description": "Đọc truyện trên trang mangaread.org",
-      "type": "comic",
-      "locale": "en_EN",
-      "tag": "nsfw"
-    },
-    {
       "name": "SachHayOnline",
       "author": "fusornat",
       "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/sachhayonline/plugin.zip",
@@ -164,26 +128,15 @@
       "locale": "vi-VN"
     },
     {
-      "name": "Novel Buddy",
-      "author": "Jokervtn94",
-      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/novelbuddy/plugin.zip",
-      "version": 4,
-      "source": "https://novelbuddy.me",
-      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/novelbuddy/icon.png",
-      "description": "Đọc truyện trên trang novelbuddy.com",
-      "type": "novel",
-      "locale": "vi-VN"
-    },
-    {
       "name": "Dingdian 【顶点】",
       "author": "Jokervtn94",
       "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/dingdian/plugin.zip",
-      "version": 2,
+      "version": 3,
       "source": "https://www.dingdian666.com",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/dingdian/icon.png",
-      "description": "Đọc truyện trên trang www.dingdian666.com",
+      "description": "Dingdian: chuẩn hóa ngôn ngữ nguồn truyện tiếng Trung.",
       "type": "chinese_novel",
-      "locale": "vi-VN"
+      "locale": "zh_CN"
     },
     {
       "name": "CiWeiMao 【刺猬猫】",
@@ -195,17 +148,6 @@
       "description": "CiWeiMao: sửa lỗi encryt_keys undefined, xử lý CAPTCHA, phiên đăng nhập và chương VIP.",
       "type": "chinese_novel",
       "locale": "cn-CN"
-    },
-    {
-      "name": "Wuxia World",
-      "author": "Jokervtn94",
-      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/wuxiaworld/plugin.zip",
-      "version": 5,
-      "source": "https://www.wuxiaworld.com",
-      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/wuxiaworld/icon.png",
-      "description": "WuxiaWorld: tải đầy đủ mục lục bằng API gRPC-Web (mọi nhóm chương), kiểm tra thiếu/trùng và đọc chương.",
-      "type": "novel",
-      "locale": "en-EN"
     },
     {
       "name": "bFaloo",
@@ -228,17 +170,6 @@
       "description": "Đọc truyện trên trang www.tadu.com",
       "type": "chinese_novel",
       "locale": "cn-CN"
-    },
-    {
-      "name": "Royalroad",
-      "author": "fusornat",
-      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/royalroad/plugin.zip",
-      "version": 2,
-      "source": "https://www.royalroad.com",
-      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/royalroad/icon.png",
-      "description": "Royal Road® is the home of web novels and fan fictions! In our amazing community, you can find various talented individuals who write as a hobby or even professionally, artists who create art for them, and many, many readers who provide valuable feedback and encouragement.",
-      "type": "novel",
-      "locale": "en-EN"
     },
     {
       "name": "69Shuba (69书吧)",

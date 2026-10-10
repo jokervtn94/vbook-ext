@@ -32,43 +32,6 @@ function attr(o) {
       return els([]);
     }};
 }
-const omegaUrl='https://omegascans.org/series/love-quest';
-const omegaDoc={
-  select:sel=>{
-    if(sel==='a[href^="/series/"]')return els([
-      attr({href:'/series/love-quest',cover:'https://media.omegascans.org/real-cover.webp',text:'Love Quest'}),
-      attr({href:'/series/love-quest/chapter-1',cover:'https://media.omegascans.org/chapter.png'}),
-      attr({href:'/series/love-quest',cover:'https://media.omegascans.org/real-cover.webp'})
-    ]);
-    if(sel==='.space-y-2 .flex')return {text:()=> 'Release year 2026 Total chapters 37 Author QRQ'};
-    if(sel==='h1')return els([attr({text:'Love Quest'})]);
-    if(sel==='.gap-y-2 img')return els([{attr:()=> '/_next/image?url=https%3A%2F%2Fmedia.omegascans.org%2Fcover.webp&w=640&q=75'}]);
-    if(sel==='.space-y-2 .flex:contains(Author) span')return els([attr({text:'QRQ'})]);
-    if(sel==='meta[name=description]')return {attr:()=> 'Synopsis'};
-    if(sel==='img[data-fallback-index][src]')return els([
-      {attr:()=> 'https://media.omegascans.org/chap/01.jpg'},
-      {attr:()=> 'https://media.omegascans.org/chap/02.jpg'}
-    ]);
-    throw Error('Unexpected Omega CSS '+sel);
-  }
-};
-function omegaFetch(url){
-  assert.ok([omegaUrl,omegaUrl+'/chapter-1','https://omegascans.org/'].includes(url),url);
-  return {ok:true,html:()=>omegaDoc};
-}
-const omegaGen=boot('omegascans','gen.js',omegaFetch);
-const ol=omegaGen('home','1');
-assert.equal(ol.kind,'success'); assert.equal(ol.value.length,1);
-assert.equal(ol.value[0].cover,'https://media.omegascans.org/real-cover.webp');
-assert.equal(omegaGen('home','2').value.length,0);
-const omegaDetail=boot('omegascans','detail.js',omegaFetch)(omegaUrl);
-assert.equal(omegaDetail.value.cover,'https://media.omegascans.org/cover.webp');
-const omegaToc=boot('omegascans','toc.js',omegaFetch)(omegaUrl);
-assert.equal(omegaToc.value.length,37);
-assert.equal(omegaToc.value[36].url,omegaUrl+'/chapter-37');
-const omegaChap=boot('omegascans','chap.js',omegaFetch)(omegaUrl+'/chapter-1');
-assert.equal(omegaChap.value.length,2);
-
 const bookUrl='https://www.sachhayonline.com/tua-sach/ai-tinh-mieu';
 const chapterUrl=bookUrl+'/chuong-1/601';
 function bookDoc() {
@@ -120,8 +83,8 @@ assert.equal(acGen.value[0].cover,'https://manhua.acimg.cn/cover.jpg');
 assert.equal(acGen.value[0].link,'https://ac.qq.com/Comic/comicInfo/id/531490');
 
 const catalog=JSON.parse(fs.readFileSync(path.join(root,'plugin.json'),'utf8'));
-assert.equal(catalog.data.length,23, 'Published catalog should include 69Shuba and UUKanShu');
+assert.equal(catalog.data.length,17, 'Catalog must only publish Vietnamese and Chinese sources');
 assert.ok(catalog.data.some(item=>item.path.includes('/shuba69/plugin.zip')));
 assert.ok(catalog.data.some(item=>item.path.includes('/uukanshu/plugin.zip')));
 assert.ok(!catalog.data.some(item=>item.path.includes('/manhwahentai/')));
-console.log('PASS repair tests: Omega list/detail/TOC/images; SachHay links/TOC/full chapter; BookQQ; Tencent covers; Tiên Vực last page.');
+console.log('PASS repair tests: SachHay links/TOC/full chapter; BookQQ; Tencent covers; Tiên Vực last page; 17 active sources.');
