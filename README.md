@@ -19,7 +19,7 @@ https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/plugin.json
 | Tiên Vực | https://tienvuc.me | 13 | vi_VN | novel |
 | Truyện Convert | https://truyenconvert.net | 3 | vi_VN | novel |
 | Đọc Sách Hay | https://docsachhay.net | 1 | vi_VN | novel |
-| Say Hentai | https://sayhentai.one | 9 | vi_VN | comic |
+| Say Hentai | https://sayhentai.cx | 10 | vi_VN | comic |
 | Tranh 18 | https://tranh18.cc | 2 | vi_VN | comic |
 | Giáng Thế | https://giangthe.com | 3 | vi_VN | novel |
 | Hố Truyện | https://hotruyen1.com | 5 | vi_VN | novel |
