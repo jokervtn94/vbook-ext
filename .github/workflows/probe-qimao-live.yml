@@ -55,3 +55,40 @@ jobs:
               print('API',label,r.status_code,r.url.split('?')[0],r.headers.get('content-type'),'LEN',len(r.content),'BODY',r.text[:530].replace('\n',' '),flush=True)
             except Exception as e:print('APIERROR',label,type(e).__name__,str(e)[:180],flush=True)
           PY
+
+      - name: Inspect current catalog card and chapter HTML contracts
+        run: |
+          python - <<'PY'
+          import requests,hashlib,re
+          from bs4 import BeautifulSoup
+          s=requests.Session()
+          s.headers.update({'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/130.0.0.0 Safari/537.36','Accept-Language':'zh-CN,zh;q=0.9'})
+          urls={'catalog':'https://www.qimao.com/shuku/a-a-a-a-a-a-a-update_time-1/','search':'https://www.qimao.com/search/index/?keyword=%E4%BF%AE%E4%BB%99','detail':'https://www.qimao.com/shuku/151581/'}
+          for name,url in urls.items():
+            r=s.get(url,timeout=18);soup=BeautifulSoup(r.text,'html.parser')
+            print('PAGE',name,r.status_code,len(r.content),flush=True)
+            for a in soup.select('.s-tit a')[:1]:
+              print('TITLE_ANCHOR',str(a)[:550],flush=True)
+              p=a
+              for i in range(4):
+                p=p.parent
+                print('ANCESTOR',i,str(p)[:1350],flush=True)
+            if name=='detail':
+              for selector in ['.book-detail','.book-desc','.book-intro','.book-pic','.book-img','.book-cover','.book-name','.book-title','.writer','.book-detail-title','.book-details','.chapter-list','.catalog','.chapter-item','a[href*="/shuku/"]']:
+                es=soup.select(selector)
+                print('DETAILSELECT',selector,len(es),str(es[0])[:380] if es else '',flush=True)
+              for script in soup.find_all('script'):
+                txt=script.get_text()
+                if 'chapterList' in txt or 'chapter_lists' in txt:
+                  print('SCRIPTCHAPTER',txt[:700],flush=True);break
+          key='d3dGiJc651gSQ8w1'
+          h={'platform':'android','app-version':'71900','application-id':'com.kmxs.reader','user-agent':'webviewversion/0','sign':hashlib.md5(('app-version=71900application-id=com.kmxs.readerplatform=android'+key).encode()).hexdigest()}
+          query='chapterId=345141&id=151581'
+          sign=hashlib.md5(('chapterId=345141id=151581'+key).encode()).hexdigest()
+          url='https://api-ks.wtzw.com/api/v1/chapter/content?'+query+'&sign='+sign
+          try:
+            r=s.get(url,headers=h,timeout=18)
+            data=r.json();v=data.get('data') if isinstance(data,dict) else None
+            print('CHAPTER_API',r.status_code,'CODE',data.get('code'),'MESSAGE',str(data.get('msg') or data.get('message'))[:220],'DATA_TYPE',type(v).__name__,'DATA_KEYS',list(v.keys())[:24] if isinstance(v,dict) else [],'CONTENT_LEN',len(str(v.get('content',''))) if isinstance(v,dict) else None,'BODY',r.text[:320],flush=True)
+          except Exception as e:print('CHAPTER_ERROR',type(e).__name__,str(e)[:250],flush=True)
+          PY
