@@ -104,3 +104,70 @@ for group in [318, 3]:
     flush=True)
   except requests.RequestException as exc:
    print("GRPC_PROBE",{"group":group,"type":content_type,"error":type(exc).__name__},flush=True)
+
+# Inspect current hydrated volume IDs and decode a bounded sample of proto groups.
+import json
+tag="window.__REACT_QUERY_STATE__ ="
+scripts_with_data=[x.get_text() for x in doc.select("script") if tag in x.get_text()]
+if scripts_with_data:
+ raw=scripts_with_data[0].split(tag,1)[1].strip()
+ try:
+  hydrated,_=json.JSONDecoder().raw_decode(raw)
+  q=next((q for q in hydrated["queries"] if q.get("queryKey",[None])[0]=="novel"),{})
+  novel=q.get("state",{}).get("data",{}).get("item",{})
+  info=novel.get("chapterInfo",{})
+  groups=info.get("chapterGroups",[])
+  summary=[{"id":g.get("id"),"order":g.get("order"),"total":g.get("counts",{}).get("total"),
+      "normal":g.get("counts",{}).get("normal"),
+      "advance":g.get("counts",{}).get("advance")} for g in groups]
+  print("NOVEL_HYDRATION",{"id":novel.get("id"),"groups":len(summary),
+      "chapterCount":info.get("chapterCount"),"summary":summary},flush=True)
+ except (ValueError,KeyError,TypeError) as e:
+  print("HYDRATION_ERROR",type(e).__name__,str(e)[:100],flush=True)
+def readint(b,i):
+ n=0;shift=0
+ while i<len(b):
+  c=b[i];i+=1;n|=(c&127)<<shift
+  if c<128:return n,i
+  shift+=7
+ raise ValueError("truncated varint")
+def protobuf_fields(b):
+ output=[];i=0
+ while i<len(b):
+  k,i=readint(b,i);num=k>>3;typ=k&7
+  if typ==0:v,i=readint(b,i)
+  elif typ==2:
+   length,i=readint(b,i);v=b[i:i+length];i+=length
+  elif typ==5:v=b[i:i+4];i+=4
+  elif typ==1:v=b[i:i+8];i+=8
+  else:raise ValueError("unsupported wire type")
+  output.append((num,typ,v))
+ return output
+for vol in [318]:
+ try:
+  pb=proto(vol)
+  packet=b"\0"+len(pb).to_bytes(4,"big")+pb
+  rr=S.post(api,data=packet,headers={
+   "Content-Type":"application/grpc-web+proto",
+   "x-grpc-web":"1","Origin":"https://www.wuxiaworld.com"},
+   timeout=14)
+  frames=rr.content
+  if not frames or frames[0]!=0:raise ValueError("no gRPC frame")
+  n=int.from_bytes(frames[1:5],"big")
+  resp=frames[5:5+n]
+  flds=protobuf_fields(resp)
+  vols=[]
+  for num,typ,buf in flds:
+   if num!=1:continue
+   fields=protobuf_fields(buf)
+   volmeta={"id":next((x for a,b,x in fields if a==1),None),
+    "name":next((x.decode("utf8","replace") for a,b,x in fields if a==2),None),
+    "count":sum(a==6 for a,b,x in fields)}
+   chapter=next((x for a,b,x in fields if a==6),None)
+   if chapter:
+    chapter_fields=protobuf_fields(chapter)
+    volmeta["chapter1_fields"]=[(a,b, x[:65].hex() if isinstance(x,bytes) else x) for a,b,x in chapter_fields]
+   vols.append(volmeta)
+  print("PROTO_DECODE",{"status":rr.status_code,"groups":vols},flush=True)
+ except (ValueError,requests.RequestException) as exc:
+  print("PROTO_ERROR",type(exc).__name__,str(exc)[:110],flush=True)
