@@ -2,10 +2,10 @@
   "metadata": {
     "name": "Wuxia World",
     "author": "Nhocconsr",
-    "version": 2,
+    "version": 3,
     "source": "https://www.wuxiaworld.com",
-    "regexp": "(www.)?wuxiaworld.com.*",
-    "description": "Đọc truyện trên trang www.wuxiaworld.com",
+    "regexp": "https?://(?:www\\.)?wuxiaworld\\.com/novel/[^/?#]+(?:/[^?#]+)?/?(?:[?#].*)?$",
+    "description": "WuxiaWorld: cập nhật API tìm kiếm, thông tin và đọc chương; không trả mục lục thiếu chương.",
     "locale": "en-EN",
     "language": "javascript",
     "type": "novel"

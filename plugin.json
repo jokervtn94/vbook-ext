@@ -200,10 +200,10 @@
       "name": "Wuxia World",
       "author": "Jokervtn94",
       "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/wuxiaworld/plugin.zip",
-      "version": 2,
+      "version": 3,
       "source": "https://www.wuxiaworld.com",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/wuxiaworld/icon.png",
-      "description": "Đọc truyện trên trang www.wuxiaworld.com",
+      "description": "WuxiaWorld: cập nhật API tìm kiếm, thông tin và đọc chương; không trả mục lục thiếu chương.",
       "type": "novel",
       "locale": "en-EN"
     },
