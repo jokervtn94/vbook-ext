@@ -1,0 +1,50 @@
+name: Smoke test ManhuaGui v8 live chapter
+on:
+  push:
+    branches: [master]
+    paths: ['.github/workflows/probe-manhuagui-v8-live.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - run: python -m pip -q install requests
+      - name: Decode first chapter from both live layouts
+        shell: bash
+        run: |
+          python - <<'PY'
+          import requests
+          url='https://www.manhuagui.com/comic/26729/346817.html'
+          agents={'mobile':'Mozilla/5.0 (Linux; Android 14; Mobile) Chrome/130 Mobile Safari/537.36',
+                  'desktop':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/130 Safari/537.36'}
+          for mode,agent in agents.items():
+            r=requests.get(url,headers={'User-Agent':agent},timeout=20)
+            print('HTTP',mode,r.status_code,'FINAL',r.url,'LENGTH',len(r.content),flush=True)
+            assert r.status_code==200
+            open('/tmp/mgv8_'+mode+'.html','w').write(r.text)
+          PY
+          cat > /tmp/mgv8_live.cjs <<'JS'
+          const fs=require('fs'),vm=require('vm');
+          const source=fs.readFileSync('manhuagui/src/chap.js','utf8');
+          for(const mode of ['mobile','desktop']){
+            const content=fs.readFileSync('/tmp/mgv8_'+mode+'.html','utf8');
+            const ctx=vm.createContext({
+              fetch:()=>({ok:true,text:()=>content}),
+              Response:{success:imgs=>({ok:true,imgs}),error:err=>({ok:false,error:err})}
+            });
+            vm.runInContext(source,ctx,{filename:'chap.js'});
+            const result=vm.runInContext("execute('https://www.manhuagui.com/comic/26729/346817.html')",ctx,{timeout:9000});
+            console.log('READER',mode,'OK',result.ok,'IMAGES',result.imgs?.length,'ERROR',result.error||'');
+            if(!result.ok||result.imgs.length<30)process.exitCode=1;
+            if(result.ok){
+              const first=result.imgs[0];
+              console.log('IMAGE_URL',mode,'HOST',new URL(first).hostname,'EXT',first.split('?')[0].split('.').pop(),'SIGNED',first.includes('?e=')&&first.includes('&m='));
+              if(!first.startsWith('https://i.hamreus.com/')||!first.includes('?e='))process.exitCode=1;
+            }
+          }
+          JS
+          node /tmp/mgv8_live.cjs
