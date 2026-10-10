@@ -37,11 +37,12 @@ function execute(url) {
         chapterList = [];
     }
 
-    // Fallback only when complete: do not silently present 20/285 chapters.
+    // The page may report stale totals while the API contains the currently available chapters.
+    // Fail only when a substantial fraction is missing; never accept the partial 20/50 HTML list.
     if (!chapterList.length && Array.isArray(manga.chapters)) {
         chapterList = manga.chapters;
     }
-    if (!chapterList.length || (expected > 0 && chapterList.length < expected)) {
+    if (!chapterList.length || (expected > 0 && chapterList.length < Math.ceil(expected * 0.95))) {
         return Response.error('NovelBuddy: không tải được đầy đủ mục lục. Vui lòng thử lại.');
     }
 
