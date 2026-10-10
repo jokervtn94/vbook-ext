@@ -2,10 +2,10 @@
   "metadata": {
     "name": "UUKanShu (UU看書)",
     "author": "Jokervtn94",
-    "version": 1,
+    "version": 2,
     "source": "https://uukanshu.cc",
     "regexp": "https?://(?:www\\.)?uukanshu\\.cc/book/\\d+(?:/\\d+\\.html|/?)",
-    "description": "Truyện chữ Trung Quốc phồn thể: phân loại, tìm kiếm, ảnh bìa, mục lục và đọc chương.",
+    "description": "UUKanShu: sửa chuẩn hóa URL chương, tránh mất mục lục do liên kết tương đối và đọc chương ngắn.",
     "locale": "zh_TW",
     "language": "javascript",
     "type": "chinese_novel"
