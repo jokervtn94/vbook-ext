@@ -73,3 +73,34 @@ for group in [318, 3]:
    except ValueError:shape["preview"]=rr.text[:150]
    print("CONNECT_PROBE",shape,flush=True)
   except requests.RequestException as exc:print("CONNECT_PROBE",{"group":group,"error":type(exc).__name__},flush=True)
+
+# Binary gRPC-Web tests with a public volume only. Proto based on website.
+import base64
+def vint(n):
+ out=[]
+ while n>=128:
+  out.append((n&127)|128);n>>=7
+ return bytes(out+[n])
+def ldelim(field,buf):return vint((field<<3)|2)+vint(len(buf))+buf
+def var(field,n):return vint(field<<3)+vint(n)
+def proto(group):
+ f=ldelim(1,var(1,group))
+ return var(1,6)+ldelim(2,f)
+for group in [318, 3]:
+ packet=proto(group)
+ framed=b"\0"+len(packet).to_bytes(4,"big")+packet
+ for content_type in ["application/grpc-web+proto","application/grpc-web-text","application/grpc+proto"]:
+  body=base64.b64encode(framed) if content_type.endswith("text") else framed
+  hdr={"Content-Type":content_type,"Accept":content_type,
+       "x-grpc-web":"1","x-user-agent":"grpc-web-javascript/0.1",
+       "Origin":"https://www.wuxiaworld.com",
+       "Referer":"https://www.wuxiaworld.com/"}
+  try:
+   rr=S.post(api,data=body,headers=hdr,timeout=(5,15))
+   preview=rr.content[:28].hex()
+   print("GRPC_PROBE",{"group":group,"type":content_type,"status":rr.status_code,
+    "resp_type":rr.headers.get("Content-Type"),"grpc_status":rr.headers.get("grpc-status"),
+    "bytes":len(rr.content),"hex":preview,"text_prefix":rr.text[:35] if rr.status_code>=400 else ""},
+    flush=True)
+  except requests.RequestException as exc:
+   print("GRPC_PROBE",{"group":group,"type":content_type,"error":type(exc).__name__},flush=True)
