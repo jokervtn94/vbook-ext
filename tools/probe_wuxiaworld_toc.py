@@ -171,3 +171,26 @@ for vol in [318]:
   print("PROTO_DECODE",{"status":rr.status_code,"groups":vols},flush=True)
  except (ValueError,requests.RequestException) as exc:
   print("PROTO_ERROR",type(exc).__name__,str(exc)[:110],flush=True)
+
+# Try official unfiltered list request first: potentially all 807 chapter entries in one RPC.
+try:
+ payload=var(1,6)
+ packet=b"\0"+len(payload).to_bytes(4,"big")+payload
+ rr=S.post(api,data=packet,headers={
+  "Content-Type":"application/grpc-web+proto","x-grpc-web":"1",
+  "Origin":"https://www.wuxiaworld.com"},timeout=(5,18))
+ output={"status":rr.status_code,"grpc":rr.headers.get("grpc-status"),
+  "bytes":len(rr.content)}
+ if rr.content and rr.content[0]==0:
+  n=int.from_bytes(rr.content[1:5],"big")
+  items=[v for a,t,v in protobuf_fields(rr.content[5:5+n]) if a==1]
+  output["group_count"]=len(items)
+  output["group_ids"]=[]
+  output["chapter_count"]=0
+  for group in items:
+   fields=protobuf_fields(group)
+   output["group_ids"].append(next((v for a,t,v in fields if a==1),0))
+   output["chapter_count"]+=sum(a==6 for a,t,v in fields)
+ print("UNFILTERED_LIST",output,flush=True)
+except (ValueError,requests.RequestException) as exc:
+ print("UNFILTERED_LIST",type(exc).__name__,str(exc)[:100],flush=True)
