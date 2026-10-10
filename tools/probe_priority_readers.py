@@ -156,7 +156,7 @@ def one(entry):
                         raw = hydration.split("window.__REACT_QUERY_STATE__ =", 1)[1].strip()
                         if raw.endswith(";"):
                             raw = raw[:-1]
-                        state = json.loads(raw)
+                        state, consumed = json.JSONDecoder().raw_decode(raw)
                         result["react_queries"] = []
                         for query in state.get("queries", [])[:18]:
                             inner = (query.get("state") or {}).get("data")
@@ -180,7 +180,9 @@ def one(entry):
                                     item["count"] = len(inner["items"])
                             result["react_queries"].append(item)
                     except (ValueError, TypeError, KeyError) as exc:
-                        result["react_state_error"] = type(exc).__name__
+                        result["react_state_error"] = str(exc)[:160]
+                        result["react_state_head"] = raw[:80]
+                        result["react_state_tail"] = raw[-100:]
             result["challenge"] = bool(
                 soup.select_one("#challenge-form, .cf-turnstile")
                 or "just a moment" in result["title"].lower()
