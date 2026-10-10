@@ -42,6 +42,17 @@ jobs:
         run: node tests/test_shuba69_vbook_dom.js
       - name: Validate ManhuaVN cover normalization and listing regressions
         run: node tests/test_manhuavn_covers.js
+      - name: Verify every published ZIP matches current source
+        run: |
+          python - <<'PY'
+          import json
+          from tools.check_package_sync import check
+          with open('plugin.json', encoding='utf-8') as stream:
+              entries = json.load(stream)['data']
+          for entry in entries:
+              check(entry['path'].split('/')[-2])
+          print('PASS:', len(entries), 'published plugin ZIPs match their source')
+          PY
       - name: Verify repaired ZIP contents match source
         run: python tools/check_package_sync.py manhuavn tranh18 novelbuddy sayhentai omegascans acqq bookqq tienvuc myrics sachhayonline dingdian
       - name: Validate catalog assets
