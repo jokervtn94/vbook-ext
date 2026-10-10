@@ -43,6 +43,11 @@ PROBES = [
      "https://www.wuxiaworld.com/api/novels/search",
      {"Content-Type": "application/json"},
      {"language":"Any","sortType":"Name","sortAsc":True,"searchAfter":"0","count":2}),
+    ("wuxiaworld_catalog_500", "POST",
+     "https://www.wuxiaworld.com/api/novels/search",
+     {"Content-Type":"application/json"},
+     {"title":"","tags":[],"language":"Any","genres":[],"active":None,
+      "sortType":"Name","sortAsc":True,"searchAfter":None,"count":500}),
     ("wuxiaworld_novel", "GET", "https://www.wuxiaworld.com/novel/coiling-dragon", {}, None),
     ("wuxiaworld_chapter", "GET",
      "https://www.wuxiaworld.com/novel/coiling-dragon/cd-book-1-chapter-1", {}, None),
@@ -93,6 +98,17 @@ def one(entry):
                         if isinstance(data.get("items"), list) and data["items"]:
                             result["first_item_keys"] = sorted(data["items"][0].keys())[:25]
                     result["code"] = data.get("code")
+                    if name == "bookqq_read":
+                        result["api_message"] = str(data.get("msg") or "")[:100]
+                    if name == "qimao_detail" and isinstance(data.get("data"), dict):
+                        record = data["data"]
+                        book = record.get("book") or {}
+                        author = record.get("author_info") or {}
+                        result["book_keys"] = sorted(book.keys())[:50]
+                        result["author_info_keys"] = sorted(author.keys())[:30]
+                        result["author_uid_type"] = type(book.get("author_uid")).__name__
+                        result["author_field"] = str(book.get("author") or "")[:70]
+                        result["author_name"] = str(author.get("name") or author.get("author_name") or "")[:70]
                     result["success"] = data.get("success")
                     inner = data.get("data")
                     if isinstance(inner, dict):
