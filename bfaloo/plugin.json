@@ -1,7 +1,7 @@
 {
   "metadata": {
     "name": "bFaloo (飞卢小说)",
-    "author": "Nhocconsr",
+    "author": "Jokervtn94",
     "version": 5,
     "source": "https://b.faloo.com",
     "regexp": "(www.)?((b.faloo.com/\\d+.html)|(wap.faloo.com/\\d+.html))",

@@ -1,7 +1,7 @@
 {
   "metadata": {
     "name": "8ternal",
-    "author": "fusornat",
+    "author": "Jokervtn94",
     "version": 2,
     "source": "https://comic.8ternal.com",
     "regexp": "https://comic.8ternal.com/series/(.*?)[.]html",

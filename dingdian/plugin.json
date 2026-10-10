@@ -1,7 +1,7 @@
 {
   "metadata": {
     "name": "Dingdian 【顶点】",
-    "author": "Nhocconsr",
+    "author": "Jokervtn94",
     "version": 1,
     "source": "https://www.dingdian666.com",
     "regexp": "(www.)?((dingdian666.com/xiaoshuo/\\d+/?$)|(m.dingdian666.com/ebooks/\\d+/?$))",

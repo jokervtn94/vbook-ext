@@ -1,14 +1,14 @@
 {
   "metadata": {
     "name": "Tadu (塔读)",
-    "author": "Nhocconsr",
+    "author": "Jokervtn94",
     "version": 2,
     "source": "https://www.tadu.com",
     "regexp": "(www.)?(m.)?tadu.com/book/\\d+/?",
     "description": "Đọc truyện trên trang www.tadu.com",
     "locale": "cn-CN",
     "language": "javascript",
-    "type" : "chinese_novel"
+    "type": "chinese_novel"
   },
   "script": {
     "home": "home.js",

@@ -1,7 +1,7 @@
 {
   "metadata": {
     "name": "Royal Road",
-    "author": "fusornat",
+    "author": "Jokervtn94",
     "version": 1,
     "source": "https://www.royalroad.com",
     "regexp": "(www.)?royalroad.com/fiction/(\\d+)/[A-Za-z-].+",

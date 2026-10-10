@@ -1,7 +1,7 @@
 {
   "metadata": {
     "name": "Đọc Sách Hay",
-    "author": "Nhocconsr",
+    "author": "Jokervtn94",
     "version": 1,
     "source": "https://docsachhay.net",
     "regexp": "(www.)?docsachhay.net/sach/[0-9a-z-]+/?",

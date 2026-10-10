@@ -1,7 +1,7 @@
 {
   "metadata": {
     "name": "ManhwaHentai",
-    "author": "Nhocconsr",
+    "author": "Jokervtn94",
     "version": 3,
     "source": "https://manhwahentai.me",
     "regexp": "(www.)?manhwahentai.me/webtoon/[^/]+/?",

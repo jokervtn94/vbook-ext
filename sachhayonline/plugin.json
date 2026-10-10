@@ -1,7 +1,7 @@
 {
   "metadata": {
     "name": "sachhayonline",
-    "author": "fusornat",
+    "author": "Jokervtn94",
     "version": 2,
     "source": "https://www.sachhayonline.com/",
     "regexp": "(www.)?sachhayonline.com/tua-sach/[A-Za-z].+/?$",

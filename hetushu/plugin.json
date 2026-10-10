@@ -1,7 +1,7 @@
 {
   "metadata": {
     "name": "Hetushu 【和图书】",
-    "author": "Nhocconsr",
+    "author": "Jokervtn94",
     "version": 2,
     "source": "https://www.hetushu.com",
     "regexp": "(www.)?(m.)?hetushu.com/book/\\d+/index.html",

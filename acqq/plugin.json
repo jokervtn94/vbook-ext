@@ -1,7 +1,7 @@
 {
   "metadata": {
     "name": "AC QQ 腾讯动漫",
-    "author": "Nhocconsr",
+    "author": "Jokervtn94",
     "version": 1,
     "source": "https://m.ac.qq.com",
     "regexp": "(www.)?(m.)?ac.qq.com/comic/index/id/\\d+",

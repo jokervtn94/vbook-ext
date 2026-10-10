@@ -1,7 +1,7 @@
 {
   "metadata": {
     "name": "Hố Truyện",
-    "author": "Nhocconsr",
+    "author": "Jokervtn94",
     "version": 5,
     "source": "https://hotruyen1.com",
     "regexp": "(www.)?hotruyen1.com/truyen/[^/+]+",

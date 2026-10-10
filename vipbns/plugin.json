@@ -1,7 +1,7 @@
 {
   "metadata": {
     "name": "【VIP】Bạch Ngọc Sách",
-    "author": "Nhocconsr",
+    "author": "Jokervtn94",
     "version": 21,
     "source": "https://bnsvip.net",
     "regexp": "(www.)?(bachngocsach.(info|pro|net.vn|io.vn)|bnsvip.(vn|com|com.vn|net))/truyen/[0-9a-z-]+/?",

@@ -1,7 +1,7 @@
 {
   "metadata": {
     "name": "Book QQ [阅读]",
-    "author": "Nhocconsr",
+    "author": "Jokervtn94",
     "version": 1,
     "source": "https://book.qq.com",
     "regexp": "(www.)?(ubook.reader|book).qq.com/book-detail/\\d+/?$",

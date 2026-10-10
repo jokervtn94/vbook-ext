@@ -1,7 +1,7 @@
 {
   "metadata": {
     "name": "ST Truyện",
-    "author": "Nhocconsr",
+    "author": "Jokervtn94",
     "version": 7,
     "source": "https://sttruyen.com",
     "regexp": "(www.)?sttruyen.com/story/[0-9a-z-]+/?$",

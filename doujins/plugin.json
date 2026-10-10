@@ -1,7 +1,7 @@
 {
   "metadata": {
     "name": "DouJins",
-    "author": "Nhocconsr",
+    "author": "Jokervtn94",
     "version": 5,
     "source": "https://doujins.com",
     "regexp": "(www.)?doujins.com/.*/[0-9a-z-]+",
@@ -9,7 +9,7 @@
     "locale": "en-EN",
     "language": "javascript",
     "type": "comic",
-    "tag" : "nsfw"
+    "tag": "nsfw"
   },
   "script": {
     "home": "home.js",

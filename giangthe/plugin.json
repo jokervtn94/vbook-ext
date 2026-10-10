@@ -1,7 +1,7 @@
 {
   "metadata": {
     "name": "Giáng Thế",
-    "author": "Nhocconsr",
+    "author": "Jokervtn94",
     "version": 3,
     "source": "https://giangthe.com",
     "regexp": "(www.)?giangthe.com/truyen/\\d+",

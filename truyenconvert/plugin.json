@@ -1,7 +1,7 @@
 {
   "metadata": {
     "name": "Truyện Convert",
-    "author": "Nhocconsr",
+    "author": "Jokervtn94",
     "version": 3,
     "source": "https://truyenconvert.net",
     "regexp": "(www.)?truyenconvert.net/truyen/[0-9a-z-]+",

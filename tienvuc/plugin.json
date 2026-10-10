@@ -1,7 +1,7 @@
 {
   "metadata": {
     "name": "Tiên Vực",
-    "author": "Nhocconsr",
+    "author": "Jokervtn94",
     "version": 13,
     "source": "https://tienvuc.me",
     "regexp": "(www.)?tienvuc.(pro|vn|one|me|com)/[0-9a-z-]+/?$",

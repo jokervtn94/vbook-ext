@@ -1,7 +1,7 @@
 {
   "metadata": {
     "name": "TsuMiNo",
-    "author": "Nhocconsr",
+    "author": "Jokervtn94",
     "version": 1,
     "source": "https://www.tsumino.com",
     "regexp": "(www.)?tsumino.com/entry/\\d+",

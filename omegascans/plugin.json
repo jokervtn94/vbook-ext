@@ -1,7 +1,7 @@
 {
   "metadata": {
     "name": "Omega Scans [EN]",
-    "author": "Nhocconsr",
+    "author": "Jokervtn94",
     "version": 1,
     "source": "https://omegascans.org",
     "regexp": "(www.)?omegascans.org/series/[0-9a-z-]+/?$",

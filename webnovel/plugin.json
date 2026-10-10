@@ -1,7 +1,7 @@
 {
   "metadata": {
     "name": "WebNovel (Novel)",
-    "author": "Nhocconsr",
+    "author": "Jokervtn94",
     "version": 1,
     "source": "https://www.webnovel.com",
     "regexp": "(www.)?(m.)?webnovel.com/book/.*",

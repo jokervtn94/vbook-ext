@@ -1,7 +1,7 @@
 {
   "metadata": {
     "name": "Qimao (七猫文化)",
-    "author": "Nhocconsr",
+    "author": "Jokervtn94",
     "version": 2,
     "source": "https://www.qimao.com",
     "regexp": "(www.)?(qimao.com/shuku/\\d+/?)|(api-bc.wtzw.com/.*)",

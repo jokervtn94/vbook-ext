@@ -1,7 +1,7 @@
 {
   "metadata": {
     "name": "Zing Truyện",
-    "author": "Nhocconsr",
+    "author": "Jokervtn94",
     "version": 7,
     "source": "https://zingtruyen.store",
     "regexp": "(www.)?zingtruyen.(store|fan|top)/story/[0-9a-z-]+/\\d+.html",

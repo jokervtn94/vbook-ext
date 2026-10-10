@@ -1,7 +1,7 @@
 {
   "metadata": {
     "name": "MTL Novel",
-    "author": "Tác giả",
+    "author": "Jokervtn94",
     "version": 2,
     "source": "https://www.mtlnovel.com",
     "regexp": "(www.)mtlnovel.com/[0-9a-z-]+/?$",

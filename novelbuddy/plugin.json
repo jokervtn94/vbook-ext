@@ -1,7 +1,7 @@
 {
   "metadata": {
     "name": "Novel Buddy",
-    "author": "Nhocconsr",
+    "author": "Jokervtn94",
     "version": 2,
     "source": "https://novelbuddy.com",
     "regexp": "(www.)?novelbuddy.com/[0-9a-z-]+/?$",
