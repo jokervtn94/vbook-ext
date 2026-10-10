@@ -60,6 +60,8 @@ jobs:
         run: node tests/test_shuba69_cloudflare.js
       - name: Validate 69Shuba v7 safe per-response decoding in all reader stages
         run: node tests/test_shuba69_charset.js
+      - name: Validate 69Shuba v9 duplicate heading removal
+        run: node tests/test_shuba69_embedded_title.js
       - name: Validate 69Shuba v8 chapter charset safety and no false positives
         run: node tests/test_shuba69_chapter_encoding.js
       - name: Validate 69Shuba detail, TOC and chapter reading

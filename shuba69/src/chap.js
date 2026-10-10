@@ -71,6 +71,48 @@ function shubaCleanChapter(html) {
         .trim();
 }
 
+
+function shubaChapterTitleText(doc) {
+    if (!doc || typeof doc.select !== "function") return "";
+    try {
+        var headings = doc.select(".txtnav h1, h1");
+        if (headings && headings.size()) return String(headings.first().text() || "").trim();
+    } catch (ignored) {}
+    return "";
+}
+// The reader already knows chapter names from toc.js. Strip only a duplicate
+// leading heading inside the HTML body; do not touch chapter content or the TOC.
+function shubaStripEmbeddedTitle(html, pageTitle) {
+    var source = String(html || "");
+    var expected = String(pageTitle || "").replace(/\s+/g, "").trim();
+    var matchExpected = expected.match(/(?:第\s*)?(\d{1,8})\s*(?:章|回|节|卷|绔)/);
+    var expectedNumber = matchExpected ? matchExpected[1] : "";
+    var tokens = source.match(/<[^>]*>|[^<]+/g);
+    if (!tokens) return source;
+    for (var i = 0; i < tokens.length; i++) {
+        var token = tokens[i];
+        if (token.charAt(0) === "<") continue;
+        var prefix = token.match(/^(?:(?:\s|\u3000)|&(?:emsp|nbsp);|&#(?:12288|160|x3000);)*/i);
+        var start = prefix ? prefix[0].length : 0;
+        if (start >= token.length) continue;
+        var rest = token.slice(start);
+        var stop = rest.search(/[\r\n]/);
+        var firstLine = (stop === -1 ? rest : rest.slice(0, stop)).trim();
+        if (!firstLine || firstLine.length > 110) return source;
+        var plain = firstLine.replace(/&(?:nbsp|emsp);|&#(?:12288|160|x3000);/gi, " ")
+                             .replace(/\s+/g, " ").trim();
+        var number = plain.match(/^(?:第|绗)\s*(\d{1,8})\s*(?:章|回|节|卷|绔|绔犲|锛|:\s|：\s|\s)/);
+        var chineseHeading = /^(?:第\s*[一二三四五六七八九十百千万零〇两]{1,12}\s*[章回节卷]|(?:\d{1,8})[.．、：:]\s*\S)/.test(plain);
+        var comparable = !!expected && plain.replace(/\s+/g, "") === expected;
+        var sameChapter = !!(number && (!expectedNumber || String(Number(number[1])) === String(Number(expectedNumber))));
+        var headingBoundary = /^(?:第\s*\d{1,8}\s*[章回节卷](?:\s|[.．、:：]|\d|$)|绗\s*\d{1,8}\s*(?:绔|章|回|卷))/.test(plain);
+        if (!(comparable || (sameChapter && headingBoundary) || (!expected && chineseHeading))) return source;
+        tokens[i] = (stop === -1 ? "" : rest.slice(stop));
+        return tokens.join("");
+    }
+    return source;
+}
+
 function execute(url) {
     var status = 0, doc = null, root = null, challenged = false;
     try {
@@ -122,6 +164,7 @@ function execute(url) {
         }
 
         var html = shubaCleanChapter(root.html());
+        html = shubaStripEmbeddedTitle(html, shubaChapterTitleText(doc));
         var plain = html.replace(/<[^>]+>/g, "").replace(/&[a-z]+;/gi, " ").trim();
         if (!plain || /^(Just a moment|Checking your browser|请完成人机验证)/i.test(plain)) {
             return Response.error(
