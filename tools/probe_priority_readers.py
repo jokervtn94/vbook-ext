@@ -31,6 +31,8 @@ PROBES = [
      "https://book.qq.com/api/book/detail/chapters?bid=39103283", {}, None),
     ("bookqq_read", "GET",
      "https://book.qq.com/api/book/read?bid=38504732&cid=5", {}, None),
+    ("bookqq_active_free", "GET",
+     "https://book.qq.com/api/book/read?bid=39103283&cid=1", {}, None),
     ("qimao_detail", "GET",
      "https://api-bc.wtzw.com/api/v5/book/detail?id=" + BOOK_ID + "&sign=" + QIMAO_SIGN,
      QIMAO_HEADERS, None),
@@ -100,6 +102,11 @@ def one(entry):
                     result["code"] = data.get("code")
                     if name == "bookqq_read":
                         result["api_message"] = str(data.get("msg") or "")[:100]
+                    if name == "bookqq_active_free":
+                        result["api_message"] = str(data.get("msg") or "")[:100]
+                        body = data.get("data") or {}
+                        result["chapter_price"] = body.get("chapterPrice")
+                        result["has_content"] = bool(body.get("content"))
                     if name == "bookqq_chapters" and isinstance(data.get("data"), list):
                         chapters = data["data"]
                         result["first_chapters"] = [
