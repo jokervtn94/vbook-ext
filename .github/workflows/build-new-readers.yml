@@ -1,0 +1,38 @@
+name: Package 69Shuba and UUKanShu
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'shuba69/plugin.json'
+      - 'shuba69/src/**'
+      - 'uukanshu/plugin.json'
+      - 'uukanshu/src/**'
+      - '.github/workflows/build-new-readers.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v4
+        with:
+          ref: master
+      - name: Build Vbook plugin ZIPs
+        run: python tools/build_extensions.py shuba69 uukanshu --apply
+      - name: Inspect Vbook packages
+        run: |
+          python tools/inspect_packages.py shuba69 uukanshu
+          python tools/check_package_sync.py shuba69 uukanshu
+      - name: Commit package outputs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- shuba69/plugin.zip uukanshu/plugin.zip
+          if ! git diff --cached --quiet; then
+            git commit -m "build: sync 69Shuba and UUKanShu plugin packages [skip ci]"
+            git push origin HEAD:master
+          fi
