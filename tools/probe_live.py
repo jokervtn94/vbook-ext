@@ -120,3 +120,27 @@ for name, url in [
                 print("GENRE_SELECT",css,len(els),str(els[0])[:430] if els else "",flush=True)
     except Exception as ex:
         print("UNVERIFIED",str(ex)[:140],flush=True)
+
+
+for name,url in [
+ ("manhua_legacy_api","https://mhvn.truyensieuhay.com/api/story/getlisttheloaiinweb"),
+ ("manhua_detail_page","https://manhuavn2.com/dai-quan-gia-la-ma-hoang-0.html"),
+ ("manhua_list_page","https://manhuavn2.com/danhsach/P1/index.html?status=0&sort=2")
+]:
+    print("API_PROBE",name,flush=True)
+    try:
+        r=session.get(url,timeout=10)
+        soup=BeautifulSoup(r.text,"html.parser")
+        print("API_STATUS",r.status_code,r.url,"size",len(r.content),"contenttype",r.headers.get("Content-Type",""),flush=True)
+        if name=="manhua_list_page":
+            for css in [".item",".item a[href$='.html']", "a[href$='-0.html']", ".list-item",".story-item",".pagination a"]:
+                els=soup.select(css)
+                print("LIST_SELECT",css,len(els),str(els[0])[:280] if els else "",flush=True)
+        if name=="manhua_detail_page":
+            for css in ["a[href^='/doc-truyen/']",".detail-info",".title",".m-img img","h1",".desc",".truyen_description",".noidung"]:
+                els=soup.select(css)
+                print("DETAIL_SELECT",css,len(els),str(els[0])[:280] if els else "",flush=True)
+        if name=="manhua_legacy_api":
+            print("API_BODY_PREFIX",r.text[:190].replace("\n"," "),flush=True)
+    except Exception as e:
+        print("API_UNVERIFIED",str(e)[:190],flush=True)
