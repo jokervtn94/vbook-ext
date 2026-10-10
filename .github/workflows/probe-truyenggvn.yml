@@ -1,0 +1,64 @@
+name: Probe TruyenGGVN markup
+on:
+  push:
+    branches: [master]
+    paths: ['.github/workflows/probe-truyenggvn.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install requests beautifulsoup4
+      - name: Inspect live listing, detail, chapter and search DOM
+        run: |
+          python - <<'PY'
+          import requests,collections
+          from bs4 import BeautifulSoup
+          host="https://truyenggvn.com"
+          urls={
+            "home":host+"/",
+            "genre":host+"/the-loai/action-26.html",
+            "listing":host+"/truyen-moi-cap-nhat/trang-1.html",
+            "detail":host+"/truyen-tranh/dai-quan-gia-la-ma-hoang-7015",
+            "chapter":host+"/truyen-tranh/dai-quan-gia-la-ma-hoang-7015-chap-0.html",
+            "search":host+"/tim-kiem/trang-1.html?q=one%20piece",
+          }
+          s=requests.Session()
+          s.headers.update({"User-Agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/128.0 Safari/537.36"})
+          selectors={
+            "home":[".list_item_home .item_home",".item_home","a[href*='/truyen-tranh/']",".dropdown-menu li a",".pagination a"],
+            "genre":[".list_item_home .item_home",".item_home",".story-item",".pagination a"],
+            "listing":[".list_item_home .item_home",".item_home",".story-item",".pagination a"],
+            "search":[".list_item_home .item_home",".item_home",".story-item",".pagination a"],
+            "detail":["h1[itemprop=name]","h1",".thumbblock img",".story-detail-info",".list_chap a",".list-chapter a","a[href*='-chap-']"],
+            "chapter":[".content_detail img",".chapter_content img",".chapter-content img",".page-chapter img",".reading-detail img",".chapter-detail img","img[data-src]","img[src]"]
+          }
+          for name,url in urls.items():
+            try:
+              r=s.get(url,timeout=20);html=r.text;doc=BeautifulSoup(html,"html.parser")
+              print("\\nPAGE",name,r.status_code,r.url,"size",len(html),"title",str(doc.title.get_text(" ",strip=True) if doc.title else "")[:140],flush=True)
+              print("COUNTS",[(sel,len(doc.select(sel))) for sel in selectors[name]],flush=True)
+              counts=collections.Counter(cls for tag in doc.find_all(True) for cls in tag.get("class",[]))
+              print("CLASSES",counts.most_common(35),flush=True)
+              candidates=[a for a in doc.find_all("a",href=True) if "/truyen-tranh/" in a["href"]][:4]
+              print("STORY LINKS",[(x.get_text(" ",strip=True)[:55],x["href"],str(x.parent)[:450]) for x in candidates],flush=True)
+              if name=="detail":
+                hits=[a for a in doc.select("a[href*='-chap-']")][:4]
+                print("TOC LINKS",[(x.get_text(" ",strip=True)[:55],x.get("href"),str(x.parent)[:420]) for x in hits],flush=True)
+                for k in ["h1",".thumbblock",".story-detail-info",".list_chap",".list-chapter",".chapter-list",".book-info"]:
+                  node=doc.select_one(k)
+                  print("DETAIL-SELECT",k,str(node)[:650] if node else None,flush=True)
+              if name=="chapter":
+                images=doc.find_all("img")
+                print("IMAGE EXAMPLES",[(str(im.parent)[:300],{k:str(v)[:180] for k,v in im.attrs.items()}) for im in images[:8]],flush=True)
+              if name=="listing" or name=="search":
+                for k in [".item_home",".story-item",".pagination"]:
+                  node=doc.select_one(k)
+                  print("LIST SELECT",k,str(node)[:850] if node else None,flush=True)
+            except Exception as e:
+              print("FAIL",name,type(e).__name__,str(e)[:250],flush=True)
+          PY
