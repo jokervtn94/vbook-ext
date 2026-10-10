@@ -1,0 +1,44 @@
+name: Build repaired Vbook readers v20261010
+on:
+  push:
+    branches: [fix/live-audit-22-extension-readers-20261010]
+    paths: ['.github/workflows/build-reader-repairs-v20261010.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/live-audit-22-extension-readers-20261010
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check all published reader JavaScript and linked scripts
+        run: python tools/check_published_scripts.py
+      - name: Regressions
+        run: |
+          node tests/test_reader_repair_batch.js
+          node tests/test_vbook_regressions.js
+          node tests/test_manhuavn_covers.js
+      - name: Build seven repaired ZIPs
+        run: python tools/build_extensions.py omegascans acqq bookqq tienvuc myrics sachhayonline dingdian --apply
+      - name: Validate package and published registry
+        run: |
+          python tools/check_package_sync.py manhuavn tranh18 novelbuddy sayhentai omegascans acqq bookqq tienvuc myrics sachhayonline dingdian
+          python tools/validate_extensions.py
+          python main.py --check
+          python tools/inspect_packages.py
+          python tools/audit_structure.py
+      - name: Publish distribution ZIPs on repair branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- omegascans/plugin.zip acqq/plugin.zip bookqq/plugin.zip tienvuc/plugin.zip myrics/plugin.zip sachhayonline/plugin.zip dingdian/plugin.zip
+          if ! git diff --cached --quiet; then
+            git commit -m "build: package seven repaired published Vbook extensions [skip ci]"
+            git push origin HEAD:fix/live-audit-22-extension-readers-20261010
+          fi
