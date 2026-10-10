@@ -1,45 +1,53 @@
-// Chapter pages and TOC may not share a charset. A valid Han character is
-// never evidence of mojibake. Score only unambiguous corruption markers.
+// 69Shuba pages may declare GBK while serving UTF-8, or really use GBK.
+// Start with UTF-8 and only retry a fresh HTTP response when decoding looks bad.
+// Do not parse the same VBook HTTP response twice.
 function shubaChapterEncodingQuality(doc) {
+    if (!doc || typeof doc.select !== "function")
+        return {valid: false, score: 1000000, chinese: 0};
     var root = shubaContentRoot(doc);
     if (!root) return {valid: false, score: 1000000, chinese: 0};
-    var chapter = "";
-    var title = "";
+    var chapter = "", title = "";
     try {
         chapter = String(root.text() || "");
-        if (!chapter.trim()) chapter = String(root.html() || "").replace(/<[^>]+>/g, " ");
+        if (!chapter.trim()) chapter = String(root.html() || "").replace(/<[^>]*>/g, " ");
     } catch (ignored) {}
     try {
-        var titles = doc.select(".txtnav h1, h1");
-        if (titles && titles.size()) title = String(titles.first().text() || "");
+        var headings = doc.select(".txtnav h1, h1");
+        if (headings && headings.size()) title = String(headings.first().text() || "");
     } catch (ignoredTitle) {}
-    var sample = (title + " " + chapter).slice(0, 6000);
+    var sample = (title + " " + chapter).slice(0, 12000);
     if (!sample.trim()) return {valid: false, score: 1000000, chinese: 0};
-    var bad = (sample.match(/\uFFFD/g) || []).length;
-    var unmistakable = (sample.match(/锟斤拷|銆€|鐨勮|鍙戝|宸茬粡|瀛楃|鏂囧/g) || []).length;
-    var han = (sample.match(/[\u3400-\u9fff]/g) || []).length;
-    return {valid: true, score: bad * 100 + unmistakable * 30, chinese: han};
+    var invalid = (sample.match(/\uFFFD/g) || []).length;
+    var controls = (sample.match(/[\u0000-\u0008\u000b-\u001f]/g) || []).length;
+    // Highly distinctive mojibake sequences only. Ordinary Han characters
+    // (such as 涓, 锛, 濡) are not sufficient to declare corruption.
+    var signatures = (sample.match(/锟斤拷|銆€|鐨勮|鍙戝|宸茬粡|瀛楃|鏂囧|绗\s*\d{1,8}\s*绔|Ã[\u0080-\u00ff]|Â[\u0080-\u00ff]/g) || []).length;
+    var chinese = (sample.match(/[\u3400-\u9fff]/g) || []).length;
+    return {valid: true, score: invalid * 1000 + controls * 100 + signatures * 50, chinese: chinese};
 }
 function shubaSafeHtml(response, target) {
-    // The TOC on 69Shuba is correctly decoded with GBK. Retain GBK for
-    // chapters unless the decoded chapter actually contains broken glyphs.
-    var original = response.html("gbk");
-    if (!original || typeof original.select !== "function") return original;
-    var first = shubaChapterEncodingQuality(original);
-    if (!first.valid || first.score === 0) return original;
-    // VBook HTTP responses are potentially one-shot; use a fresh request.
+    var utfDoc = null, utfQuality = {valid: false, score: 1000000, chinese: 0};
     try {
-        var secondResponse = fetch(target);
-        if (!secondResponse || !secondResponse.ok) return original;
-        var alternate = secondResponse.html("utf-8");
-        if (!alternate || typeof alternate.select !== "function") return original;
-        var other = shubaChapterEncodingQuality(alternate);
-        // An empty error/challenge page must not beat a real Chinese chapter.
-        if (other.valid && other.chinese > 0 && other.score < first.score)
-            return alternate;
-    } catch (ignoredRetry) {}
-    return original;
+        utfDoc = response.html("utf-8");
+        utfQuality = shubaChapterEncodingQuality(utfDoc);
+    } catch (ignoredUtf8) {}
+    // UTF-8 is unambiguous when it contains actual readable chapter content
+    // and no replacement characters or known mojibake.
+    if (utfQuality.valid && utfQuality.score === 0) return utfDoc;
+    var gbkDoc = null, gbkQuality = {valid: false, score: 1000000, chinese: 0};
+    try {
+        var retry = fetch(target);
+        if (retry && retry.ok) {
+            gbkDoc = retry.html("gbk");
+            gbkQuality = shubaChapterEncodingQuality(gbkDoc);
+        }
+    } catch (ignoredGbk) {}
+    if (gbkQuality.valid &&
+        (!utfQuality.valid || (gbkQuality.score < utfQuality.score && gbkQuality.chinese > 0)))
+        return gbkDoc;
+    return utfDoc || gbkDoc;
 }
+
 function shubaContentRoot(doc) {
     if (!doc || typeof doc.select !== "function") return null;
     var selectors = [".txtnav", "#content", "#txt"];

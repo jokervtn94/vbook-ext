@@ -40,7 +40,9 @@ function verify(body, present, absent) {
     const result = run(body);
     assert.match(result.html, present);
     if (absent) assert.doesNotMatch(result.html, absent);
-    assert.equal(result.requests, 1, "Normal chapter should be fetched once");
+    // A recognizably garbled heading warrants one fallback request.
+    const expectedRequests = body.indexOf("绗568") >= 0 ? 2 : 1;
+    assert.equal(result.requests, expectedRequests, "No repeated charset parsing or unnecessary chapter fetches");
 }
 
 // Actual website pattern: title in H1 then duplicated as first paragraph.
@@ -62,4 +64,4 @@ verify('<h1>' + heading + '</h1><p>第568章的战斗令人不寒而栗。</p>' 
 // A paragraph with the previous chapter number is not stripped.
 verify('<h1>' + heading + '</h1><p>第567章的谜团还没有解决。</p>',
        /第567章的谜团/, /<h1/);
-console.log("PASS 69Shuba v9: duplicate chapter title removed, real prose preserved");
+console.log("PASS 69Shuba v10: duplicate chapter title removed, real prose preserved");

@@ -56,8 +56,13 @@ function run(file,charset,missingOther=false){
    file==="chap.js"?host+"/txt/29590/25167831":book;
  const result=file==="gen.js"||file==="search.js"?context.execute(input,"1"):context.execute(input);
  assert.equal(result.ok,true,file+" "+charset+": "+result.error);
- if(charset==="gbk") assert.deepEqual(calls,["gbk"]);
- else assert.deepEqual(calls,["gbk","utf-8"]);
+ if(file==="chap.js") {
+   if(charset==="utf-8") assert.deepEqual(calls,["utf-8"]);
+   else assert.deepEqual(calls,["utf-8","gbk"]);
+ } else {
+   if(charset==="gbk") assert.deepEqual(calls,["gbk"]);
+   else assert.deepEqual(calls,["gbk","utf-8"]);
+ }
  assert.ok(context.execute, "VBook execute must remain available");
  const value=result.value;
  let actual="";
@@ -82,6 +87,6 @@ for(const charset of ["utf-8","gbk"]){
    run(file,charset);
 }
 const manifest=JSON.parse(fs.readFileSync(path.join(base,"..","plugin.json"),"utf8")).metadata;
-assert.equal(manifest.version,9);
+assert.equal(manifest.version,10);
 assert.equal(manifest.author,"Jokervtn94");
-console.log("PASS 69Shuba v9: mixed UTF-8/GBK decoding, repaired novel titles, TOC chapter 1418, metadata and chapter body.");
+console.log("PASS 69Shuba v10: mixed UTF-8/GBK decoding, repaired novel titles, TOC chapter 1418, metadata and chapter body.");

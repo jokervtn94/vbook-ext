@@ -175,10 +175,10 @@
       "name": "69Shuba (69书吧)",
       "author": "Jokervtn94",
       "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/shuba69/plugin.zip",
-      "version": 9,
+      "version": 10,
       "source": "https://www.69shuba.com",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/shuba69/icon.png",
-      "description": "69Shuba v9: sửa dòng tên chương bị lỗi khi mở đọc; giữ nguyên danh mục chương và nội dung truyện.",
+      "description": "69Shuba v10: sửa lỗi tên chương đọc sai theo từng truyện bằng tự chọn UTF-8/GBK an toàn; giữ nguyên danh mục.",
       "type": "chinese_novel",
       "locale": "zh_CN"
     },

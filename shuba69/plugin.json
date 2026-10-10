@@ -2,10 +2,10 @@
   "metadata": {
     "name": "69Shuba (69书吧)",
     "author": "Jokervtn94",
-    "version": 9,
+    "version": 10,
     "source": "https://www.69shuba.com",
     "regexp": "https?://(?:www\\.)?69shuba\\.com/(?:book/\\d+(?:\\.htm|/)?|txt/\\d+/\\d+(?:\\.html?)?)",
-    "description": "69Shuba v9: xóa tiêu đề chương trùng/lỗi chữ trong nội dung đọc; giữ tên chương chuẩn từ danh mục.",
+    "description": "69Shuba v10: đọc chương UTF-8 trước, chỉ thử GBK khi có lỗi mã hóa; sửa tên chương giữa các truyện mà không ảnh hưởng mục lục.",
     "locale": "zh_CN",
     "language": "javascript",
     "type": "chinese_novel"
