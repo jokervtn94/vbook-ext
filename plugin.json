@@ -54,10 +54,10 @@
       "name": "Hố Truyện",
       "author": "Jokervtn94",
       "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/hotruyen/plugin.zip",
-      "version": 7,
+      "version": 8,
       "source": "https://hotruyen1.com",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/hotruyen/icon.png",
-      "description": "Đọc truyện trên trang Hotruyen1.com",
+      "description": "Hố Truyện v8: thêm 6 nhóm phân loại, sửa ảnh bìa danh sách/tìm kiếm/chi tiết; dùng ảnh mặc định khi nguồn không có bìa riêng.",
       "type": "novel",
       "locale": "vi_VN"
     },

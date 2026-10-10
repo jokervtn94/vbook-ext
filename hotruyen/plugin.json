@@ -2,10 +2,10 @@
   "metadata": {
     "name": "Hố Truyện",
     "author": "Jokervtn94",
-    "version": 7,
+    "version": 8,
     "source": "https://hotruyen1.com",
-    "regexp": "(www.)?hotruyen1.com/truyen/[^/+]+",
-    "description": "Đọc truyện trên trang Hotruyen.com",
+    "regexp": "(?:https?://)?(?:www\\.)?hotruyen1\\.com/truyen/[^/?#]+/?(?:\\?.*)?$",
+    "description": "Hố Truyện v8: bổ sung 6 nhóm phân loại còn hoạt động; sửa ảnh bìa, URL ảnh mặc định, danh sách, tìm kiếm và chi tiết.",
     "locale": "vi-VN",
     "language": "javascript",
     "type": "novel"
@@ -15,6 +15,7 @@
     "detail": "detail.js",
     "search": "search.js",
     "toc": "toc.js",
-    "chap": "chap.js"
+    "chap": "chap.js",
+    "genre": "genre.js"
   }
 }

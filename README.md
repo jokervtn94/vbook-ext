@@ -18,7 +18,7 @@ https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/plugin.json
 | Tiên Vực | https://tienvuc.me | 15 | vi_VN | novel |
 | Say Hentai | https://sayhentai.cx | 12 | vi_VN | comic |
 | Tranh 18 | https://tranh18.cc | 3 | vi_VN | comic |
-| Hố Truyện | https://hotruyen1.com | 7 | vi_VN | novel |
+| Hố Truyện | https://hotruyen1.com | 8 | vi_VN | novel |
 | Qimao | https://www.qimao.com | 6 | zh_CN | chinese_novel |
 | AC QQ | https://ac.qq.com | 3 | zh_CN | comic |
 | Manhua Gui | https://www.manhuagui.com | 6 | zh_CN | comic |

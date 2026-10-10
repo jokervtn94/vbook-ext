@@ -56,6 +56,8 @@ jobs:
         run: node tests/test_shuba69_reader.js
       - name: Validate 69Shuba Vbook DOM compatibility
         run: node tests/test_shuba69_vbook_dom.js
+      - name: Validate Hotruyen covers and six category feeds
+        run: node tests/test_hotruyen_reader.js
       - name: Validate Dingdian covers and detail fallback
         run: node tests/test_dingdian_covers.js
       - name: Validate TruyenQQKO reader and Cloudflare handling
