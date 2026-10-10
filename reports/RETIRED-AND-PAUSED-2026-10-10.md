@@ -14,7 +14,7 @@ Each removed directory contained its scripts, icon, manifest and ZIP. Source can
 ## Unpublished, code retained pending further verification
 - `baotangtruyen`: prior URL parked, alternative baotangtruyen32.top did not yield a verifiable reader. Version and source remain in its local manifest.
 
-These three can be reinstated once a valid data source and end-to-end chapter test are confirmed.
+The paused extension may be reinstated only after verifying a valid source and a complete chapter test.
 
 ## Verification required for remaining extensions
 A valid homepage or an HTTP 200 response does not demonstrate a functioning Vbook crawler.

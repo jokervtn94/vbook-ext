@@ -1,10 +1,5 @@
-name: Check remaining source domains
+name: Check remaining Vbook source domains
 on:
-  push:
-    branches: [fix/active-sources-prune-20261010]
-    paths:
-      - tools/check_remaining_sources.py
-      - .github/workflows/check-domains.yml
   workflow_dispatch:
 permissions:
   contents: read

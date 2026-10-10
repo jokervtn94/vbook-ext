@@ -1,10 +1,5 @@
-name: Live source-contract smoke tests
+name: Live Vbook source-contract smoke tests
 on:
-  push:
-    branches: [fix/active-sources-prune-20261010]
-    paths:
-      - tools/smoke_migrations.py
-      - .github/workflows/smoke-migrations.yml
   workflow_dispatch:
 permissions:
   contents: read
