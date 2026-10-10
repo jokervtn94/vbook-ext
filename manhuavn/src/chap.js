@@ -1,22 +1,26 @@
+load('config.js');
 function execute(url) {
-    let cid = url.split('/').pop()
-    let response = fetch('https://mhvn.truyensieuhay.com/api/story/getDetailChapterPostSec', {
-        method: 'POST',
-        body: {sChapterID: cid}
-    })
-    if(response.ok){
-        let imgs = [];
-        let json = response.json().data
-        if(json.currentchap.ChapContent.length === 0){
-            imgs.push('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh4kgxo8Z2RBMLmkue7X7LtDmGEDLzPMNj3ex6qnaODTSeGvZtFxwjCXF4dqd9SxgWHJvBrJK5YImLR01b-iJSiSQ7KPOA-viJwSkbiZ27NSaU2Jl1UsQW6T0JcaFewv5v8yIT0aqN4hrdDs8URrTddk6Mx0MZFHIbpz0pTSUJLQ3dApoHLfRYVQj580ks/s0/thongbaocung.jpg')
-            return Response.success(imgs)
-        }
-        let ccontent = json.currentchap.ChapContent
-        let doc = Html.parse(ccontent)  
-        let el = doc.select('img')
-        el.forEach(e =>{
-            imgs.push(e.attr('src'))
-        })
-        return Response.success(imgs)
+    // Pages marked app-only are not bypassed. Use old free-chapter API only
+    // when a valid API chapter ID was returned by the chapter list.
+    if (url.indexOf('/doc-truyen/')>=0 || url.indexOf('manhuavn2.com')>=0) {
+        return Response.error('Chương này chỉ được cung cấp trên ứng dụng của nguồn ManhuaVN.');
+    }
+    var id=url.split('/').pop(), response;
+    try {
+        response=fetch(BASE_API+'/api/story/getDetailChapterPostSec',{
+            method:'POST',body:{sChapterID:id}
+        });
+        if (!response.ok) return null;
+        var obj=response.json().data;
+        var html=obj.currentchap.ChapContent || '';
+        if (!html) return Response.error('Chương này không có ảnh miễn phí qua API.');
+        var imgs=[];
+        Html.parse(html).select('img').forEach(function(e) {
+            var src=e.attr('src') || e.attr('data-src');
+            if (src) imgs.push(src);
+        });
+        return Response.success(imgs);
+    } catch(e) {
+        return null;
     }
 }
