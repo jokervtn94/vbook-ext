@@ -4,12 +4,10 @@ on:
   push:
     branches:
       - master
-      - main
       - 'maintenance/**'
   pull_request:
     branches:
       - master
-      - main
   workflow_dispatch:
   # GitHub-token build commits do not start push workflows; validate the
   # finalized branch after each archive builder completes.

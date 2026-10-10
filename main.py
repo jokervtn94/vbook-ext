@@ -31,6 +31,8 @@ def render_readme(catalog):
         "",
         "Extensions cho app Vbook App.",
         "",
+        "Nhánh phát hành chính: `master`. Mọi extension mới và bản cập nhật đều phát hành từ `master`.",
+        "",
         "Tải app tại: [Vbook App Download](https://bit.ly/vbookapp)",
         "",
         "## Link extension",
