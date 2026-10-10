@@ -2,10 +2,10 @@
   "metadata": {
     "name": "Dingdian 【顶点】",
     "author": "Nhocconsr",
-    "version": 1,
+    "version": 2,
     "source": "https://www.dingdian666.com",
     "regexp": "(www.)?((dingdian666.com/xiaoshuo/\\d+/?$)|(m.dingdian666.com/ebooks/\\d+/?$))",
-    "description": "Nếu lỗi báo cáo email : phamgiavang@gmail.com hoặc discord.Extention này cover méo có đâu nên đừng bảo lỗi nhé :)",
+    "description": "Danh sách chưa có ảnh bìa từ nguồn; trang chi tiết đọc được ảnh bìa thật, không gán bìa giả.",
     "locale": "vi-VN",
     "language": "javascript",
     "type": "chinese_novel"
