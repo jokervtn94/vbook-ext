@@ -1,1 +1,6 @@
-{"gen.js":"https://www.wuxiaworld.com/api/novels/search"}
+{
+  "gen.js": "https://www.wuxiaworld.com/api/novels/search",
+  "detail.js": "https://www.wuxiaworld.com/novel/coiling-dragon",
+  "toc.js": "https://www.wuxiaworld.com/novel/coiling-dragon",
+  "chap.js": "https://www.wuxiaworld.com/novel/coiling-dragon/cd-book-1-chapter-1"
+}
