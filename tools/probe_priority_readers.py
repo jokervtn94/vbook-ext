@@ -98,6 +98,10 @@ def one(entry):
                         result["data_list_count"] = len(inner)
                     if isinstance(data.get("items"), list):
                         result["item_count"] = len(data["items"])
+                    if name.startswith("wuxiaworld_old_search") and isinstance(data.get("items"), list):
+                        result["first_item_id"] = data["items"][0].get("id") if data["items"] else None
+                        result["last_item_id"] = data["items"][-1].get("id") if data["items"] else None
+                        result["first_item_slug"] = data["items"][0].get("slug") if data["items"] else None
             except ValueError:
                 result["invalid_json"] = True
         elif "html" in result["type"] or r.text.startswith("<"):
@@ -109,6 +113,28 @@ def one(entry):
             }
             text = soup.get_text(" ",strip=True)
             result["text_chars"] = len(text)
+            if name == "wuxiaworld_novel":
+                result["headings"] = [
+                    {"tag": tag.name, "text": tag.get_text(" ", strip=True)[:70],
+                     "class": tag.get("class", [])[:4]}
+                    for tag in soup.select("h1, h2, h3, h4")[:12]
+                ]
+                result["metadata"] = {
+                    key: (soup.select_one(key).get("content", "")[:160]
+                          if soup.select_one(key) else None)
+                    for key in ['meta[property="og:title"]',
+                                'meta[property="og:image"]',
+                                'meta[name="description"]']
+                }
+                result["chapter_link_samples"] = [
+                    a.get("href", "")[:140]
+                    for a in soup.select('a[href*="/novel/coiling-dragon/"]')[:4]
+                ]
+                result["inline_state_markers"] = {
+                    tag: tag in r.text for tag in
+                    ["__NEXT_DATA__", "__NUXT__", "__INITIAL_STATE__",
+                     "chapterGroups", "chapterList", '"chapterCount"']
+                }
             result["challenge"] = bool(
                 soup.select_one("#challenge-form, .cf-turnstile")
                 or "just a moment" in result["title"].lower()
