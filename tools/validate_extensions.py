@@ -53,6 +53,11 @@ def validate(root, branch):
         if not isinstance(entry.get("name"), str) or not entry["name"].strip():
             errors.append(f"{prefix}: missing name")
 
+        if entry.get("type") not in ("novel", "comic", "chinese_novel"):
+            errors.append(f"{prefix}: missing/invalid type")
+        if not isinstance(entry.get("locale"), str) or not entry["locale"].strip():
+            errors.append(f"{prefix}: missing locale")
+
         folder, problem = validate_asset_url(entry.get("path"), branch, "plugin.zip")
         if problem:
             errors.append(f"{prefix}.path: {problem}")
