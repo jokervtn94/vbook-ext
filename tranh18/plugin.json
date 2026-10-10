@@ -1,7 +1,7 @@
 {
   "metadata": {
     "name": "Tranh 18",
-    "author": "Nhocconsr",
+    "author": "Jokervtn94",
     "version": 1,
     "source": "https://tranh18.com",
     "regexp": "(www.)?tranh18.com/comic/[0-9a-z-_]+",
