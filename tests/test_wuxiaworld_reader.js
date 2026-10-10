@@ -29,14 +29,14 @@ assert.equal(list.ok,true,list.error);
 assert.equal(list.data.length,1);assert.equal(list.data[0].link,'https://www.wuxiaworld.com/novel/coiling-dragon');
 assert.equal(requests[0].opt.method,'POST');
 assert.equal(JSON.parse(requests[0].opt.body).count,100);
-function item(id){return {id,name:'Novel '+id,slug:'novel-'+id,coverUrl:'https://cdn.wuxiaworld.com/'+id+'.jpg',chapterCount:10};}
+function mkItem(id){return {id,name:'Novel '+id,slug:'novel-'+id,coverUrl:'https://cdn.wuxiaworld.com/'+id+'.jpg',chapterCount:10};}
 const calls=[];
 const paginated=boot('gen.js',(url,opt)=>{
  const payload=JSON.parse(opt.body);
  calls.push(payload.searchAfter);
  let start=payload.searchAfter===null?300:payload.searchAfter-1;
  const size=payload.searchAfter===101?51:100;
- const items=Array.from({length:size},(_,i)=>item(start-i));
+ const items=Array.from({length:size},(_,i)=>mkItem(start-i));
  return {ok:true,json:()=>({result:true,total:251,items})};
 });
 let p1=paginated('https://www.wuxiaworld.com/api/novels/search','1');
