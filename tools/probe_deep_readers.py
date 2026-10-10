@@ -18,6 +18,8 @@ URLS={
 "qimao_list":"https://www.qimao.com/shuku/a-a-a-a-a-update_time-1/",
 "doujins_home":"https://doujins.com/",
 "novelbuddy_latest":"https://novelbuddy.me/latest",
+"hotruyen_toc":"https://hotruyen1.com/muc-luc-sv/toan-dan-chuyen-chuc-ngu-long-su-ta-co-the-chem-than-323131373837382D32373437353936",
+"sayhentai_chapter":"https://sayhentai.cx/truyen-tu-phe-vat-thanh-ke-bao-thu-mua-1/chuong-20",
 }
 def inspect(arg):
     name,url=arg
@@ -28,6 +30,18 @@ def inspect(arg):
         choices=["h1","h2","h3","img","a[href]","a[href*='/chapter']","a[href*='/series/']",".gap-y-2 img",".text-muted-foreground p",".space-y-2 .flex","#manga-chapters-holder",".wp-manga-chapter a","[data-chapter]","#newupdate .uitem","#des-info",".dinfo","#borderchapter",".book img",".chapter","ul.box-list-chapter li","#chapter_content img[id^=image]",".summary_image img",".page-item-detail",".comic-link",".qm-pic-txt li"]
         res["selectors"]={sel:len(doc.select(sel)) for sel in choices if doc.select(sel)}
         res["headline"]=[x.get_text(" ",strip=True)[:130] for x in doc.select("h1,h2")[:5]]
+        if "omega_root" in name:
+            res["cards"]=[str(a)[:1050] for a in doc.select('a[href^="/series/"]')[:8]]
+        if "omega_detail" in name:
+            res["chapter_controls"]=[str(x)[:1000] for x in doc.select("[data-chapter],button,select")[:18]]
+            res["cover_metas"]=[(x.get("property"),x.get("content")) for x in doc.select("meta[property^=og:]")]
+        if name=="hotruyen_toc":
+            res["chapters"]=[str(x)[:550] for x in doc.select(".chapter")[:17]]
+            res["chapter_count"]=len(doc.select(".chapter"))
+            res["hrefs"]=[(x.get("href"),x.get_text(" ",strip=True)[:70]) for x in doc.select("a[href]") if "chuong" in x.get("href","")][:16]
+        if name=="sayhentai_chapter":
+            res["page_images"]=[str(x)[:350] for x in doc.select("#chapter_content img[id^=image],.reading-content img")[:5]]
+            res["all_imgs"]=[str(x)[:230] for x in doc.select("img")[:9]]
         if "omega" in name:
             res["chapter_meta"]=[x.get_text(" ",strip=True)[:140] for x in doc.select(".space-y-2 .flex")[:13]]
             res["series_links"]=[(a.get("href"),a.get_text(" ",strip=True)[:80]) for a in doc.select("a[href]") if "/chapter" in a.get("href","")][:12]
