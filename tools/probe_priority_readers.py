@@ -54,7 +54,7 @@ PROBES = [
     ("uukanshu_chapter", "GET", "https://uukanshu.cc/book/25044/16039379.html", {}, None),
 ]
 SELECTORS = {
-    "wuxiaworld_novel": [".novel-body h2", "ul.list-chapters li", "#chapter-content", "#__NEXT_DATA__"],
+    "wuxiaworld_novel": [".novel-body h2", "ul.list-chapters li", "#chapter-content", "#__NEXT_DATA__", "h1", "h2", "meta[property=og:image]", "meta[name=description]", "a[href*=\'/novel/coiling-dragon/\']", "[class*=synopsis]", "[class*=Synopsis]"],
     "sayhentai_chapter": ["#chapter_content img[id^=image]", "#chapter_content img", "img[data-src]"],
     "ciweimao_vip": [".chapter-content", ".chapter-content p", "#chapter_content"],
     "mangaread_detail": [".summary_image img", ".post-content .post-content_item", ".chapter-item"],
@@ -82,6 +82,11 @@ def one(entry):
                 data = r.json()
                 if isinstance(data, dict):
                     result["top_keys"] = sorted(data.keys())[:12]
+                    if name.startswith("wuxiaworld_old_search"):
+                        result["result_field"] = str(data.get("result"))[:120]
+                        result["total"] = data.get("total")
+                        if isinstance(data.get("items"), list) and data["items"]:
+                            result["first_item_keys"] = sorted(data["items"][0].keys())[:25]
                     result["code"] = data.get("code")
                     result["success"] = data.get("success")
                     inner = data.get("data")
