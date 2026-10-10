@@ -51,10 +51,21 @@ def probe(url):
             "links": len(dom.select("a[href]")),
             "images": len(dom.select("img"))
         })
-        if (dom.select_one("#challenge-form, .cf-turnstile, #cf-challenge-running")
-                or "just a moment" in marker
-                or "checking your browser" in marker
-                or "attention required | cloudflare" in marker):
+        # A Cloudflare widget embedded in a fully rendered page is not itself
+        # proof that the reader is blocked. Require an actual challenge title or
+        # a nearly empty/error page with a verification form.
+        page_title = title.lower().strip()
+        challenge_title = (
+            page_title.startswith(("just a moment", "checking your browser",
+                                   "attention required", "验证码", "驗證碼"))
+        )
+        challenge_widget = bool(
+            dom.select_one("#challenge-form, .cf-turnstile, #cf-challenge-running")
+        )
+        if challenge_title or (
+            challenge_widget and (response.status_code in (403, 429, 503)
+                                  or len(body) < 250)
+        ):
             result["result"] = "challenge"
         elif "you need to enable javascript to run this app" in marker:
             result["result"] = "javascript-app"
