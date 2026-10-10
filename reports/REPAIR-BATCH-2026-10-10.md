@@ -1,5 +1,7 @@
 # Vbook-Ext — source fixes and retirements (2026-10-10)
 
+> **Lịch sử:** bảng dưới đây ghi lại đợt sửa v3. NovelBuddy v4 và ManhuaVN v4 khắc phục thêm lỗi TOC/chương miễn phí; xem [báo cáo v4](VBOOK-V4-CHAPTERS-2026-10-10.md).
+
 ## Change summary
 - Published registry: **41 → 35** extensions on `master`.
 - Physically removed from Git working tree: `tsumino`, `sttruyen`, `truyengg`, `lightnovel`, `vipbns` (five directories, recoverable from Git history).

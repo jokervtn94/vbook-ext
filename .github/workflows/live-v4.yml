@@ -1,10 +1,5 @@
 name: Live chapter source checks
 on:
-  push:
-    branches: [fix/novelbuddy-toc-manhuavn-20261010]
-    paths:
-      - 'tests/test_live_source_contracts.py'
-      - '.github/workflows/live-v4.yml'
   workflow_dispatch:
 permissions:
   contents: read
