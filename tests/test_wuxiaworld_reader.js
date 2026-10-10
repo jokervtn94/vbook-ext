@@ -51,8 +51,8 @@ const ids=new Set([...p1.data,...p2.data,...p3.data].map(x=>x.link));
 assert.equal(ids.size,251,'All 251 novels must have unique links');
 let found=boot('search.js',apiFetch)('dragon');
 assert.equal(found.ok,true);assert.equal(found.data.length,1);assert.equal(requests[1].opt.queries.query,'dragon');
-const incompleteDoc={select:key=>coll(key==='body'?[node('807 Chapters')]:key.includes('a[href*=')?[node('Start Reading',{href:'/novel/coiling-dragon/cd-book-1-chapter-1'})]:[])};
-let toc=boot('toc.js',()=>({ok:true,html:()=>incompleteDoc}))('https://www.wuxiaworld.com/novel/coiling-dragon');
-assert.equal(toc.ok,false,'TOC must not pretend 1/807 chapters is complete');
-assert.match(toc.error,/1\/807/);
-console.log('PASS: WuxiaWorld current SSR metadata, chapters, API search and incomplete TOC guard');
+const missingHydration=boot('toc.js',()=>({ok:true,text:()=>'<html>Missing chapter state</html>'}))
+  ('https://www.wuxiaworld.com/novel/coiling-dragon');
+assert.equal(missingHydration.ok,false,'TOC must not pretend a missing directory is complete');
+assert.match(missingHydration.error,/nhóm chương/);
+console.log('PASS: WuxiaWorld current SSR metadata, chapters, API search and missing TOC guard');
