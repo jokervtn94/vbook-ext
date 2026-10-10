@@ -60,7 +60,9 @@ jobs:
         run: node tests/test_shuba69_cloudflare.js
       - name: Validate 69Shuba v10 stage-specific adaptive charset decoding
         run: node tests/test_shuba69_charset.js
-      - name: Validate 69Shuba v10 duplicate heading removal
+      - name: Validate 69Shuba v11 screenshot double-heading fix
+        run: node tests/test_shuba69_double_reader_heading.js
+      - name: Validate 69Shuba v11 duplicate heading removal
         run: node tests/test_shuba69_embedded_title.js
       - name: Validate 69Shuba v10 per-page UTF-8/GBK encoding and no false positives
         run: node tests/test_shuba69_chapter_encoding.js

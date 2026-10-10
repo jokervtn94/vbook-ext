@@ -90,35 +90,73 @@ function shubaChapterTitleText(doc) {
 }
 // The reader already knows chapter names from toc.js. Strip only a duplicate
 // leading heading inside the HTML body; do not touch chapter content or the TOC.
+// Strip duplicate chapter headings at the start of the chapter body.
+// VBook itself already displays the correct chapter title from toc.js.
+// Never replace prose text or alter the TOC.
+function shubaNormalizeHeading(text) {
+    return String(text || "")
+        .replace(/&#(?:x([0-9a-f]+)|(\d+));/gi, function (_, hex, dec) {
+            var value = parseInt(hex || dec, hex ? 16 : 10);
+            return value > 0 && value < 65536 ? String.fromCharCode(value) : " ";
+        })
+        .replace(/&(?:nbsp|emsp|ensp|thinsp);/gi, " ")
+        .replace(/[\s\u3000]+/g, " ").trim();
+}
+function shubaHeadingNumber(value) {
+    var text = shubaNormalizeHeading(value);
+    var match = text.match(/^(?:第|绗|[\uFFFD\s\u3000]){0,12}(\d{1,8})(?=\D|$)/);
+    return match ? String(parseInt(match[1], 10)) : "";
+}
+function shubaLooksLikeChapterHeading(text, expected, expectedNumber) {
+    var line = shubaNormalizeHeading(text);
+    if (!line || line.length > 130) return false;
+    if (expected && line.replace(/\s+/g, "") === expected.replace(/\s+/g, "")) return true;
+    var number = shubaHeadingNumber(line);
+    if (expectedNumber && number !== expectedNumber) return false;
+    // A sentence about a numbered chapter is prose, not a duplicated title.
+    var standard = /^(?:第\s*\d{1,8}\s*[章回节卷](?![的里中后是])(?:\s|[.．、:：]|$)|\d{1,8}\s*[.．、:：]\s*\S|绗\s*\d{1,8}\s*(?:绔|章|回|卷))/.test(line);
+    if (number && standard) return true;
+    // A malformed heading can start with ��1418��. Reject such a line
+    // only when it is short, has multiple replacement glyphs and a near-start
+    // chapter number. Real prose is never modified merely for a bad glyph.
+    var invalid = (line.match(/\uFFFD/g) || []).length;
+    var digit = line.search(/\d/);
+    if (number && invalid >= 2 && digit >= 0 && digit <= 18 &&
+        line.slice(0, Math.min(digit + 4, line.length)).indexOf("\uFFFD") !== -1)
+        return true;
+    return !expectedNumber && /^(?:第\s*[一二三四五六七八九十百千万零〇两]{1,12}\s*[章回节卷]|\d{1,8}\s*[.．、:：]\s*\S)/.test(line);
+}
 function shubaStripEmbeddedTitle(html, pageTitle) {
     var source = String(html || "");
-    var expected = String(pageTitle || "").replace(/\s+/g, "").trim();
-    var matchExpected = expected.match(/(?:第\s*)?(\d{1,8})\s*(?:章|回|节|卷|绔)/);
-    var expectedNumber = matchExpected ? matchExpected[1] : "";
+    var expected = shubaNormalizeHeading(pageTitle);
+    var expectedNumber = shubaHeadingNumber(expected);
     var tokens = source.match(/<[^>]*>|[^<]+/g);
     if (!tokens) return source;
-    for (var i = 0; i < tokens.length; i++) {
-        var token = tokens[i];
-        if (token.charAt(0) === "<") continue;
-        var prefix = token.match(/^(?:(?:\s|\u3000)|&(?:emsp|nbsp);|&#(?:12288|160|x3000);)*/i);
-        var start = prefix ? prefix[0].length : 0;
-        if (start >= token.length) continue;
-        var rest = token.slice(start);
-        var stop = rest.search(/[\r\n]/);
-        var firstLine = (stop === -1 ? rest : rest.slice(0, stop)).trim();
-        if (!firstLine || firstLine.length > 110) return source;
-        var plain = firstLine.replace(/&(?:nbsp|emsp);|&#(?:12288|160|x3000);/gi, " ")
-                             .replace(/\s+/g, " ").trim();
-        var number = plain.match(/^(?:第|绗)\s*(\d{1,8})\s*(?:章|回|节|卷|绔|绔犲|锛|:\s|：\s|\s)/);
-        var chineseHeading = /^(?:第\s*[一二三四五六七八九十百千万零〇两]{1,12}\s*[章回节卷]|(?:\d{1,8})[.．、：:]\s*\S)/.test(plain);
-        var comparable = !!expected && plain.replace(/\s+/g, "") === expected;
-        var sameChapter = !!(number && (!expectedNumber || String(Number(number[1])) === String(Number(expectedNumber))));
-        var headingBoundary = /^(?:第\s*\d{1,8}\s*[章回节卷](?:\s|[.．、:：]|\d|$)|绗\s*\d{1,8}\s*(?:绔|章|回|卷))/.test(plain);
-        if (!(comparable || (sameChapter && headingBoundary) || (!expected && chineseHeading))) return source;
-        tokens[i] = (stop === -1 ? "" : rest.slice(stop));
-        return tokens.join("");
+    var removed = 0;
+    // Some chapters contain two copies: one corrupted, another legible.
+    // Stop immediately at the first real paragraph, and scan only the start.
+    for (var i = 0; i < tokens.length && removed < 4; i++) {
+        if (tokens[i].charAt(0) === "<") continue;
+        var remaining = tokens[i];
+        while (remaining && removed < 4) {
+            var first = remaining.match(/^([^\r\n]*)(\r\n|\r|\n|$)/);
+            if (!first) break;
+            var line = shubaNormalizeHeading(first[1]);
+            if (!line) {
+                if (!first[2]) break;
+                remaining = remaining.slice(first[0].length);
+                continue;
+            }
+            if (!shubaLooksLikeChapterHeading(line, expected, expectedNumber)) {
+                tokens[i] = remaining;
+                return tokens.join("").replace(/<p\b[^>]*>\s*<\/p>/gi, "");
+            }
+            removed++;
+            remaining = remaining.slice(first[0].length);
+        }
+        tokens[i] = remaining;
     }
-    return source;
+    return tokens.join("").replace(/<p\b[^>]*>\s*<\/p>/gi, "").trim();
 }
 
 function execute(url) {

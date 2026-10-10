@@ -1,17 +1,17 @@
 {
   "metadata": {
     "author": "Jokervtn94",
-    "description": "Danh mục riêng 69Shuba v10 — cập nhật sửa lỗi text tên chương theo từng truyện."
+    "description": "Danh mục cập nhật riêng 69Shuba v11 — sửa hai dòng tiêu đề lỗi trong nội dung đọc."
   },
   "data": [
     {
       "name": "69Shuba (69书吧)",
       "author": "Jokervtn94",
       "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/shuba69/plugin.zip",
-      "version": 10,
+      "version": 11,
       "source": "https://www.69shuba.com",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/shuba69/icon.png",
-      "description": "69Shuba v10: sửa lỗi tên chương đọc sai theo từng truyện bằng tự chọn UTF-8/GBK an toàn; giữ nguyên danh mục.",
+      "description": "69Shuba v11: loại bỏ tiêu đề chương bị lỗi ký tự và tiêu đề lặp đầu nội dung; giữ nguyên mục lục.",
       "type": "chinese_novel",
       "locale": "zh_CN"
     }

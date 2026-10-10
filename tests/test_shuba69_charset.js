@@ -92,6 +92,6 @@ for(const charset of ["utf-8","gbk"]){
    run(file,charset);
 }
 const manifest=JSON.parse(fs.readFileSync(path.join(base,"..","plugin.json"),"utf8")).metadata;
-assert.equal(manifest.version,10);
+assert.equal(manifest.version,11);
 assert.equal(manifest.author,"Jokervtn94");
-console.log("PASS 69Shuba v10: mixed UTF-8/GBK decoding, repaired novel titles, TOC chapter 1418, metadata and chapter body.");
+console.log("PASS 69Shuba v11: mixed UTF-8/GBK decoding, repaired novel titles, TOC chapter 1418, metadata and chapter body.");
