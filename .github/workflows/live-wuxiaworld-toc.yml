@@ -1,0 +1,27 @@
+name: Live WuxiaWorld full chapter catalog
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'tools/live_wuxiaworld_toc.py'
+      - 'tests/test_wuxiaworld_live_toc.js'
+      - '.github/workflows/live-wuxiaworld-toc.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests
+      - name: Capture public HTML and public chapter-list metadata
+        run: python tools/live_wuxiaworld_toc.py
+      - name: Execute published Vbook TOC against real site response
+        run: node tests/test_wuxiaworld_live_toc.js
