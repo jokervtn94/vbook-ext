@@ -10,12 +10,11 @@ function execute(url) {
         let json = response.json().data;
         let novelList = [];
         json.forEach(e => {
-            if(e.free != 0) let stt = '【Free】 ';
-            else stt = '【VIP】 ';
+            let stt = e.free != 0 ? '【Free】 ' : '【VIP】 ';
             novelList.push({
                 name: stt + e.chapterName,
                 url: url+'/'+e.cid,
-                host: "http://book.qq.com"
+                host: "https://book.qq.com"
             })
         });
         return Response.success(novelList);

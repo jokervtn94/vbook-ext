@@ -17,7 +17,7 @@ function execute(url, page) {
             })
         )
         var next = (parseInt(page) + 1).toString();
-        if(el === '') var = null
+        if (el.size() === 0) next = null;
         return Response.success(data,next)
     }
     return null;

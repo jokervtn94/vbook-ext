@@ -22,5 +22,5 @@ function execute(key, page) {
             host: 'https://www.myrics.com',
         })
     });
-    return Response.success(list, next.toString())
+    return Response.success(list, next == null ? null : String(next))
 }
