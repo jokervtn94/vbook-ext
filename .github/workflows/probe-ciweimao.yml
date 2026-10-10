@@ -1,0 +1,22 @@
+name: Diagnose CiWeiMao chapter API
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'tools/probe_ciweimao_chapter.py'
+      - '.github/workflows/probe-ciweimao.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  api-shape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests beautifulsoup4
+      - name: Check public chapter/session API response types
+        run: python tools/probe_ciweimao_chapter.py
