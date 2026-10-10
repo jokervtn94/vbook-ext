@@ -19,6 +19,7 @@ function boot(folder,file,fetcher) {
 function els(data){
   return {
     forEach:fn=>data.forEach(fn),
+    get:i=>data[i],
     first:()=>data[0]||{attr:()=>'',text:()=>'',select:()=>els([])},
     last:()=>data[data.length-1]||{attr:()=>'',text:()=>''},
     size:()=>data.length
@@ -71,16 +72,27 @@ const qqToc=boot('bookqq','toc.js',()=>({
 assert.equal(qqToc.value.length,2);
 assert.ok(qqToc.value[0].name.includes('【Free】'));
 assert.ok(qqToc.value[1].name.includes('【VIP】'));
-const acPage={
- select:s=>{
-   if(s==='a.mod-cover-list-thumb[href]')return els([attr({href:'/Comic/comicInfo/id/531490',title:'一人之下','data-original':'https://manhua.acimg.cn/cover.jpg'})]);
-   throw Error(s);
- }
+const acAnchor={
+  attr:k=>k==='href'?'/comic/index/id/531490':'',
+  text:()=> '一人之下',
+  select:css=>{
+    if(css==='.comic-title')return els([attr({text:'一人之下'})]);
+    if(css==='img.cover-image, img.comic-cover, img.head-cover, img.item-cover, img')
+      return els([attr({src:'https://manhua.acimg.cn/cover.jpg'})]);
+    return els([]);
+  }
 };
-const acGen=boot('acqq','gen.js',()=>({ok:true,html:()=>acPage}))('https://ac.qq.com/Comic/all','1');
+const acPage={
+  select:s=>{
+    if(s==="a.comic-link[href], a[href*='/comic/index/id/']")
+      return els([acAnchor]);
+    throw Error('Unexpected AC QQ mobile CSS '+s);
+  }
+};
+const acGen=boot('acqq','gen.js',()=>({ok:true,html:()=>acPage}))('https://m.ac.qq.com/','1');
 assert.equal(acGen.value.length,1);
 assert.equal(acGen.value[0].cover,'https://manhua.acimg.cn/cover.jpg');
-assert.equal(acGen.value[0].link,'https://ac.qq.com/Comic/comicInfo/id/531490');
+assert.equal(acGen.value[0].link,'https://m.ac.qq.com/comic/index/id/531490');
 
 const catalog=JSON.parse(fs.readFileSync(path.join(root,'plugin.json'),'utf8'));
 assert.equal(catalog.data.length,19, 'Catalog must only publish Vietnamese and Chinese sources');
