@@ -16,17 +16,6 @@
       "locale": "vi_VN"
     },
     {
-      "name": "MonkeyD VN",
-      "author": "Jokervtn94",
-      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/monkeyd/plugin.zip",
-      "version": 6,
-      "source": "https://monkeyd.net.vn",
-      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/monkeyd/icon.png",
-      "description": "Đọc truyện trên trang monkeyd",
-      "type": "novel",
-      "locale": "vi_VN"
-    },
-    {
       "name": "Omega Scans",
       "author": "Jokervtn94",
       "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/omegascans/plugin.zip",
@@ -39,17 +28,6 @@
       "tag": "nsfw"
     },
     {
-      "name": "123 Truyện",
-      "author": "Jokervtn94",
-      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/123truyen/plugin.zip",
-      "version": 13,
-      "source": "https://123truyen.vn",
-      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/123truyen/icon.png",
-      "description": "Đọc truyện trên trang https://123truyen.vn",
-      "type": "novel",
-      "locale": "vi_VN"
-    },
-    {
       "name": "Tiên Vực",
       "author": "Jokervtn94",
       "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/tienvuc/plugin.zip",
@@ -57,17 +35,6 @@
       "source": "https://tienvuc.me",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/tienvuc/icon.png",
       "description": "Đừng có sửa Author nếu bạn ko tự viết script nhé!",
-      "type": "novel",
-      "locale": "vi_VN"
-    },
-    {
-      "name": "Truyện Convert",
-      "author": "Jokervtn94",
-      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/truyenconvert/plugin.zip",
-      "version": 3,
-      "source": "https://truyenconvert.net",
-      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/truyenconvert/icon.png",
-      "description": "Đọc truyện trên trang truyenconvert.net",
       "type": "novel",
       "locale": "vi_VN"
     },
@@ -107,17 +74,6 @@
       "locale": "vi_VN"
     },
     {
-      "name": "Zing Truyện",
-      "author": "Jokervtn94",
-      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/zingtruyen/plugin.zip",
-      "version": 7,
-      "source": "https://zingtruyen.store",
-      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/zingtruyen/icon.png",
-      "description": "Đọc truyện trên trang zingtruyen.store",
-      "type": "novel",
-      "locale": "vi_VN"
-    },
-    {
       "name": "Qimao",
       "author": "Jokervtn94",
       "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/qimao/plugin.zip",
@@ -151,17 +107,6 @@
       "locale": "zh_CN"
     },
     {
-      "name": "Hetushu 和图书",
-      "author": "Jokervtn94",
-      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/hetushu/plugin.zip",
-      "version": 2,
-      "source": "https://www.hetushu.com",
-      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/hetushu/icon.png",
-      "description": "Đọc truyện trên trang hetushu.com",
-      "type": "chinese_novel",
-      "locale": "zh_CN"
-    },
-    {
       "name": "DouJins",
       "author": "Jokervtn94",
       "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/doujins/plugin.zip",
@@ -192,17 +137,6 @@
       "source": "https://www.myrics.com",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/myrics/icon.png",
       "description": "Đọc truyện trên trang myrics.com",
-      "type": "chinese_novel",
-      "locale": "zh_CN"
-    },
-    {
-      "name": "20xs",
-      "author": "Jokervtn94",
-      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/20xs/plugin.zip",
-      "version": 3,
-      "source": "https://www.20xs.org",
-      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/20xs/icon.png",
-      "description": "Đọc truyện trên trang www.20xs.org",
       "type": "chinese_novel",
       "locale": "zh_CN"
     },
@@ -274,17 +208,6 @@
       "locale": "en-EN"
     },
     {
-      "name": "KissLove (Raw)",
-      "author": "Jokervtn94",
-      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/kissaway/plugin.zip",
-      "version": 4,
-      "source": "https://klz9.com",
-      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/kissaway/icon.png",
-      "description": "Đọc truyện trên trang klz9.com",
-      "type": "comic",
-      "locale": "en_EN"
-    },
-    {
       "name": "ManhwaHentai",
       "author": "Jokervtn94",
       "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/manhwahentai/plugin.zip",
@@ -328,50 +251,6 @@
       "description": "Royal Road® is the home of web novels and fan fictions! In our amazing community, you can find various talented individuals who write as a hobby or even professionally, artists who create art for them, and many, many readers who provide valuable feedback and encouragement.",
       "type": "novel",
       "locale": "en-EN"
-    },
-    {
-      "name": "zTruyện",
-      "author": "fusornat",
-      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/ztruyen/plugin.zip",
-      "version": 5,
-      "source": "https://ztruyen.vn",
-      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/ztruyen/icon.png",
-      "description": "zTruyen.vn",
-      "type": "novel",
-      "locale": "vi-VN"
-    },
-    {
-      "name": "docsach24",
-      "author": "fusornat",
-      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/docsach24/plugin.zip",
-      "version": 1,
-      "source": "https://docsach24.co",
-      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/docsach24/icon.png",
-      "description": "Docsach24.",
-      "type": "novel",
-      "locale": "vi-VN"
-    },
-    {
-      "name": "8ternal",
-      "author": "fusornat",
-      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/8ternal/plugin.zip",
-      "version": 2,
-      "source": "https://comic.8ternal.com",
-      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/8ternal/icon.png",
-      "description": "8ternal tổng hợp truyện dịch từ nhiều nguồn khác nhau, hỗ trợ các bạn đọc comics theo đúng timeline của các sự kiện chính. Hoặc đọc truyện theo timeline nhân vật mà các bạn yêu thích..",
-      "type": "comic",
-      "locale": "vi-VN"
-    },
-    {
-      "name": "Vozer",
-      "author": "Jokervtn94",
-      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/vozer/plugin.zip",
-      "version": 5,
-      "source": "https://vozer.vn",
-      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/vozer/icon.png",
-      "description": "Truyện Voz.",
-      "type": "novel",
-      "locale": "vi_VN"
     }
   ]
 }
