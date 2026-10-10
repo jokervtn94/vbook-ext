@@ -239,6 +239,28 @@
       "description": "Royal Road® is the home of web novels and fan fictions! In our amazing community, you can find various talented individuals who write as a hobby or even professionally, artists who create art for them, and many, many readers who provide valuable feedback and encouragement.",
       "type": "novel",
       "locale": "en-EN"
+    },
+    {
+      "name": "69Shuba (69书吧)",
+      "author": "Jokervtn94",
+      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/shuba69/plugin.zip",
+      "version": 1,
+      "source": "https://www.69shuba.com",
+      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/shuba69/icon.png",
+      "description": "Truyện chữ Trung Quốc giản thể: danh sách, tìm kiếm, thông tin, mục lục và đọc chương.",
+      "type": "chinese_novel",
+      "locale": "zh_CN"
+    },
+    {
+      "name": "UUKanShu (UU看書)",
+      "author": "Jokervtn94",
+      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/uukanshu/plugin.zip",
+      "version": 1,
+      "source": "https://uukanshu.cc",
+      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/uukanshu/icon.png",
+      "description": "Truyện chữ Trung Quốc phồn thể: phân loại, tìm kiếm, ảnh bìa, mục lục và đọc chương.",
+      "type": "chinese_novel",
+      "locale": "zh_TW"
     }
   ]
 }

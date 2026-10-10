@@ -33,6 +33,8 @@ https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/plugin.json
 | bFaloo | https://b.faloo.com | 5 | zh-CN | chinese_novel |
 | Tadu (塔读) | https://www.tadu.com | 2 | cn-CN | chinese_novel |
 | Royalroad | https://www.royalroad.com | 1 | en-EN | novel |
+| 69Shuba (69书吧) | https://www.69shuba.com | 1 | zh_CN | chinese_novel |
+| UUKanShu (UU看書) | https://uukanshu.cc | 1 | zh_TW | chinese_novel |
 
 ## Hướng dẫn cài đặt
 

@@ -1,0 +1,21 @@
+{
+  "metadata": {
+    "name": "UUKanShu (UU看書)",
+    "author": "Jokervtn94",
+    "version": 1,
+    "source": "https://uukanshu.cc",
+    "regexp": "https?://(?:www\\.)?uukanshu\\.cc/book/\\d+(?:/\\d+\\.html|/?)",
+    "description": "Truyện chữ Trung Quốc phồn thể: phân loại, tìm kiếm, ảnh bìa, mục lục và đọc chương.",
+    "locale": "zh_TW",
+    "language": "javascript",
+    "type": "chinese_novel"
+  },
+  "script": {
+    "home": "home.js",
+    "detail": "detail.js",
+    "search": "search.js",
+    "toc": "toc.js",
+    "chap": "chap.js",
+    "genre": "gen.js"
+  }
+}
