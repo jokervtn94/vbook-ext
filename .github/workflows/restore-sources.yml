@@ -1,0 +1,32 @@
+name: Restore missing extension sources
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'tools/restore_missing_src.py'
+      - '.github/workflows/restore-sources.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out master
+        uses: actions/checkout@v4
+        with:
+          ref: master
+      - name: Restore only missing JavaScript from original ZIP
+        run: python tools/restore_missing_src.py --apply
+      - name: Commit restored source files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- omegascans/src
+          if ! git diff --cached --quiet; then
+            git commit -m "fix: restore OmegaScans missing source scripts [skip ci]"
+            git push origin HEAD:master
+          fi
