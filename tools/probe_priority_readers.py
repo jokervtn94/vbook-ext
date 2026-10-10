@@ -100,6 +100,17 @@ def one(entry):
                     result["code"] = data.get("code")
                     if name == "bookqq_read":
                         result["api_message"] = str(data.get("msg") or "")[:100]
+                    if name == "bookqq_chapters" and isinstance(data.get("data"), list):
+                        chapters = data["data"]
+                        result["first_chapters"] = [
+                            {"cid":str(ch.get("cid")), "free":ch.get("free")}
+                            for ch in chapters[:5]
+                        ]
+                        result["first_free"] = next(
+                            ({"cid":str(ch.get("cid")), "free":ch.get("free")}
+                             for ch in chapters if ch.get("free") not in (0, "0")),
+                            None
+                        )
                     if name == "qimao_detail" and isinstance(data.get("data"), dict):
                         record = data["data"]
                         book = record.get("book") or {}
