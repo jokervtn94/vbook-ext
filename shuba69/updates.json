@@ -1,0 +1,19 @@
+{
+  "metadata": {
+    "author": "Jokervtn94",
+    "description": "Danh mục độc lập 69Shuba v8 — dùng để làm mới dữ liệu cập nhật VBook."
+  },
+  "data": [
+    {
+      "name": "69Shuba (69书吧)",
+      "author": "Jokervtn94",
+      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/shuba69/plugin.zip",
+      "version": 8,
+      "source": "https://www.69shuba.com",
+      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/shuba69/icon.png",
+      "description": "69Shuba v8: sửa tên chương hiển thị sai khi tải nội dung; danh mục giữ nguyên; phát hiện UTF-8/GBK chính xác hơn.",
+      "type": "chinese_novel",
+      "locale": "zh_CN"
+    }
+  ]
+}
