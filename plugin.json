@@ -122,10 +122,10 @@
       "name": "Book QQ",
       "author": "Jokervtn94",
       "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/bookqq/plugin.zip",
-      "version": 2,
+      "version": 3,
       "source": "https://book.qq.com",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/bookqq/icon.png",
-      "description": "Đọc truyện trên trang book.qq.com",
+      "description": "Book QQ: sửa URL chương, ID sách/chương, mục lục và xử lý chương VIP.",
       "type": "chinese_novel",
       "locale": "zh_CN"
     },
