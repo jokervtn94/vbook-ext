@@ -1,22 +1,19 @@
 function execute(url, page) {
     if (!page) page = '1';
-    const doc = Http.get('https://novelbuddy.com/'+url).params({page: page}).html();
-
-    var next = doc.select(".paginator").select("a.active + a").text()
-
-    const el = doc.select(".list .book-item")
-
-    const data = [];
-    for (var i = 0; i < el.size(); i++) {
-        var e = el.get(i);
-        data.push({
-            name: e.select("h3").first().text(),
-            link: e.select("a").first().attr("href"),
-            cover: e.select("img").first().attr("data-src").replace('//','https://'),
-            description: e.select(".latest-chapter").first().text(),
-            host: "https://novelbuddy.com"
-        })
-    }
-
-    return Response.success(data, next)
+    var address = 'https://novelbuddy.me/' + (url || 'latest').replace(/^\//, '');
+    var response = fetch(address + '?page=' + encodeURIComponent(page));
+    if (!response.ok) return null;
+    var items = [], host = 'https://novelbuddy.me';
+    response.html().select('article').forEach(function(e) {
+        var a = e.select('a[href]').first();
+        var href = a.attr('href');
+        var img = e.select('img').first();
+        var title = img.attr('alt') || a.attr('aria-label') || a.text();
+        var cover = img.attr('src') || img.attr('data-src');
+        if (!href || !title || href.indexOf('/chapter-')>=0) return;
+        if (cover && cover.indexOf('//')===0) cover='https:'+cover;
+        else if (cover && cover.charAt(0)==='/') cover=host+cover;
+        items.push({name:title,link:href,cover:cover||'',description:'',host:host});
+    });
+    return Response.success(items, items.length ? String(parseInt(page,10)+1) : null);
 }
