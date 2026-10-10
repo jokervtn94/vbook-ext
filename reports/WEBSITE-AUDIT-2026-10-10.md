@@ -2,6 +2,11 @@
 
 **Phạm vi**: 41 extension đang xuất hiện trong `plugin.json` tại thời điểm kiểm tra (trước khi tạo `master` riêng) tại thời điểm kiểm tra. Bốn extension lưu trong repo nhưng chưa được công bố không thuộc mẫu số 41.
 
+> **ĐÍNH CHÍNH (10/10/2026):** Đây là báo cáo sàng lọc nguồn web, không phải kết quả kiểm thử Vbook. Kiểm tra lại cùng ngày cho thấy:
+> - `https://foxtruyen2.com/truyen-moi-cap-nhat.html` chuyển tiếp đến domain không phải nguồn truyện; **không được tự động cập nhật `truyengg` sang foxtruyen2.com**.
+> - `https://novelbuddy.com/latest` *và* `https://novelbuddy.me/latest` đều có nội dung được ghi nhận; **không được kết luận novelbuddy.com đã chết** chỉ dựa trên một redirect.
+> - `https://manhuavn2.com/` và `https://tranh18.cc/update` có trang truyện; cần kiểm tra lại API, selector và chương trước khi đổi URL trong extension.
+> - Vì bằng chứng thay đổi, các nhóm `DOMAIN_MOVED` / `REPLACE_OR_RETIRE` dưới đây chỉ là **ưu tiên rà soát**, không phải quyết định thay domain được phép thực hiện ngay.
 ## Kết quả
 
 | Nhóm | Số lượng | Ý nghĩa |
