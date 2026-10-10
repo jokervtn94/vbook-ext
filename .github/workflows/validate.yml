@@ -17,6 +17,7 @@ on:
     workflows:
       - 'Sync previously stale Vbook packages'
       - 'Package 69Shuba and UUKanShu'
+      - 'Synchronize published VBook authors'
     types: [completed]
 
 jobs:
@@ -59,6 +60,27 @@ jobs:
         run: node tests/test_shuba69_vbook_dom.js
       - name: Validate ManhuaVN cover normalization and listing regressions
         run: node tests/test_manhuavn_covers.js
+      - name: Enforce Jokervtn94 in catalog, source and shipped ZIPs
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from zipfile import ZipFile
+          repo = Path('.')
+          catalog = json.loads((repo / 'plugin.json').read_text(encoding='utf-8'))
+          assert catalog['metadata']['author'] == 'Jokervtn94'
+          for entry in catalog['data']:
+              folder = entry['path'].split('/')[-2]
+              source = json.loads((repo / folder / 'plugin.json').read_text(encoding='utf-8'))
+              with ZipFile(repo / folder / 'plugin.zip') as zf:
+                  archive = json.loads(zf.read('plugin.json').decode('utf-8'))
+                  assert zf.testzip() is None, folder
+              assert entry['author'] == 'Jokervtn94', folder
+              assert source['metadata']['author'] == 'Jokervtn94', folder
+              assert archive['metadata']['author'] == 'Jokervtn94', folder
+              assert source['metadata']['version'] == entry['version'] == archive['metadata']['version'], folder
+          print('Verified publisher and archive version for', len(catalog['data']), 'readers')
+          PY
       - name: Verify every published ZIP matches current source
         run: |
           python - <<'PY'
