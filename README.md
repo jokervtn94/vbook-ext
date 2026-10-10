@@ -18,10 +18,8 @@ https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/plugin.json
 | 123 Truyện | https://123truyen.vn | 13 | vi_VN | novel |
 | Tiên Vực | https://tienvuc.me | 13 | vi_VN | novel |
 | Truyện Convert | https://truyenconvert.net | 3 | vi_VN | novel |
-| Đọc Sách Hay | https://docsachhay.net | 1 | vi_VN | novel |
 | Say Hentai | https://sayhentai.cx | 10 | vi_VN | comic |
 | Tranh 18 | https://tranh18.cc | 2 | vi_VN | comic |
-| Giáng Thế | https://giangthe.com | 3 | vi_VN | novel |
 | Hố Truyện | https://hotruyen1.com | 5 | vi_VN | novel |
 | Zing Truyện | https://zingtruyen.store | 7 | vi_VN | novel |
 | Qimao | https://www.qimao.com | 2 | zh_CN | chinese_novel |
@@ -33,20 +31,20 @@ https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/plugin.json
 | Myrics | https://www.myrics.com | 1 | zh_CN | chinese_novel |
 | 20xs | https://www.20xs.org | 3 | zh_CN | chinese_novel |
 | Manga Read | https://www.mangaread.org | 2 | en_EN | comic |
-| SachHayOnline | https://www.sachhayonline.com/ | 2 | - | - |
-| Novel Buddy | https://novelbuddy.me | 4 | - | - |
-| Dingdian 【顶点】 | https://www.dingdian666.com | 1 | - | - |
-| CiWeiMao 【刺猬猫】 | https://www.ciweimao.com | 3 | - | - |
-| Wuxia World | https://www.wuxiaworld.com | 1 | - | - |
+| SachHayOnline | https://www.sachhayonline.com/ | 2 | vi-VN | novel |
+| Novel Buddy | https://novelbuddy.me | 4 | vi-VN | novel |
+| Dingdian 【顶点】 | https://www.dingdian666.com | 1 | vi-VN | chinese_novel |
+| CiWeiMao 【刺猬猫】 | https://www.ciweimao.com | 3 | cn-CN | chinese_novel |
+| Wuxia World | https://www.wuxiaworld.com | 1 | en-EN | novel |
 | KissLove (Raw) | https://klz9.com | 4 | en_EN | comic |
 | ManhwaHentai | https://manhwahentai.me | 3 | en_EN | comic |
-| bFaloo | https://b.faloo.com | 5 | - | - |
-| Tadu (塔读) | https://www.tadu.com | 2 | - | - |
-| Royalroad | https://www.royalroad.com | 1 | - | - |
-| zTruyện | https://ztruyen.vn | 5 | - | - |
-| docsach24 | https://docsach24.co | 1 | - | - |
-| 8ternal | https://comic.8ternal.com | 2 | - | - |
-| Vozer | https://vozer.vn | 5 | - | - |
+| bFaloo | https://b.faloo.com | 5 | zh-CN | chinese_novel |
+| Tadu (塔读) | https://www.tadu.com | 2 | cn-CN | chinese_novel |
+| Royalroad | https://www.royalroad.com | 1 | en-EN | novel |
+| zTruyện | https://ztruyen.vn | 5 | vi-VN | novel |
+| docsach24 | https://docsach24.co | 1 | vi-VN | novel |
+| 8ternal | https://comic.8ternal.com | 2 | vi-VN | comic |
+| Vozer | https://vozer.vn | 5 | vi_VN | novel |
 
 ## Hướng dẫn cài đặt
 
