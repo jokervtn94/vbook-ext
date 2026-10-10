@@ -18,6 +18,8 @@ URLS={
 "qimao_list":"https://www.qimao.com/shuku/a-a-a-a-a-update_time-1/",
 "doujins_home":"https://doujins.com/",
 "sachhay_category":"https://www.sachhayonline.com/danh-muc/van-hoc-viet-nam",
+"sachhay_detail":"https://www.sachhayonline.com/tua-sach/ai-tinh-mieu",
+"dingdian_detail":"https://www.dingdian666.com/xiaoshuo/087827/",
 "dingdian_list":"https://www.dingdian666.com/sort/1_1/",
 "acqq_detail":"https://ac.qq.com/Comic/ComicInfo/id/656723",
 "acqq_category":"https://ac.qq.com/Comic/all",
@@ -61,6 +63,12 @@ def inspect(arg):
         if "sayhentai" in name:
             res["taglines"]=[str(x)[:350] for x in doc.select(".summary_image img,ul.box-list-chapter li,div.chapter")[:3]]
             res["chaps"]=[x.get("href") for x in doc.select("a[href]") if "chap" in x.get("href","")][:10]
+        if name=="sachhay_detail":
+            res["list_items"]=[str(x)[:900] for x in doc.select("ul.default li")[:5]]
+            res["headers"]=[str(x)[:550] for x in doc.select(".inner,.row .image,.reading-white")[:3]]
+        if name=="dingdian_detail":
+            res["cover"]=str(doc.select_one(".border_left a img"))[:380]
+            res["book_name"]=str(doc.select_one("meta[property='og:novel:book_name']"))[:250]
         if name=="sachhay_category":
             res["list_items"]=[str(x)[:750] for x in doc.select("ul.default > li")[:3]]
             res["link_samples"]=[str(x)[:340] for x in doc.select("ul.default a")[:6]]
