@@ -148,3 +148,17 @@ for number in [1,2,100,915,920]:
         imgs=chapter.select("img") if chapter else []
         print("PUBLIC_CHAP",number,response.status_code,"locked",locked,"images",len(imgs),"title",dom.title.get_text(" ",strip=True)[:90] if dom.title else "",flush=True)
     except Exception as err:print("PUBLIC_ERR",number,str(err)[:140],flush=True)
+
+print("=== FREE READER IMG ATTRIBUTES ===",flush=True)
+for number in [1,915]:
+    u="https://manhuavn2.com/doc-truyen/dai-quan-gia-la-ma-hoang-chapter-%s.html"%number
+    try:
+        page=s.get(u,timeout=12);doc=BeautifulSoup(page.text,"html.parser")
+        root=doc.select_one("#chapcontent")
+        images=root.select("img") if root else []
+        print("READER_IMAGES",number,"COUNT",len(images),"ATTRS",
+              [(img.get("src"),img.get("data-src"),img.get("class"),img.get("width"),str(img.parent)[:130]) for img in images[:6]],
+              "LAST",[(i.get("src"),i.get("class")) for i in images[-4:]],flush=True)
+        for css in ["#chapcontent img[data-original]","#chapcontent img[data-src]","#chapcontent img[src]","#chapcontent div.page-chapter img","#chapcontent .wrap-content-part img"]:
+            print("READER_SEL",number,css,len(doc.select(css)),flush=True)
+    except Exception as err:print("READER_ERR",number,str(err)[:130],flush=True)
