@@ -45,3 +45,24 @@ jobs:
                   break
             except Exception as e:print('ERROR',url,type(e).__name__,str(e)[:240],flush=True)
           PY
+
+      - name: Verify cover CDN responses and category selectors
+        run: |
+          python - <<'PY'
+          import requests
+          from bs4 import BeautifulSoup
+          s=requests.Session()
+          s.headers.update({'User-Agent':'Mozilla/5.0','Referer':'https://www.dingdian666.com/'})
+          source='https://www.dingdian666.com/sort/3_1/'
+          resp=s.get(source,timeout=15)
+          soup=BeautifulSoup(resp.content,'html.parser')
+          for selector in ['.sort_5tu li','.sort_5tu ul li','.sort_5tu img','.lastupdate ul li','.lastupdate ul li .name a','.lastupdate ul li a','.border_left a img','.border_left img']:
+              elements=soup.select(selector)
+              print('EXACT_SELECT',selector,'COUNT',len(elements),'FIRST',str(elements[0])[:650] if elements else None,flush=True)
+          for host in ['www.dingdian666.com','dingdian666.com','m.dingdian666.com']:
+              u='https://'+host+'/files/article/image/152/152799/152799s.jpg'
+              try:
+                  r=s.get(u,timeout=15)
+                  print('COVER',r.status_code,r.url,len(r.content),r.headers.get('Content-Type'),r.content[:10],flush=True)
+              except Exception as e:print('COVER ERROR',str(e)[:180],flush=True)
+          PY
