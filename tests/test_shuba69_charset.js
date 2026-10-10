@@ -16,6 +16,7 @@ function fixtures(good){
   ".intro, .desc, .author, .update, p":[elem({},author)]
  });
  const list=document({
+   "h3 a[href*='/book/']":[link],
    ".bookbox, .newbox ul li, .mybox li, .booklist li":[card],
    "h3 a[href*='/book/'], h4 a[href*='/book/'], .bookbox a[href*='/book/']":[link],
    ".newbox ul li h3 a, .bookbox h3 a, h3 a[href*='/book/'], h4 a[href*='/book/']":[link]
@@ -29,6 +30,10 @@ function fixtures(good){
    ".booknav2":[elem({},title+" 作者："+author)]
  });
  const toc=document({
+   "#catalog li a[href*='/txt/']":[
+     elem({href:"/txt/29590/25167831"},chapter),
+     elem({href:"/txt/29590/25167832"},good?"第1419章 新起点":"��1419�� ���")
+   ],
    "#catalog li a[href*='/txt/'], #catalog ul li a":[
      elem({href:"/txt/29590/25167831"},chapter),
      elem({href:"/txt/29590/25167832"},good?"第1419章 新起点":"��1419�� ���")
