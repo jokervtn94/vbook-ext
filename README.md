@@ -25,7 +25,7 @@ https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/plugin.json
 | Book QQ | https://book.qq.com | 5 | zh_CN | chinese_novel |
 | Myrics | https://www.myrics.com | 3 | zh_CN | chinese_novel |
 | SachHayOnline | https://www.sachhayonline.com/ | 4 | vi-VN | novel |
-| Dingdian 【顶点】 | https://www.dingdian666.com | 4 | zh_CN | chinese_novel |
+| Dingdian 【顶点】 | https://www.dingdian666.com | 5 | zh_CN | chinese_novel |
 | CiWeiMao 【刺猬猫】 | https://www.ciweimao.com | 6 | cn-CN | chinese_novel |
 | bFaloo | https://b.faloo.com | 7 | zh-CN | chinese_novel |
 | Tadu (塔读) | https://www.tadu.com | 4 | cn-CN | chinese_novel |

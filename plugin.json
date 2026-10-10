@@ -131,10 +131,10 @@
       "name": "Dingdian 【顶点】",
       "author": "Jokervtn94",
       "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/dingdian/plugin.zip",
-      "version": 4,
+      "version": 5,
       "source": "https://www.dingdian666.com",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/dingdian/icon.png",
-      "description": "Dingdian: chuẩn hóa ngôn ngữ nguồn truyện tiếng Trung.",
+      "description": "Dingdian v5: sửa ảnh bìa danh sách và trang chi tiết, không suy đoán ID ảnh từ ID truyện.",
       "type": "chinese_novel",
       "locale": "zh_CN"
     },

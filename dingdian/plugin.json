@@ -2,10 +2,10 @@
   "metadata": {
     "name": "Dingdian 【顶点】",
     "author": "Jokervtn94",
-    "version": 4,
+    "version": 5,
     "source": "https://www.dingdian666.com",
     "regexp": "(www.)?((dingdian666.com/xiaoshuo/\\d+/?$)|(m.dingdian666.com/ebooks/\\d+/?$))",
-    "description": "Dingdian: chuẩn hóa ngôn ngữ nguồn truyện tiếng Trung.",
+    "description": "Dingdian v5: lấy bìa truyện thực từ trang chi tiết cho danh sách; chuẩn hóa URL ảnh và hỗ trợ metadata dự phòng.",
     "locale": "zh_CN",
     "language": "javascript",
     "type": "chinese_novel"

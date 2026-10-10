@@ -1,19 +1,34 @@
-function execute(url, page) {
-    var base = 'https://www.dingdian666.com'
-    if (!page) page = '1';
-    const doc = Http.get('https://www.dingdian666.com/sort/'+url+'_'+page+'/').html();
-    const el = doc.select(".lastupdate ul li")
-    const data = [];
-    for (var i = 0; i < el.size(); i++) {
-        var e = el.get(i);
-        var link = e.select(".name a").attr('href');
-        data.push({
-            name: e.select(".name a").first().text(),
-            link: link,
-            cover: '', // Site's category list has no covers; avoid assigning one unrelated cover to every book.
-            description: e.select(".zuo").first().text(),
-            host: 'https://www.dingdian666.com',
-        })
+load("cover.js");
+function execute(category, page) {
+    var p = parseInt(page || "1", 10);
+    if (!(p > 0)) p = 1;
+    var group = /^[1-6]$/.test(String(category)) ? String(category) : "1";
+    var doc;
+    try {
+        doc = Http.get(DD_HOST + "/sort/" + group + "_" + p + "/").html();
+    } catch (e) {
+        return Response.error("Dingdian: không tải được danh sách truyện: " + (e.message || e));
     }
-    return Response.success(data,(parseInt(page)+1).toString())
+    var rows = doc.select(".lastupdate ul li");
+    var data = [], coverCache = {}, seen = {};
+    rows.forEach(function(row) {
+        var a = row.select(".name a").first();
+        var name = String(a.text() || "").trim();
+        var href = String(a.attr("href") || "").trim();
+        var idMatch = href.match(/\/xiaoshuo\/(\d+)(?:\/|$|\?)/i);
+        if (!idMatch || !name || seen[idMatch[1]]) return;
+        seen[idMatch[1]] = true;
+        var link = DD_HOST + "/xiaoshuo/" + idMatch[1] + "/";
+        var cover = ddCoverFromListItem(row) || ddCoverFromBook(link, coverCache);
+        var author = String(row.select(".zuo").first().text() || "").trim();
+        data.push({
+            name: name,
+            link: link,
+            cover: cover,
+            description: author,
+            host: DD_HOST
+        });
+    });
+    if (!data.length) return Response.error("Dingdian: danh sách truyện trống hoặc giao diện nguồn đã thay đổi.");
+    return Response.success(data, data.length >= 20 ? String(p + 1) : null);
 }
