@@ -203,6 +203,17 @@
       "description": "Truyện tranh tiếng Việt; tìm kiếm, mục lục, đọc ảnh chương; nhận diện Cloudflare.",
       "type": "comic",
       "locale": "vi_VN"
+    },
+    {
+      "name": "TruyenQQKO",
+      "author": "Jokervtn94",
+      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/truyenqqko/plugin.zip",
+      "version": 1,
+      "source": "https://truyenqqko.com/doc-truyen",
+      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/truyenqqko/icon.png",
+      "description": "Truyện tranh tiếng Việt, tìm kiếm AJAX, thể loại, danh sách chương và ảnh truyện.",
+      "type": "comic",
+      "locale": "vi_VN"
     }
   ]
 }

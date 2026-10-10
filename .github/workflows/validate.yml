@@ -56,6 +56,8 @@ jobs:
         run: node tests/test_shuba69_reader.js
       - name: Validate 69Shuba Vbook DOM compatibility
         run: node tests/test_shuba69_vbook_dom.js
+      - name: Validate TruyenQQKO reader and Cloudflare handling
+        run: node tests/test_truyenqqko_reader.js
       - name: Validate TruyenGGVN reader and Cloudflare handling
         run: node tests/test_truyenggvn_reader.js
       - name: Validate ManhuaVN cover normalization and listing regressions

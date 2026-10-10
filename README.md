@@ -32,6 +32,7 @@ https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/plugin.json
 | 69Shuba (69书吧) | https://www.69shuba.com | 4 | zh_CN | chinese_novel |
 | UUKanShu (UU看書) | https://uukanshu.cc | 2 | zh_TW | chinese_novel |
 | TruyenGGVN | https://truyenggvn.com | 1 | vi_VN | comic |
+| TruyenQQKO | https://truyenqqko.com/doc-truyen | 1 | vi_VN | comic |
 
 ## Hướng dẫn cài đặt
 
