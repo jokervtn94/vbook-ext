@@ -1,0 +1,36 @@
+name: Diagnose TruyenQQKO cover extraction
+on:
+  push:
+    branches: [master]
+    paths: ['.github/workflows/probe-truyenqq-cover.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect publicly available VBook TruyenQQ reference
+        shell: bash
+        run: |
+          python - <<'PY'
+          import io,zipfile,urllib.request,re
+          url='https://raw.githubusercontent.com/Darkrai9x/vbook-extensions/master/truyenqq/plugin.zip'
+          try:
+              data=urllib.request.urlopen(url,timeout=16).read()
+              with zipfile.ZipFile(io.BytesIO(data)) as z:
+                  print('REFERENCE MEMBERS',z.namelist())
+                  for f in z.namelist():
+                      if f.endswith(('.js','.json')) and (f.endswith(('gen.js','search.js','detail.js','config.js','src/utils.js','src/helper.js')) or f.endswith('plugin.json')):
+                          code=z.read(f).decode('utf-8','replace')
+                          if f.endswith('plugin.json'):print('REFERENCE MANIFEST',code[:1400]);continue
+                          print('REFERENCE',f,'LENGTH',len(code))
+                          rows=code.splitlines()
+                          for i,line in enumerate(rows):
+                              if re.search(r'cover|image|img|data-src|data-original|data-fb|lazy|redirect|referer|proxy|thumbnail',line,re.I):
+                                  print('LINE',i+1,' '.join(rows[max(0,i-1):min(len(rows),i+2)])[:360])
+          except Exception as exc:
+              print('REFERENCE ERROR:',type(exc).__name__,str(exc)[:300])
+          PY
