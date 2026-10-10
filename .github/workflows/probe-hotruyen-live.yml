@@ -50,3 +50,33 @@ jobs:
                 print('  IMG',str(img)[:430],flush=True)
             except Exception as e:print('FAIL',name,type(e).__name__,str(e)[:250],flush=True)
           PY
+
+      - name: Probe active category routes and search filter contracts
+        run: |
+          python - <<'PY'
+          import requests,re
+          from bs4 import BeautifulSoup
+          root='https://hotruyen1.com'
+          paths=['/nu-sinh','/dam-my','/vo-cp','/bach-hop','/ngon-tinh','/khac','/nam-sinh?pg=2','/tim-truyen?tg=_22_','/tim-truyen?sg=0','/tim-truyen?st=1','/tim-truyen?tg=_22_&sn=than']
+          s=requests.Session();s.headers.update({'User-Agent':'Mozilla/5.0 Chrome/128.0'})
+          for p in paths:
+            try:
+              r=s.get(root+p,timeout=12);d=BeautifulSoup(r.text,'html.parser')
+              print('ROUTE',p,r.status_code,'FINAL',r.url,'LIST',len(d.select('#newupdate .uitem')),'SEARCH',len(d.select('#searchresult .sitem')),'MSG',d.select_one('#searchresult .text-disabled').get_text(' ',strip=True)[:130] if d.select_one('#searchresult .text-disabled') else '',flush=True)
+            except Exception as e:print('ROUTEERROR',p,str(e)[:150],flush=True)
+          for p in ['/tim-truyen?sn=than&pg=1','/truyen-nam-sinh/']:
+            try:
+              d=BeautifulSoup(s.get(root+p,timeout=14).text,'html.parser')
+              print('FILTERPAGE',p,flush=True)
+              for tag in d.select('input,select,button,a[href*="tim-truyen?"],label')[:220]:
+                cl=' '.join(tag.get('class',[]))
+                if tag.name in ['input','select','button'] or ('filter' in cl or 'tim-truyen?' in str(tag.get('href',''))):
+                  print('FORM',tag.name,'id',tag.get('id'),'name',tag.get('name'),'value',tag.get('value'),'href',tag.get('href'),'data',str(tag.attrs)[:260],'text',tag.get_text(' ',strip=True)[:70],flush=True)
+              for sc in d.select('script'):
+                js=sc.get_text()
+                for word in ['function timkiem','function pageClick','/tim-truyen?','var tg','tagList','?tg=']:
+                  pos=js.find(word)
+                  if pos>=0:
+                    print('SCRIPT_MATCH',word,js[max(0,pos-250):pos+1500].replace('\n',' ')[:1450],flush=True)
+            except Exception as e:print('FILTER ERROR',p,str(e)[:170],flush=True)
+          PY
