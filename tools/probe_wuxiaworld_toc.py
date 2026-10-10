@@ -1,0 +1,40 @@
+"""Locate public WuxiaWorld chapter-list transport in current page JS.
+Read-only endpoint discovery; print metadata and small code neighborhoods only.
+"""
+import concurrent.futures
+import re
+from urllib.parse import urljoin, urlparse
+import requests
+from bs4 import BeautifulSoup
+URL="https://www.wuxiaworld.com/novel/coiling-dragon"
+KEYS=["chapterGroups", "chapterGroupId", "chapter-list", "GetChapterList",
+      "getChapterList", "chapterList", "getChapters", "novel/chapters",
+      "/api/chapters", "chapters/list", "chapter-groups", "chapter-groups",
+      "chapterGroup", "chapters?"]
+S=requests.Session()
+S.headers.update({"User-Agent":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0 Safari/537.36"})
+r=S.get(URL,timeout=16);r.raise_for_status()
+doc=BeautifulSoup(r.text,"html.parser")
+scripts=[urljoin(URL,t["src"]) for t in doc.select("script[src]") if t.get("src")]
+scripts=list(dict.fromkeys(scripts))
+print("PAGE",r.status_code,"SCRIPT COUNT",len(scripts),"TIT",doc.title.get_text(" ",strip=True) if doc.title else None,flush=True)
+print("SCRIPT HOSTS",list(dict.fromkeys(urlparse(u).netloc for u in scripts)),flush=True)
+def scan(url):
+ try:
+  x=S.get(url,timeout=(4,16))
+  if not x.ok:return {"url":url,"status":x.status_code}
+  content=x.text
+  hits=[]
+  for pattern in KEYS:
+   at=content.find(pattern)
+   if at>=0:
+    excerpt=content[max(at-90,0):at+125].replace("\n"," ").replace("\r"," ")
+    hits.append((pattern,excerpt[:215]))
+  if hits:return {"url":url[-90:],"bytes":len(content),"hits":hits[:12]}
+  return {"url":url[-90:],"bytes":len(content),"hits":[]}
+ except requests.RequestException as e:return {"url":url[-90:],"error":type(e).__name__}
+with concurrent.futures.ThreadPoolExecutor(max_workers=8) as ex:
+ rows=list(ex.map(scan,scripts[:36]))
+for row in rows:
+ if row.get("hits") or row.get("error"):print("BUNDLE",row,flush=True)
+print("SCANNED",len(rows),"WITH-HITS",sum(bool(r.get("hits")) for r in rows),flush=True)
