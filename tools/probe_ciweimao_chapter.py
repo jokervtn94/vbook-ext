@@ -70,6 +70,17 @@ try:
             timeout=(5,14)
         )
         print("CHAPTER_API",json.dumps(describe(chapter),ensure_ascii=False),flush=True)
+        if chapter.ok:
+            chapter_result = chapter.json()
+            content = chapter_result.get("chapter_content")
+            keys = chapter_result.get("encryt_keys")
+            if content and isinstance(keys,list) and keys:
+                from pathlib import Path
+                fixture = {"session":{"chapter_access_key":key},
+                           "chapter":chapter_result}
+                Path("/tmp/vbook-ciweimao-live.json").write_text(
+                    json.dumps(fixture,ensure_ascii=False),encoding="utf-8")
+                print("LIVE_FIXTURE_SAVED",len(keys),"encrypted keys",flush=True)
     else:
         print("CHAPTER_API_SKIPPED", "No valid public access key / human verification required",
               flush=True)

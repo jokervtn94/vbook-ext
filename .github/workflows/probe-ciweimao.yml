@@ -20,3 +20,5 @@ jobs:
       - run: pip install requests beautifulsoup4
       - name: Check public chapter/session API response types
         run: python tools/probe_ciweimao_chapter.py
+      - name: Execute published decryptor with real public API fixture
+        run: node tests/test_ciweimao_live_decrypt.js
