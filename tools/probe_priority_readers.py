@@ -147,6 +147,40 @@ def one(entry):
                      "has_chapters":"chapterGroups" in tag.get_text()}
                     for tag in soup.select("script") if "chapterGroups" in tag.get_text()
                 ][:3]
+                hydration = next(
+                    (tag.get_text() for tag in soup.select("script")
+                     if "window.__REACT_QUERY_STATE__ =" in tag.get_text()), ""
+                )
+                if hydration:
+                    try:
+                        raw = hydration.split("window.__REACT_QUERY_STATE__ =", 1)[1].strip()
+                        if raw.endswith(";"):
+                            raw = raw[:-1]
+                        state = json.loads(raw)
+                        result["react_queries"] = []
+                        for query in state.get("queries", [])[:18]:
+                            inner = (query.get("state") or {}).get("data")
+                            item = {
+                                "key": str(query.get("queryKey"))[:140],
+                                "type": type(inner).__name__,
+                                "data_keys": sorted(inner.keys())[:20] if isinstance(inner, dict) else [],
+                            }
+                            if isinstance(inner, dict):
+                                nested = inner.get("item")
+                                item["item_keys"] = sorted(nested.keys())[:30] if isinstance(nested, dict) else []
+                                if isinstance(nested, dict):
+                                    chapter_info = nested.get("chapterInfo")
+                                    if isinstance(chapter_info, dict):
+                                        groups = chapter_info.get("chapterGroups", [])
+                                        item["group_count"] = len(groups)
+                                        item["loaded_chapters"] = sum(
+                                            len(group.get("chapterList", [])) for group in groups
+                                        )
+                                if isinstance(inner.get("items"), list):
+                                    item["count"] = len(inner["items"])
+                            result["react_queries"].append(item)
+                    except (ValueError, TypeError, KeyError) as exc:
+                        result["react_state_error"] = type(exc).__name__
             result["challenge"] = bool(
                 soup.select_one("#challenge-form, .cf-turnstile")
                 or "just a moment" in result["title"].lower()
