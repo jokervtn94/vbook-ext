@@ -1,0 +1,45 @@
+name: Retire legacy main branch (one-time)
+on:
+  push:
+    branches: [master]
+    paths:
+      - '.github/workflows/retire-main-once.yml'
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  retire:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate preservation and safely delete old branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          repo="$GITHUB_REPOSITORY"
+          default_branch="$(gh api "repos/$repo" --jq '.default_branch')"
+          if [[ "$default_branch" != "master" ]]; then
+            echo "::error::Refusing to delete: default branch is $default_branch"
+            exit 1
+          fi
+          main_head="$(gh api "repos/$repo/git/ref/heads/main" --jq '.object.sha')"
+          tag_obj="$(gh api "repos/$repo/git/ref/tags/legacy-main-2026-10-10" --jq '.object.sha')"
+          tag_commit="$(gh api "repos/$repo/git/tags/$tag_obj" --jq '.object.sha')"
+          if [[ "$main_head" != "$tag_commit" ]]; then
+            echo "::error::Refusing to delete: archive tag differs from main HEAD"
+            exit 1
+          fi
+          pr_count="$(gh api "repos/$repo/pulls?state=open&base=main&per_page=100" --jq 'length')"
+          if [[ "$pr_count" != "0" ]]; then
+            echo "::error::Refusing to delete: $pr_count open PR(s) target main"
+            exit 1
+          fi
+          gh api --method DELETE "repos/$repo/git/refs/heads/main"
+          if gh api "repos/$repo/git/ref/heads/main" >/dev/null 2>&1; then
+            echo "::error::Main branch still exists"
+            exit 1
+          fi
+          echo "PASS: main was deleted, master remains default, legacy-main-2026-10-10 preserves $tag_commit"
