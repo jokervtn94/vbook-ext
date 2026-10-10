@@ -35,7 +35,8 @@ function execute(url) {
         var response = fetch(url);
         status = response.status || 0;
         if (response.ok) {
-            doc = response.html();
+            // Chapter text is GBK, WebView (when needed) uses page charset itself.
+            doc = response.html("gbk");
             root = shubaContentRoot(doc);
             challenged = shubaIsChallenge(doc);
         } else if (status !== 403 && status !== 429) {

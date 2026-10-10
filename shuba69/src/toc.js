@@ -13,7 +13,7 @@ function execute(url) {
             return Response.error("69Shuba mục lục HTTP " + response.status +
                 (response.status == 403 ? ": website yêu cầu xác minh Cloudflare" : ""));
         }
-        var doc = response.html();
+        var doc = response.html("gbk");
         var els = doc.select("#catalog li a[href*='/txt/'], #catalog ul li a");
         if (!els.size()) els = doc.select("#catalog a");
         if (!els.size()) els = doc.select("a[href*='/txt/" + bookid + "/']");

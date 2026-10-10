@@ -11,7 +11,7 @@ function execute(key, page) {
             });
         }
         if (!response.ok) return Response.error("69Shuba tìm kiếm HTTP " + response.status);
-        var doc = response.html();
+        var doc = response.html("gbk");
         var cards = doc.select(".bookbox, .newbox ul li, .mybox li, .booklist li");
         var cardById = {};
         for (var j = 0; j < cards.size(); j++) {

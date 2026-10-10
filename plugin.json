@@ -175,10 +175,10 @@
       "name": "69Shuba (69书吧)",
       "author": "Jokervtn94",
       "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/shuba69/plugin.zip",
-      "version": 4,
+      "version": 5,
       "source": "https://www.69shuba.com",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/shuba69/icon.png",
-      "description": "69Shuba: hỗ trợ dự phòng WebView khi chương bị Cloudflare chặn, hướng dẫn xác minh trong Vbook.",
+      "description": "69Shuba v5: giải mã GBK chính xác khi tải HTML để khôi phục tên truyện, tác giả, mô tả, chương.",
       "type": "chinese_novel",
       "locale": "zh_CN"
     },

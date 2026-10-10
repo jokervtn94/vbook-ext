@@ -7,7 +7,7 @@ function execute(category, page) {
     try {
         var response = fetch(url);
         if (!response.ok) return Response.error("69Shuba HTTP " + response.status + ": " + url);
-        var doc = response.html();
+        var doc = response.html("gbk");
         var cards = doc.select(".bookbox, .newbox ul li, .mybox li, .booklist li");
         var cardById = {};
         for (var j = 0; j < cards.size(); j++) {
