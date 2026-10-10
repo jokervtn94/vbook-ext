@@ -1,0 +1,31 @@
+name: Live audit of published Vbook sources
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'tools/audit_live_catalog.py'
+      - '.github/workflows/audit-live-catalog.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-status:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests beautifulsoup4
+      - name: Probe 23 published source and sample URLs
+        run: python tools/audit_live_catalog.py
+      - name: Publish complete diagnostic artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: published-vbook-live-audit
+          path: audit-live-catalog.json
+          if-no-files-found: warn
