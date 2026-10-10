@@ -75,7 +75,7 @@ def audit(root):
             e.append("missing icon.png")
         archive = directory / "plugin.zip"
         if not archive.is_file():
-            e.append("missing plugin.zip")
+            (e if folder in published else w).append("missing plugin.zip")
         else:
             try:
                 with zipfile.ZipFile(archive) as z:
@@ -93,6 +93,16 @@ def audit(root):
                                        n.endswith("/src/" + filename) or
                                        n == filename for n in names):
                                 w.append(f"archive may be missing script {key}: {filename}")
+                    archive_manifest = next((n for n in names if n == "plugin.json" or n.endswith("/plugin.json")), None)
+                    if archive_manifest:
+                        try:
+                            zip_meta = json.loads(z.read(archive_manifest).decode("utf-8")).get("metadata", {})
+                            for key in ("version", "source"):
+                                if zip_meta.get(key) != meta.get(key):
+                                    w.append(f"archive metadata.{key}={zip_meta.get(key)!r} != source metadata.{key}={meta.get(key)!r}")
+                            record["archive_version"] = zip_meta.get("version")
+                        except (UnicodeDecodeError, ValueError, KeyError) as exc:
+                            w.append(f"unreadable metadata in archive: {exc}")
                     corrupt = z.testzip()
                     if corrupt:
                         e.append(f"invalid ZIP entry: {corrupt}")
