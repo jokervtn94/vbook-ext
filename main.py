@@ -12,7 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 CATALOG = ROOT / "plugin.json"
 README = ROOT / "README.md"
-CATALOG_URL = "https://raw.githubusercontent.com/jokervtn94/vbook-ext/main/plugin.json"
+CATALOG_URL = "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/plugin.json"
 
 
 def cell(value):
