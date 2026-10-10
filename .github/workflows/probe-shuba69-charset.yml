@@ -1,0 +1,41 @@
+name: Probe 69Shuba character encoding
+on:
+  push:
+    branches: [master]
+    paths: ['.github/workflows/probe-shuba69-charset.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check live page declared charset and UTF-8 replacement symptoms
+        shell: bash
+        run: |
+          python - <<'PY'
+          import requests,re
+          from html.parser import HTMLParser
+          urls=[
+            'https://www.69shuba.com/book/29590.htm',
+            'https://www.69shuba.com/book/29590/',
+            'https://www.69shuba.com/novels/monthvisit_0_0_1.htm',
+            'https://www.69shuba.com/txt/29590/25167831'
+          ]
+          session=requests.Session();session.headers.update({'User-Agent':'Mozilla/5.0 (Linux; Android 14) Chrome/130 Mobile Safari/537.36'})
+          for url in urls:
+            try:
+              r=session.get(url,timeout=13)
+              head=r.content[:1800].decode('ascii','ignore')
+              tag=re.search(r'<meta[^>]*charset[^>]*>',head,re.I)
+              gbk=r.content.decode('gb18030',errors='replace')
+              utf=r.content.decode('utf-8',errors='replace')
+              def title(t):
+                m=re.search(r'<title[^>]*>(.*?)</title>',t,re.I|re.S)
+                return m.group(1)[:115] if m else 'none'
+              print('PAGE',url,'STATUS',r.status_code,'FINAL',r.url,'MIME',r.headers.get('Content-Type'),'META',tag.group(0) if tag else 'none','BYTES',len(r.content),'UTF8_BAD',utf.count('\ufffd'),'GB18030_BAD',gbk.count('\ufffd'),'TITLE_UTF8',repr(title(utf)),'TITLE_GBK',repr(title(gbk)),flush=True)
+            except Exception as e:
+              print('ERROR',url,type(e).__name__,str(e)[:180],flush=True)
+          PY
