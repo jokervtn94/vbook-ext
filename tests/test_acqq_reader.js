@@ -43,7 +43,7 @@ const detailDoc=doc({
  "h1.top-title":[el({},"男主和后宫都是我的了")],
  "meta[property='og:image']":[el({content:"https://manhua.acimg.cn/horizontal/detail.jpg/0"})],
  ".head-info-desc":[el({},"测试简介")],
- ".chapter-info":[el({},"连载中")
+ ".chapter-info":[el({},"连载中")]
 });
 run=boot("detail.js",url=>{assert.equal(url,book);return http(detailDoc);});
 result=run.execute("https://ac.qq.com/Comic/ComicInfo/id/650953");
