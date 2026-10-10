@@ -47,3 +47,39 @@ jobs:
               print('  HTML',re.sub(r'\s+',' ',r.text[:280]),flush=True)
             except Exception as e:print('ERROR',label,type(e).__name__,str(e)[:250],flush=True)
           PY
+
+      - name: Analyze real selectors and embedded chapter image manifest
+        run: |
+          python - <<'PY'
+          import requests,re
+          from bs4 import BeautifulSoup
+          s=requests.Session();s.headers.update({'User-Agent':'Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 Chrome/130.0 Mobile Safari/537.36'})
+          urls={
+            'home':'https://m.ac.qq.com/',
+            'categories':'https://m.ac.qq.com/category/index',
+            'category-theme':'https://m.ac.qq.com/category/index/theme/1',
+            'rank':'https://m.ac.qq.com/rank/biaosheng',
+            'search':'https://m.ac.qq.com/search/index?key=%E4%BA%BA',
+            'detail':'https://m.ac.qq.com/comic/index/id/650953',
+            'chapter':'https://m.ac.qq.com/chapter/index/id/650953/cid/1'
+          }
+          for name,url in urls.items():
+            try:
+              r=s.get(url,timeout=18);d=BeautifulSoup(r.text,'html.parser')
+              print('TARGET',name,r.status_code,r.url,len(r.content),flush=True)
+              for selector in ['.comic-item','.comic-item a','.comic-item img','.comic-list li','.recommend-list li','.rank-item','.comic-link','.item-cover','.category-item','.category-list a','.chapter-link','.head-cover','.comic-pic-list img','#comicContain img','.comic-pic-list','.comic-img','img[data-src]','.chapter-content img','.comic-cover','.head-info-desc','.comic-intro','.author-name','h1.top-title','a[href*=\"/category/\"]']:
+                es=d.select(selector)
+                if es:
+                  print(' DOM',selector,len(es),'FIRST',str(es[0])[:530].replace('\n',' '),flush=True)
+              for a in d.select('a[href*="/category/"]')[:30]:
+                print(' GENRE',a.get_text(' ',strip=True)[:60],a.get('href'),flush=True)
+              if name=='chapter':
+                for token in ['picture','chapter_data','img_list','imgList','comic-pic','data-src','__DATA__','__NUXT__','__INITIAL_STATE__','base64','DATA','chapterInfo','chapterComicInfo','comicImages','chapterPicture','picture-list','picList','comicPic','picUrl','imageUrls','cid']:
+                  print(' TOKEN',token,len(list(re.finditer(re.escape(token),r.text,re.I))),flush=True)
+                for script in d.find_all('script'):
+                  raw=script.get_text(' ',strip=False)
+                  if len(raw)>1000 and any(t in raw.lower() for t in ['imglist','comic-pic','chapter_data','picture','chapterinfo','picurl','comicpic']):
+                    print(' EMBEDDED_SCRIPT',len(raw),raw[:4200].replace('\n',' ')[:4200],flush=True)
+                print(' IMAGE_ELEMENTS',[str(x)[:480] for x in d.find_all('img')[:10]],flush=True)
+            except Exception as e:print('ERROR',name,type(e).__name__,str(e)[:220],flush=True)
+          PY
