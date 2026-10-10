@@ -76,3 +76,29 @@ try:
             if matches:
                 print("CHUNK",u,"SIZE",size,"MATCH",matches[:4],flush=True)
 except Exception as err: print("NEXT_ERR",str(err),flush=True)
+
+print("=== CHAPTER API DISCOVERY ===",flush=True)
+try:
+    r=s.get(base,timeout=15)
+    d=BeautifulSoup(r.text,"html.parser")
+    parsed=json.loads(d.select_one("script#__NEXT_DATA__").string)
+    page=parsed["props"]["pageProps"]
+    sc=page.get("siteConfig",{})
+    manga=page.get("initialManga",{})
+    print("SITE_CONFIG",repr({k:sc.get(k) for k in ["apiUrl","siteUrl","path","contentType"]}),flush=True)
+    print("MANGA_KEYS",list(manga.keys()),flush=True)
+    for key in ["chapters","latestChapters","stats","firstChapter","mangaId","id","slug","chapterCount","displayChapters"]:
+        val=manga.get(key)
+        if isinstance(val,list):print("MANGA_KEY",key,"LIST",len(val),"START",repr(val[:1])[:340],flush=True)
+        else:print("MANGA_KEY",key,repr(val)[:260],flush=True)
+    for a in d.select("script[src]"):
+        src=a.get("src","")
+        if "/_next/static/chunks/pages/" in src and src.endswith(".js"):
+            response=s.get(urljoin(base,src),timeout=15)
+            txt=response.text
+            if len(txt)<30000: continue
+            print("PAGE_CHUNK",src,len(txt),flush=True)
+            for term in ["loadingChapters","totalChapters","chapterList","fetchChapters","chapters?", "/api", "getChapters", "chapter_size","per_page","perPage"]:
+                locs=list(re.finditer(re.escape(term),txt,re.IGNORECASE))[:4]
+                for loc in locs: print("PAGE_MATCH",term,repr(txt[max(0,loc.start()-220):loc.start()+300]),flush=True)
+except Exception as err: print("CHAPTER_ERR",str(err),flush=True)
