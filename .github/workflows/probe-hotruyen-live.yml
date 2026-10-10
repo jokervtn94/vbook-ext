@@ -1,0 +1,52 @@
+name: Probe Hotruyen DOM
+on:
+  push:
+    branches: [master]
+    paths: ['.github/workflows/probe-hotruyen-live.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: python -m pip -q install requests beautifulsoup4
+      - name: Inspect home search detail and categories
+        run: |
+          python - <<'PY'
+          import requests,re,json
+          from bs4 import BeautifulSoup
+          root='https://hotruyen1.com'
+          paths={
+            'home':'/',
+            'nam':'/nam-sinh',
+            'nam-truyen':'/truyen-nam-sinh/',
+            'ngon-tinh':'/truyen-ngon-tinh/',
+            'search-empty':'/tim-truyen',
+            'search-word':'/tim-truyen?sn=than&pg=1',
+            'detail':'/truyen/toan-dan-chuyen-chuc-ngu-long-su-ta-co-the-chem-than-323131373837382D32373437353936'
+          }
+          s=requests.Session();s.headers.update({'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0 Safari/537.36','Accept-Language':'vi-VN,vi;q=0.9'})
+          sels=['#newupdate .uitem','#searchresult .sitem','.uitem','.sitem','.book img','.book','.pagination','.pagination li','#searchresult','#newupdate','.dinfo','.dinfo .book img','.book img','#des-info','a[href*="/truyen/"]','a[href*="/tim-truyen?"]','a[href*="/the-loai/"]','input[name]','select[name]','form[action]','img[data-src]']
+          for name,route in paths.items():
+            try:
+              r=s.get(root+route,timeout=16);d=BeautifulSoup(r.text,'html.parser')
+              print('PAGE',name,'HTTP',r.status_code,'URL',r.url,'LEN',len(r.content),'TITLE',d.title.get_text(' ',strip=True)[:100] if d.title else '',flush=True)
+              for sel in sels:
+                found=d.select(sel)
+                if found:print('  SEL',sel,'COUNT',len(found),'EXAMPLE',str(found[0])[:850],flush=True)
+              for selector in ['#newupdate .uitem','#searchresult .sitem','.uitem','.sitem','.book']:
+                node=d.select_one(selector)
+                if node:print('  FULL_CARD',selector,str(node)[:1900],flush=True)
+              for a in d.select('a[href]'):
+                href=a.get('href','')
+                if any(x in href for x in ['/tim-truyen?','/truyen-nam-sinh/','/truyen-ngon-tinh/','/truyen-dam-my/','/truyen-bach-hop/']):
+                  print('  FILTER',a.get_text(' ',strip=True)[:38],href[:220],flush=True)
+              for option in d.select('select option')[:35]:
+                print('  OPT',option.get_text(' ',strip=True)[:36],option.get('value'),str(option.parent)[:95],flush=True)
+              for img in d.find_all('img')[:9]:
+                print('  IMG',str(img)[:430],flush=True)
+            except Exception as e:print('FAIL',name,type(e).__name__,str(e)[:250],flush=True)
+          PY
