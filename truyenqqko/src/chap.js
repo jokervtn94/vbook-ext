@@ -1,4 +1,5 @@
 load("config.js");
+// Preserve chapter image ordering and ignore duplicate lazy-loaded image URLs.
 function execute(url){
   return qqWithDoc(qqAbs(url),function(doc){
     var imgs=qqNodes(doc,[
