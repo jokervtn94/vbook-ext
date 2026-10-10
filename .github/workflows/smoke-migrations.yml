@@ -1,0 +1,20 @@
+name: Live source-contract smoke tests
+on:
+  push:
+    branches: [fix/active-sources-prune-20261010]
+    paths:
+      - tools/smoke_migrations.py
+      - .github/workflows/smoke-migrations.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests beautifulsoup4
+      - run: python tools/smoke_migrations.py
