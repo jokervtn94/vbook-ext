@@ -1,0 +1,47 @@
+name: Probe Dingdian cover markup
+on:
+  push:
+    branches: [master]
+    paths: ['.github/workflows/probe-dingdian-cover.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: python -m pip -q install requests beautifulsoup4
+      - name: Inspect website and cover image candidates
+        run: |
+          python - <<'PY'
+          import requests,re
+          from bs4 import BeautifulSoup
+          session=requests.Session()
+          session.headers.update({'User-Agent':'Mozilla/5.0 (Linux; Android 14; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0 Mobile Safari/537.36','Accept-Language':'zh-CN,zh;q=0.9,en;q=0.8'})
+          urls=[
+            'https://www.dingdian666.com/xiaoshuo/537816/',
+            'https://m.dingdian666.com/ebooks/537816/',
+            'https://www.dingdian666.com/sort/3_1/',
+            'https://m.dingdian666.com/',
+            'https://www.dingdian666.com/'
+          ]
+          for url in urls:
+            try:
+              r=session.get(url,timeout=17)
+              doc=BeautifulSoup(r.text,'html.parser')
+              print('\nPAGE',url,'STATUS',r.status_code,'FINAL',r.url,'LENGTH',len(r.text),'TITLE',doc.title.get_text(' ',strip=True)[:100] if doc.title else '',flush=True)
+              for key in ['.border_left img','.border_left a img','.bookimg img','.book-img img','.bookcover img','.book_info img','.pic img','.picbox img','.left img','.cover img','.book-item img','.lastupdate ul li','.lastupdate ul li img','.book-list li img']:
+                print('SELECTOR',key,'COUNT',len(doc.select(key)),flush=True)
+              for m in doc.find_all('meta'):
+                if 'image' in (m.get('property','')+m.get('name','')).lower():
+                  print('META',str(m)[:400],flush=True)
+              for img in doc.find_all('img')[:15]:
+                print('IMG',str(img)[:700],flush=True)
+              for a in doc.find_all('a',href=True):
+                if re.search(r'/xiaoshuo/\d+',a['href']):
+                  print('NOVEL_LINK',a['href'],str(a.parent)[:650],flush=True)
+                  break
+            except Exception as e:print('ERROR',url,type(e).__name__,str(e)[:240],flush=True)
+          PY
