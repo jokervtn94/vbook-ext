@@ -1,0 +1,21 @@
+{
+  "metadata": {
+    "name": "TruyenGGVN",
+    "author": "Jokervtn94",
+    "version": 1,
+    "source": "https://truyenggvn.com",
+    "regexp": "https?://(?:www\\.)?truyenggvn\\.com/truyen-tranh/[a-z0-9-]+(?:-chap-[0-9.]+)?(?:\\.html)?(?:\\?.*)?$",
+    "description": "Đọc truyện tranh tiếng Việt trên TruyenGGVN; hỗ trợ tìm kiếm, thể loại, mục lục, ảnh chương và báo xác minh Cloudflare.",
+    "locale": "vi_VN",
+    "language": "javascript",
+    "type": "comic"
+  },
+  "script": {
+    "home": "home.js",
+    "genre": "genre.js",
+    "detail": "detail.js",
+    "search": "search.js",
+    "toc": "toc.js",
+    "chap": "chap.js"
+  }
+}

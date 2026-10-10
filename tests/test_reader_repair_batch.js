@@ -83,8 +83,8 @@ assert.equal(acGen.value[0].cover,'https://manhua.acimg.cn/cover.jpg');
 assert.equal(acGen.value[0].link,'https://ac.qq.com/Comic/comicInfo/id/531490');
 
 const catalog=JSON.parse(fs.readFileSync(path.join(root,'plugin.json'),'utf8'));
-assert.equal(catalog.data.length,17, 'Catalog must only publish Vietnamese and Chinese sources');
+assert.equal(catalog.data.length,18, 'Catalog must only publish Vietnamese and Chinese sources');
 assert.ok(catalog.data.some(item=>item.path.includes('/shuba69/plugin.zip')));
 assert.ok(catalog.data.some(item=>item.path.includes('/uukanshu/plugin.zip')));
 assert.ok(!catalog.data.some(item=>item.path.includes('/manhwahentai/')));
-console.log('PASS repair tests: SachHay links/TOC/full chapter; BookQQ; Tencent covers; Tiên Vực last page; 17 active sources.');
+console.log('PASS repair tests: SachHay links/TOC/full chapter; BookQQ; Tencent covers; Tiên Vực last page; 18 active sources.');

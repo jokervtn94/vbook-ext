@@ -21,12 +21,12 @@ CHINESE={
     "ciweimao","bfaloo","tadu","shuba69","uukanshu"
 }
 VIETNAMESE={
-    "manhuavn","tienvuc","sayhentai","tranh18","hotruyen","sachhayonline"
+    "manhuavn","tienvuc","sayhentai","tranh18","hotruyen","sachhayonline","truyenggvn"
 }
 expected=CHINESE|VIETNAMESE
 folders={x["path"].split("/")[-2] for x in items}
 assert folders==expected, f"Unexpected/missing source: {sorted(folders^expected)}"
-assert len(items)==len(expected)==17
+assert len(items)==len(expected)==18
 for name in RETIRED:
     assert not (ROOT/name).exists(), f"Retired source tree still exists: {name}"
 for item in items:

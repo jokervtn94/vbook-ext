@@ -192,6 +192,17 @@
       "description": "UUKanShu: sửa chuẩn hóa URL chương, tránh mất mục lục do liên kết tương đối và đọc chương ngắn.",
       "type": "chinese_novel",
       "locale": "zh_TW"
+    },
+    {
+      "name": "TruyenGGVN",
+      "author": "Jokervtn94",
+      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/truyenggvn/plugin.zip",
+      "version": 1,
+      "source": "https://truyenggvn.com",
+      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/truyenggvn/icon.png",
+      "description": "Truyện tranh tiếng Việt; tìm kiếm, mục lục, đọc ảnh chương; nhận diện Cloudflare.",
+      "type": "comic",
+      "locale": "vi_VN"
     }
   ]
 }
