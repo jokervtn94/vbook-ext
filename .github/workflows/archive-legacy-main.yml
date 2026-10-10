@@ -1,0 +1,35 @@
+name: Archive legacy main history
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - '.github/workflows/archive-legacy-main.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  preserve:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+      - name: Preserve legacy history as a Git tag (without an extra active branch)
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          tag="legacy-main-2026-10-10"
+          if git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null 2>&1; then
+            echo "Archive tag already exists: $tag"
+          else
+            main_sha="$(git rev-parse refs/remotes/origin/main)"
+            git tag -a "$tag" "$main_sha" -m "Historical 45-extension main branch preserved before master-only publishing migration"
+            git push origin "refs/tags/$tag"
+          fi
+          git ls-remote --exit-code --tags origin "refs/tags/$tag"
