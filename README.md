@@ -15,7 +15,7 @@ https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/plugin.json
 | ManhuaVN [Free Chap] | https://manhuavn2.com | 5 | vi_VN | comic |
 | Omega Scans | https://omegascans.org | 2 | en_EN | comic |
 | Tiên Vực | https://tienvuc.me | 14 | vi_VN | novel |
-| Say Hentai | https://sayhentai.cx | 10 | vi_VN | comic |
+| Say Hentai | https://sayhentai.cx | 11 | vi_VN | comic |
 | Tranh 18 | https://tranh18.cc | 2 | vi_VN | comic |
 | Hố Truyện | https://hotruyen1.com | 6 | vi_VN | novel |
 | Qimao | https://www.qimao.com | 4 | zh_CN | chinese_novel |

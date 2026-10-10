@@ -3,6 +3,8 @@ on:
   push:
     branches: [master]
     paths:
+      - 'sayhentai/plugin.json'
+      - 'sayhentai/src/**'
       - 'bookqq/plugin.json'
       - 'bookqq/src/**'
       - 'hotruyen/plugin.json'
@@ -41,16 +43,16 @@ jobs:
         with:
           ref: master
       - name: Rebuild stale extension packages
-        run: python tools/build_extensions.py bookqq hotruyen qimao manhuagui doujins mangaread ciweimao wuxiaworld bfaloo tadu royalroad --apply
+        run: python tools/build_extensions.py sayhentai bookqq hotruyen qimao manhuagui doujins mangaread ciweimao wuxiaworld bfaloo tadu royalroad --apply
       - name: Check package integrity
         run: |
-          python tools/check_package_sync.py bookqq hotruyen qimao manhuagui doujins mangaread ciweimao wuxiaworld bfaloo tadu royalroad
-          python tools/inspect_packages.py bookqq hotruyen qimao manhuagui doujins mangaread ciweimao wuxiaworld bfaloo tadu royalroad
+          python tools/check_package_sync.py sayhentai bookqq hotruyen qimao manhuagui doujins mangaread ciweimao wuxiaworld bfaloo tadu royalroad
+          python tools/inspect_packages.py sayhentai bookqq hotruyen qimao manhuagui doujins mangaread ciweimao wuxiaworld bfaloo tadu royalroad
       - name: Commit synchronized archives
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- bookqq/plugin.zip hotruyen/plugin.zip qimao/plugin.zip manhuagui/plugin.zip doujins/plugin.zip mangaread/plugin.zip ciweimao/plugin.zip wuxiaworld/plugin.zip bfaloo/plugin.zip tadu/plugin.zip royalroad/plugin.zip
+          git add -- sayhentai/plugin.zip bookqq/plugin.zip hotruyen/plugin.zip qimao/plugin.zip manhuagui/plugin.zip doujins/plugin.zip mangaread/plugin.zip ciweimao/plugin.zip wuxiaworld/plugin.zip bfaloo/plugin.zip tadu/plugin.zip royalroad/plugin.zip
           if ! git diff --cached --quiet; then
             git commit -m "build: synchronize 10 existing Vbook reader packages"
             git push origin HEAD:master

@@ -42,10 +42,10 @@
       "name": "Say Hentai",
       "author": "Jokervtn94",
       "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/sayhentai/plugin.zip",
-      "version": 10,
+      "version": 11,
       "source": "https://sayhentai.cx",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/sayhentai/icon.png",
-      "description": "Đọc truyện trên trang Sayhentai.one",
+      "description": "Say Hentai: đồng bộ domain tìm kiếm, chuẩn hóa ảnh chương và báo lỗi Cloudflare rõ ràng.",
       "type": "comic",
       "locale": "vi_VN",
       "tag": "nsfw"

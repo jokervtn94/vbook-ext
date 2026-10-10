@@ -43,6 +43,8 @@ jobs:
         run: node tests/test_vbook_regressions.js
       - name: Validate Qimao author metadata
         run: node tests/test_qimao_detail.js
+      - name: Validate Say Hentai domain and chapter handling
+        run: node tests/test_sayhentai_reader.js
       - name: Validate WuxiaWorld full gRPC-Web chapter directory
         run: node tests/test_wuxiaworld_toc_grpc.js
       - name: Validate WuxiaWorld current reading contracts

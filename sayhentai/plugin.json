@@ -2,10 +2,10 @@
   "metadata": {
     "name": "Say Hentai",
     "author": "Nhocconsr",
-    "version": 10,
+    "version": 11,
     "source": "https://sayhentai.cx",
     "regexp": "(www\\.)?sayhentai\\.(one|cx)/[^/]+\\.html$",
-    "description": "Đọc truyện trên trang Say Hentai",
+    "description": "Say Hentai: đồng bộ domain tìm kiếm, chuẩn hóa ảnh chương và báo lỗi Cloudflare rõ ràng.",
     "locale": "vi-VN",
     "language": "javascript",
     "type": "comic",
