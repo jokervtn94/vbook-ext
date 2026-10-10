@@ -11,6 +11,13 @@ on:
       - master
       - main
   workflow_dispatch:
+  # GitHub-token build commits do not start push workflows; validate the
+  # finalized branch after each archive builder completes.
+  workflow_run:
+    workflows:
+      - 'Sync previously stale Vbook packages'
+      - 'Package 69Shuba and UUKanShu'
+    types: [completed]
 
 jobs:
   catalog:
@@ -18,6 +25,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && 'master' || github.sha }}
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
