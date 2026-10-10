@@ -1,8 +1,8 @@
 {
   "metadata": {
     "name": "Book QQ [阅读]",
-    "author": "Nhocconsr",
-    "version": 4,
+    "author": "Jokervtn94",
+    "version": 5,
     "source": "https://book.qq.com",
     "regexp": "https?://(?:www\\.)?(?:ubook\\.reader|book)\\.qq\\.com/(?:book-detail|book-read)/\\d+(?:/\\d+)?/?(?:[?#].*)?$",
     "description": "Book QQ: sửa URL chương, nhận biết sách đã gỡ, cập nhật chương mẫu đang hoạt động.",

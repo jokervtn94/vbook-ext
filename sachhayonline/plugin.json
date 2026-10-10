@@ -1,8 +1,8 @@
 {
   "metadata": {
     "name": "sachhayonline",
-    "author": "fusornat",
-    "version": 3,
+    "author": "Jokervtn94",
+    "version": 4,
     "source": "https://www.sachhayonline.com/",
     "regexp": "(www.)?sachhayonline.com/tua-sach/[A-Za-z].+/?$",
     "description": "Sửa URL truyện, mục lục, ảnh bìa chi tiết và toàn bộ nội dung chương theo website hiện tại.",

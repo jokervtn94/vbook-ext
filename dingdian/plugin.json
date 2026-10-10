@@ -1,8 +1,8 @@
 {
   "metadata": {
     "name": "Dingdian 【顶点】",
-    "author": "Nhocconsr",
-    "version": 3,
+    "author": "Jokervtn94",
+    "version": 4,
     "source": "https://www.dingdian666.com",
     "regexp": "(www.)?((dingdian666.com/xiaoshuo/\\d+/?$)|(m.dingdian666.com/ebooks/\\d+/?$))",
     "description": "Dingdian: chuẩn hóa ngôn ngữ nguồn truyện tiếng Trung.",

@@ -1,8 +1,8 @@
 {
   "metadata": {
     "name": "ManhuaVN [Free]",
-    "author": "Nhocconsr",
-    "version": 5,
+    "author": "Jokervtn94",
+    "version": 6,
     "source": "https://manhuavn2.com",
     "regexp": "(www\\.)?(manhuavn2\\.com|manhuavn\\.top|mhvn\\.truyensieuhay\\.com)/[0-9a-z-]+(\\.html)?",
     "description": "Sửa đường dẫn ảnh bìa ở trang chủ, danh sách thể loại và chi tiết; hỗ trợ đọc chương miễn phí.",

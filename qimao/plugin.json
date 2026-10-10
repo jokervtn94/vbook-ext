@@ -1,8 +1,8 @@
 {
   "metadata": {
     "name": "Qimao (七猫文化)",
-    "author": "Nhocconsr",
-    "version": 4,
+    "author": "Jokervtn94",
+    "version": 5,
     "source": "https://www.qimao.com",
     "regexp": "(www.)?(qimao.com/shuku/\\d+/?)|(api-bc.wtzw.com/.*)",
     "description": "Qimao: sửa trường tác giả theo API hiện tại, kiểm tra lỗi thông tin truyện.",

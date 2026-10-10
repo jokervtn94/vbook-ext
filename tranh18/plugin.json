@@ -1,8 +1,8 @@
 {
   "metadata": {
     "name": "Tranh 18",
-    "author": "Nhocconsr",
-    "version": 2,
+    "author": "Jokervtn94",
+    "version": 3,
     "source": "https://tranh18.cc",
     "regexp": "(www\\.)?tranh18\\.(cc|com)/comic/[0-9a-z-_]+",
     "description": "Truyện 18 Manhwa",

@@ -1,8 +1,8 @@
 {
   "metadata": {
     "name": "AC QQ 腾讯动漫",
-    "author": "Nhocconsr",
-    "version": 2,
+    "author": "Jokervtn94",
+    "version": 3,
     "source": "https://ac.qq.com",
     "regexp": "(www\\.)?ac\\.qq\\.com/Comic/[Cc]omicInfo/id/\\d+/?$",
     "description": "Sửa danh sách/bìa trên Tencent Comics; một số chương yêu cầu Javascript hoặc tài khoản.",

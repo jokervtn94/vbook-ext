@@ -1,8 +1,8 @@
 {
   "metadata": {
     "name": "Say Hentai",
-    "author": "Nhocconsr",
-    "version": 11,
+    "author": "Jokervtn94",
+    "version": 12,
     "source": "https://sayhentai.cx",
     "regexp": "(www\\.)?sayhentai\\.(one|cx)/[^/]+\\.html$",
     "description": "Say Hentai: đồng bộ domain tìm kiếm, chuẩn hóa ảnh chương và báo lỗi Cloudflare rõ ràng.",
