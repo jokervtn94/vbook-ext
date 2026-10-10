@@ -1,28 +1,25 @@
 load('config.js');
-function execute(url, page) {
+function execute(genreId, page) {
     if (!page) page = '1';
-    let response = fetch(`${BASE_API}/api/newstory/getBoLoc`,{
+    var response = fetch(BASE_API + '/api/newstory/getBoLoc', {
         method: 'POST',
-        body: {ListTheLoai: ';'+url, iStatus: '-1', iSort: '2', ipage: page, ipagesize: '25'}
+        body: { ListTheLoai: ';' + genreId, iStatus: '-1', iSort: '2',
+                ipage: page, ipagesize: '25' }
     });
-    if (response.ok) {
-        let json = response.json().data;
-        let books = [];
-
-        json.list.forEach(item => {
-            books.push({
-                name: item.StoryName,
-                link: BASE_API + '/' + item.Id,
-                cover: BASE_IMAGE+'/'+item.StoryImage,
-                description: item.StoryTitleLastChap,
-            });
+    if (!response.ok) return null;
+    var result = response.json();
+    var list = result && result.data ? result.data.list : null;
+    if (!Array.isArray(list)) return null;
+    var books = [];
+    list.forEach(function(item) {
+        if (!item.Id || !item.StoryName) return;
+        books.push({
+            name: item.StoryName,
+            link: BASE_API + '/' + item.Id,
+            cover: getCoverUrl(item.StoryImage),
+            description: item.StoryTitleLastChap || '',
+            host: BASE_URL
         });
-        if(json.list.length === 0){
-            var next = null;
-        }else{
-            var next = parseInt(page) + 1 + ""
-        }
-        return Response.success(books, next);
-    }
-    return null;
+    });
+    return Response.success(books, books.length ? String(parseInt(page, 10) + 1) : null);
 }
