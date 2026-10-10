@@ -28,7 +28,7 @@ https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/plugin.json
 | SachHayOnline | https://www.sachhayonline.com/ | 3 | vi-VN | novel |
 | Novel Buddy | https://novelbuddy.me | 4 | vi-VN | novel |
 | Dingdian 【顶点】 | https://www.dingdian666.com | 2 | vi-VN | chinese_novel |
-| CiWeiMao 【刺猬猫】 | https://www.ciweimao.com | 4 | cn-CN | chinese_novel |
+| CiWeiMao 【刺猬猫】 | https://www.ciweimao.com | 5 | cn-CN | chinese_novel |
 | Wuxia World | https://www.wuxiaworld.com | 5 | en-EN | novel |
 | bFaloo | https://b.faloo.com | 6 | zh-CN | chinese_novel |
 | Tadu (塔读) | https://www.tadu.com | 3 | cn-CN | chinese_novel |

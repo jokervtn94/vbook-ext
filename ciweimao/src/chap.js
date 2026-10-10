@@ -1,66 +1,102 @@
 load("crypto.js");
 load("base64.js");
-function execute(url){
-    function decrypt(e) {
-        var t = e.content,
-            r = e.keys,
-            o = e.keys.length,
-            s = e.accessKey.split(""),
-            n = s.length,
-            a = new Array;
-        for (a.push(r[s[n - 1].charCodeAt(0) % o]), a.push(r[s[0].charCodeAt(0) % o]), i = 0; i < a.length; i++) {
-            t = base64().decode(t);
-            var p = a[i],
-                c = base64().encode(t.substr(0, 16)),
-                S = base64().encode(t.substr(16)),
-                y = CryptoJS.format.OpenSSL.parse(S);
-            t = CryptoJS.AES.decrypt(y, CryptoJS.enc.Base64.parse(p), {
-                iv: CryptoJS.enc.Base64.parse(c),
-                format: CryptoJS.format.OpenSSL
-            }), i < a.length - 1 && (t = t.toString(CryptoJS.enc.Base64), t = base64().decode(t))
-        }
-        return t.toString(CryptoJS.enc.Utf8)
+
+function cwMessage(data, fallback) {
+    if (!data || typeof data !== "object") return fallback;
+    return String(data.msg || data.message || data.tip || data.info || fallback);
+}
+function cwObject(data) {
+    if (data && typeof data === "object" && data.data && typeof data.data === "object") {
+        return data.data;
     }
-    const chap_id = url.match(/\d+/)[0];
-    var checkPay = url.match('vip');
-    //Console.log(chap_id)
-    if(checkPay === null){
-        let getKey = fetch('https://www.ciweimao.com/chapter/ajax_get_session_code',{
-            method : "POST",
-            headers : {
-                "Referer": url,
-                'x-requested-with': 'XMLHttpRequest'
-            },
-            body : {
-                "chapter_id": chap_id
-            }
-        })
-        let data = getKey.json()
-        let chapter_access_key = data.chapter_access_key;
-        //Console.log(chapter_access_key)
-        if(chapter_access_key){
-            const options = {
-                method: 'POST',
-                headers: {
-                    referer: url,
-                    'x-requested-with': 'XMLHttpRequest'
-                },
-                body: {chapter_id: chap_id, chapter_access_key: chapter_access_key}
-            };
-            let response = fetch('https://www.ciweimao.com/chapter/get_book_chapter_detail_info', options)
-            let datas = response.json()
-            var html = decrypt({
-                    "content": datas.chapter_content,
-                    "keys": datas.encryt_keys,
-                    "accessKey": chapter_access_key
-                })
-                .replace(/<\/?span[^>]*>(.*?)<\/span>/g,"")
-                .replace(/<[^>]*>?/gm, '')
-                .replace(/\n/gi, "<br>");
-            return Response.success(html);
-            }
-    }else{
-        var html = 'Đây là chương VIP. Nếu muốn đọc mời bạn mua trên web để đọc ^^! <br>Vì mình không có VIP nên không rõ có load được chương VIP đã mua không!<br> Nếu bạn đã mua chương mà không đọc được có thể liên hệ qua email : Phamgiavang@gmail.com'
+    return data && typeof data === "object" ? data : {};
+}
+function cwDecrypt(content, keys, accessKey) {
+    if (typeof content !== "string" || !content ||
+        !keys || !Array.isArray(keys) || !keys.length ||
+        typeof accessKey !== "string" || !accessKey) {
+        throw new Error("Thiếu nội dung, danh sách khóa giải mã hoặc access key");
+    }
+    var value = content;
+    var selected = [
+        keys[accessKey.charCodeAt(accessKey.length - 1) % keys.length],
+        keys[accessKey.charCodeAt(0) % keys.length]
+    ];
+    if (!selected[0] || !selected[1]) throw new Error("Khóa chương không hợp lệ");
+    for (var i = 0; i < selected.length; i++) {
+        value = base64().decode(value);
+        if (value.length < 16) throw new Error("Dữ liệu mã hóa bị thiếu IV");
+        var iv = base64().encode(value.substr(0, 16));
+        var ciphertext = base64().encode(value.substr(16));
+        var encrypted = CryptoJS.format.OpenSSL.parse(ciphertext);
+        var decoded = CryptoJS.AES.decrypt(encrypted,
+            CryptoJS.enc.Base64.parse(selected[i]), {
+                iv: CryptoJS.enc.Base64.parse(iv),
+                format: CryptoJS.format.OpenSSL
+            });
+        value = decoded.toString(i < selected.length - 1 ?
+            CryptoJS.enc.Base64 : CryptoJS.enc.Utf8);
+        if (!value) throw new Error("Không giải mã được dữ liệu chương");
+        if (i < selected.length - 1) value = base64().decode(value);
+    }
+    return value;
+}
+function execute(url) {
+    var target = String(url || "");
+    var match = target.match(/\/chapter\/(\d+)/);
+    if (!match) return Response.error("CiWeiMao: URL chương không hợp lệ");
+    if (/\/vip(?:[/?#]|$)/i.test(target)) {
+        return Response.error("CiWeiMao: đây là chương VIP; hãy đăng nhập và mua chương hợp lệ trên website.");
+    }
+    var id = match[1], host = "https://www.ciweimao.com";
+    var headers = {"Referer": target, "x-requested-with": "XMLHttpRequest"};
+    try {
+        var sessionResponse = fetch(host + "/chapter/ajax_get_session_code", {
+            method: "POST", headers: headers, body: {chapter_id: id}
+        });
+        if (!sessionResponse.ok) {
+            return Response.error("CiWeiMao lấy khóa HTTP " + sessionResponse.status +
+                ": website có thể yêu cầu CAPTCHA hoặc xác minh phiên truy cập.");
+        }
+        var sessionJSON = sessionResponse.json();
+        var access = cwObject(sessionJSON);
+        var accessKey = access.chapter_access_key ||
+                        access.chapterAccessKey || sessionJSON.chapter_access_key;
+        if (!accessKey || typeof accessKey !== "string") {
+            return Response.error("CiWeiMao: không nhận được chapter_access_key. " +
+                cwMessage(sessionJSON, "Có thể website yêu cầu CAPTCHA/đăng nhập hoặc API đã thay đổi."));
+        }
+
+        var chapterResponse = fetch(host + "/chapter/get_book_chapter_detail_info", {
+            method: "POST", headers: headers,
+            body: {chapter_id: id, chapter_access_key: accessKey}
+        });
+        if (!chapterResponse.ok) {
+            return Response.error("CiWeiMao lấy chương HTTP " + chapterResponse.status +
+                ": website có thể yêu cầu CAPTCHA hoặc xác minh phiên truy cập.");
+        }
+        var result = chapterResponse.json();
+        var chapter = cwObject(result);
+        var content = chapter.chapter_content || chapter.content ||
+                      result.chapter_content || result.content;
+        var keys = chapter.encryt_keys || chapter.encrypt_keys || chapter.keys ||
+                   result.encryt_keys || result.encrypt_keys || result.keys;
+        if (typeof keys === "string") {
+            try { keys = JSON.parse(keys); } catch (ignored) { keys = null; }
+        }
+        if (!content || !Array.isArray(keys) || !keys.length) {
+            return Response.error("CiWeiMao: API không trả đủ chapter_content và encryt_keys. " +
+                cwMessage(result, "Có thể bị CAPTCHA, hết phiên đăng nhập hoặc API đã thay đổi."));
+        }
+        var plain = cwDecrypt(String(content), keys, String(accessKey));
+        var html = plain.replace(/<\/?span[^>]*>/gi, "")
+                        .replace(/<[^>]*>/g, "")
+                        .replace(/\r?\n/g, "<br>").trim();
+        if (!html) return Response.error("CiWeiMao: chương trống sau khi giải mã.");
         return Response.success(html);
+    } catch (e) {
+        return Response.error("CiWeiMao tải chương: " +
+            (e && e.message ? e.message : String(e)) +
+            ". Nếu cần, hãy xác minh CAPTCHA trên website rồi thử lại.");
     }
 }

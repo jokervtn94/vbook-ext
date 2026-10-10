@@ -49,6 +49,8 @@ jobs:
         run: node tests/test_wuxiaworld_toc_grpc.js
       - name: Validate WuxiaWorld current reading contracts
         run: node tests/test_wuxiaworld_reader.js
+      - name: Validate CiWeiMao API decryption inputs and access controls
+        run: node tests/test_ciweimao_chap.js
       - name: Validate Book QQ reading contracts
         run: node tests/test_bookqq_reader.js
       - name: Validate UUKanShu chapter/TOC parsing

@@ -189,10 +189,10 @@
       "name": "CiWeiMao 【刺猬猫】",
       "author": "Jokervtn94",
       "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/ciweimao/plugin.zip",
-      "version": 4,
+      "version": 5,
       "source": "https://www.ciweimao.com",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/ciweimao/icon.png",
-      "description": "Đọc truyện trên trang www.ciweimao.com",
+      "description": "CiWeiMao: sửa lỗi encryt_keys undefined, xử lý CAPTCHA, phiên đăng nhập và chương VIP.",
       "type": "chinese_novel",
       "locale": "cn-CN"
     },
