@@ -37,3 +37,42 @@ try:
         ix=r.text.lower().find(needle.lower())
         if ix!=-1:print("MANHUA_TEXT",needle,repr(r.text[max(0,ix-45):ix+140]),flush=True)
 except Exception as e:print("MANHUA_ERR",str(e),flush=True)
+
+print("==== NEXT_DATA ====",flush=True)
+try:
+    r=s.get(base,timeout=15); d=BeautifulSoup(r.text,"html.parser")
+    node=d.select_one("script#__NEXT_DATA__")
+    js=json.loads(node.string)
+    print("NEXT_KEYS",list(js.keys()),"PAGE_KEYS",list(js.get("props",{}).get("pageProps",{}).keys()),flush=True)
+    props=js.get("props",{}).get("pageProps",{})
+    for k,v in props.items():
+        if isinstance(v,dict):
+            print("NEXT_FIELD",k,"DICT",list(v.keys())[:25],flush=True)
+        elif isinstance(v,list):
+            print("NEXT_FIELD",k,"LIST",len(v),flush=True)
+        else:
+            print("NEXT_FIELD",k,"SCALAR",repr(v)[:130],flush=True)
+    payload=json.dumps(props,ensure_ascii=False)
+    for keyword in ["chapterPage","chapterCount","chapters","pageSize","total","pagination","cursor","hasNext"]:
+        for match in list(re.finditer(re.escape(keyword),payload,re.IGNORECASE))[:3]:
+            print("NEXT_FRAGMENT",keyword,repr(payload[max(match.start()-100,0):match.start()+220]),flush=True)
+    chunks=[i.get("src") for i in d.select("script[src]") if i.get("src","").endswith(".js") and "/_next/" in i.get("src","")]
+    import concurrent.futures
+    def find_chunk(url):
+        try:
+            resp=s.get(urljoin(base,url),timeout=16)
+            txt=resp.text
+            output=[]
+            for pat in ["/api/", "chapter?","chapters?","/chapters","chapterPage","chapterList","chapter-page","/v1/", "pageSize","chapterId"]:
+                matches=list(re.finditer(re.escape(pat),txt,flags=re.IGNORECASE))[:3]
+                for m in matches:
+                    snippet=txt[max(0,m.start()-110):m.start()+145]
+                    if ("chap" in snippet.lower() or pat in ("chapterPage","chapterList")):
+                        output.append((pat,snippet))
+            return url,len(txt),output[:8]
+        except Exception as exc:return url,0,[("ERR",str(exc)[:80])]
+    with concurrent.futures.ThreadPoolExecutor(max_workers=9) as pool:
+        for u,size,matches in pool.map(find_chunk,chunks):
+            if matches:
+                print("CHUNK",u,"SIZE",size,"MATCH",matches[:4],flush=True)
+except Exception as err: print("NEXT_ERR",str(err),flush=True)
