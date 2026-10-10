@@ -8,7 +8,7 @@
       "name": "ManhuaVN [Free Chap]",
       "author": "Jokervtn94",
       "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/manhuavn/plugin.zip",
-      "version": 3,
+      "version": 4,
       "source": "https://manhuavn2.com",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/manhuavn/icon.png",
       "description": "Đọc truyện trên trang manhuavn",
@@ -253,7 +253,7 @@
       "name": "Novel Buddy",
       "author": "Jokervtn94",
       "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/novelbuddy/plugin.zip",
-      "version": 3,
+      "version": 4,
       "source": "https://novelbuddy.me",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/novelbuddy/icon.png",
       "description": "Đọc truyện trên trang novelbuddy.com"
