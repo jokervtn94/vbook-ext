@@ -37,11 +37,11 @@ const html = '<html><script id="__NEXT_DATA__" type="application/json">' +
 const apiChapters = Array.from({length: 285}, (_, i) => ({
   number: 285-i, name:'Chapter '+(285-i), url:'/'+slug+'/chapter-'+(285-i)
 }));
-function novelFetch(apiWorks=true) {
+function novelFetch(apiWorks=true, chapters=apiChapters) {
   return url => {
     if (url === title) return {ok:true,text:()=>html};
     if (url === 'https://api.novelbuddy.me/titles/EXAMPLE123/chapters') {
-      return {ok:apiWorks,json:()=>({success:true,data:{chapters:apiChapters}})};
+      return {ok:apiWorks,json:()=>({success:true,data:{chapters:chapters}})};
     }
     throw Error('Unexpected URL '+url);
   };
@@ -52,6 +52,11 @@ assert.strictEqual(result.kind, 'success');
 assert.strictEqual(result.value.length, 285);
 assert.strictEqual(result.value[0].name, 'Chapter 1');
 assert.strictEqual(result.value[284].name, 'Chapter 285');
+const nearFull = run('novelbuddy/src/toc.js', {
+  fetch:novelFetch(true, apiChapters.slice(0,282)),
+  Response:responses()
+});
+assert.strictEqual(nearFull(title).value.length, 282, 'Accept small site-statistics mismatch');
 const tocOffline=run('novelbuddy/src/toc.js', {fetch:novelFetch(false), Response:responses()});
 assert.strictEqual(tocOffline(title).kind,'error', 'Do not silently present 50/285 chapters');
 
