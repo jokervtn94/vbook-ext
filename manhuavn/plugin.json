@@ -1,7 +1,7 @@
 {
   "metadata": {
     "name": "ManhuaVN [Free]",
-    "author": "Nhocconsr",
+    "author": "Jokervtn94",
     "version": 2,
     "source": "https://manhuavn.top",
     "regexp": "(www.)?(manhuavn.top|mhvn.truyensieuhay.com)/[0-9a-z-]+(.html)?",
