@@ -1,12 +1,17 @@
-load('config.js')
+load('config.js');
 function execute(url) {
-    const doc = fetch(url).html()
+    var response = fetch(url);
+    if (!response.ok) return null;
+    var doc = response.html();
+    var img = doc.select('.cover img').first().attr('src') || '';
+    if (img.indexOf('//') === 0) img = 'https:' + img;
+    else if (img.charAt(0) === '/') img = BASE_URL + img;
     return Response.success({
-        name: doc.select("h1").text(),
-        cover: doc.select(".cover img").first().attr('src'),
-        description: doc.select("p.content").text(),
-        author: "Unknown",
-        detail: doc.select('.subtitle').html().replace('\n','<br>'),
-        host: BASE_URL
+        name:doc.select('h1.bd-title').text() || doc.select('h1').first().text(),
+        cover:img,
+        description:doc.select('p#bdSummary').text() || doc.select('p.content').text(),
+        author:'Không rõ',
+        detail:doc.select('.subtitle').html() || '',
+        host:BASE_URL
     });
 }
