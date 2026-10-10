@@ -23,8 +23,10 @@ jobs:
         with:
           python-version: '3.11'
       - name: Check Python syntax
-        run: python -m py_compile main.py clean.py tools/validate_extensions.py
+        run: python -m py_compile main.py clean.py tools/validate_extensions.py tools/audit_structure.py
       - name: Validate catalog assets
         run: python tools/validate_extensions.py
       - name: Validate generated README
         run: python main.py --check
+      - name: Audit Vbook extension structure
+        run: python tools/audit_structure.py
