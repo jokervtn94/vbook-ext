@@ -82,7 +82,7 @@ def validate(root, branch):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo-root", type=Path, default=DEFAULT_ROOT)
-    parser.add_argument("--branch", default="main")
+    parser.add_argument("--branch", default="master")
     args = parser.parse_args()
 
     errors, warnings = validate(args.repo_root.resolve(), args.branch)
