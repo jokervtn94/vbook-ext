@@ -1,4 +1,33 @@
-load("charset.js");
+// VBook-safe decoder: decode each HTTP response once, refetch only if damaged.
+function shubaSafeHtml(response, target, selector) {
+    var doc = response.html("gbk");
+    if (!doc || typeof doc.select !== "function") return doc;
+    function sample(d) {
+        try {
+            var nodes = d.select(selector);
+            if (!nodes || !nodes.size()) return "";
+            var node = nodes.first();
+            return String((node.attr && node.attr("content")) || (node.text && node.text()) || "");
+        } catch (ignored) { return ""; }
+    }
+    function damage(value) {
+        var text = String(value || "").slice(0, 1500);
+        var marks = text.match(/\uFFFD|锟斤拷|馃|銆|涓|鐨|鍙|宸|璇|鍥|澶|绗|鍐|濡|鍏|鏂|鐩|浣|锛/g);
+        return marks ? marks.length : 0;
+    }
+    var originalScore = damage(sample(doc));
+    if (!originalScore) return doc;
+    // Never parse the same HTTP body twice: VBook's response may be one-shot.
+    try {
+        var retry = fetch(target);
+        if (retry && retry.ok) {
+            var alternate = retry.html("utf-8");
+            if (alternate && typeof alternate.select === "function" &&
+                damage(sample(alternate)) < originalScore) return alternate;
+        }
+    } catch (ignored) {}
+    return doc;
+}
 function shubaText(doc, selector) {
     var nodes = doc.select(selector);
     if (!nodes || !nodes.size()) return "";
@@ -20,7 +49,7 @@ function execute(url) {
                 (response.status == 403 ? ": website yêu cầu xác minh Cloudflare" : ""));
         }
         // Select UTF-8 or GBK by actual text quality; a GBK meta label may be stale.
-        var doc = shubaDocument(response,"detail");
+        var doc = shubaSafeHtml(response,target,"meta[property='og:novel:book_name']");
         if (!doc || typeof doc.select !== "function")
             return Response.error("69Shuba: không giải mã được HTML chi tiết (UTF-8/GBK)");
         // 69Shuba publishes stable OpenGraph metadata even when its visual layout changes.

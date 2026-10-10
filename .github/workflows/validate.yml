@@ -58,7 +58,7 @@ jobs:
         run: node tests/test_uukanshu_reader.js
       - name: Validate 69Shuba Cloudflare handling
         run: node tests/test_shuba69_cloudflare.js
-      - name: Validate 69Shuba v6 UTF-8/GBK adaptive decoding in all reader stages
+      - name: Validate 69Shuba v7 safe per-response decoding in all reader stages
         run: node tests/test_shuba69_charset.js
       - name: Validate 69Shuba detail, TOC and chapter reading
         run: node tests/test_shuba69_reader.js

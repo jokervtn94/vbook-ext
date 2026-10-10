@@ -1,4 +1,33 @@
-load("charset.js");
+// VBook-safe decoder: decode each HTTP response once, refetch only if damaged.
+function shubaSafeHtml(response, target, selector) {
+    var doc = response.html("gbk");
+    if (!doc || typeof doc.select !== "function") return doc;
+    function sample(d) {
+        try {
+            var nodes = d.select(selector);
+            if (!nodes || !nodes.size()) return "";
+            var node = nodes.first();
+            return String((node.attr && node.attr("content")) || (node.text && node.text()) || "");
+        } catch (ignored) { return ""; }
+    }
+    function damage(value) {
+        var text = String(value || "").slice(0, 1500);
+        var marks = text.match(/\uFFFD|锟斤拷|馃|銆|涓|鐨|鍙|宸|璇|鍥|澶|绗|鍐|濡|鍏|鏂|鐩|浣|锛/g);
+        return marks ? marks.length : 0;
+    }
+    var originalScore = damage(sample(doc));
+    if (!originalScore) return doc;
+    // Never parse the same HTTP body twice: VBook's response may be one-shot.
+    try {
+        var retry = fetch(target);
+        if (retry && retry.ok) {
+            var alternate = retry.html("utf-8");
+            if (alternate && typeof alternate.select === "function" &&
+                damage(sample(alternate)) < originalScore) return alternate;
+        }
+    } catch (ignored) {}
+    return doc;
+}
 function shubaChapterNumber(name) {
     var m = String(name).match(/^\s*(?:第\s*)?(\d{1,7})(?:[.．。、章]|\s)/);
     return m ? parseInt(m[1], 10) : null;
@@ -14,7 +43,7 @@ function execute(url) {
             return Response.error("69Shuba mục lục HTTP " + response.status +
                 (response.status == 403 ? ": website yêu cầu xác minh Cloudflare" : ""));
         }
-        var doc = shubaDocument(response,"toc");
+        var doc = shubaSafeHtml(response,target,"#catalog li a[href*='/txt/']");
         var els = doc.select("#catalog li a[href*='/txt/'], #catalog ul li a");
         if (!els.size()) els = doc.select("#catalog a");
         if (!els.size()) els = doc.select("a[href*='/txt/" + bookid + "/']");
