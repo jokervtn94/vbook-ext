@@ -2,13 +2,13 @@
   "metadata": {
     "name": "Wuxia World",
     "author": "Nhocconsr",
-    "version": 1,
+    "version": 2,
     "source": "https://www.wuxiaworld.com",
     "regexp": "(www.)?wuxiaworld.com.*",
     "description": "Đọc truyện trên trang www.wuxiaworld.com",
     "locale": "en-EN",
     "language": "javascript",
-    "type" : "novel"
+    "type": "novel"
   },
   "script": {
     "home": "home.js",

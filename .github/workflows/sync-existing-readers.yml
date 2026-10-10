@@ -1,0 +1,55 @@
+name: Sync previously stale Vbook packages
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'hotruyen/plugin.json'
+      - 'hotruyen/src/**'
+      - 'qimao/plugin.json'
+      - 'qimao/src/**'
+      - 'manhuagui/plugin.json'
+      - 'manhuagui/src/**'
+      - 'doujins/plugin.json'
+      - 'doujins/src/**'
+      - 'mangaread/plugin.json'
+      - 'mangaread/src/**'
+      - 'ciweimao/plugin.json'
+      - 'ciweimao/src/**'
+      - 'wuxiaworld/plugin.json'
+      - 'wuxiaworld/src/**'
+      - 'bfaloo/plugin.json'
+      - 'bfaloo/src/**'
+      - 'tadu/plugin.json'
+      - 'tadu/src/**'
+      - 'royalroad/plugin.json'
+      - 'royalroad/src/**'
+      - '.github/workflows/sync-existing-readers.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: sync-existing-reader-packages
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout published master
+        uses: actions/checkout@v4
+        with:
+          ref: master
+      - name: Rebuild stale extension packages
+        run: python tools/build_extensions.py hotruyen qimao manhuagui doujins mangaread ciweimao wuxiaworld bfaloo tadu royalroad --apply
+      - name: Check package integrity
+        run: |
+          python tools/check_package_sync.py hotruyen qimao manhuagui doujins mangaread ciweimao wuxiaworld bfaloo tadu royalroad
+          python tools/inspect_packages.py hotruyen qimao manhuagui doujins mangaread ciweimao wuxiaworld bfaloo tadu royalroad
+      - name: Commit synchronized archives
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- hotruyen/plugin.zip qimao/plugin.zip manhuagui/plugin.zip doujins/plugin.zip mangaread/plugin.zip ciweimao/plugin.zip wuxiaworld/plugin.zip bfaloo/plugin.zip tadu/plugin.zip royalroad/plugin.zip
+          if ! git diff --cached --quiet; then
+            git commit -m "build: synchronize 10 existing Vbook reader packages"
+            git push origin HEAD:master
+          fi

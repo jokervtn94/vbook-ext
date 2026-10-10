@@ -17,22 +17,22 @@ https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/plugin.json
 | Tiên Vực | https://tienvuc.me | 14 | vi_VN | novel |
 | Say Hentai | https://sayhentai.cx | 10 | vi_VN | comic |
 | Tranh 18 | https://tranh18.cc | 2 | vi_VN | comic |
-| Hố Truyện | https://hotruyen1.com | 5 | vi_VN | novel |
-| Qimao | https://www.qimao.com | 2 | zh_CN | chinese_novel |
+| Hố Truyện | https://hotruyen1.com | 6 | vi_VN | novel |
+| Qimao | https://www.qimao.com | 3 | zh_CN | chinese_novel |
 | AC QQ | https://ac.qq.com | 2 | zh_CN | comic |
-| Manhua Gui | https://www.manhuagui.com | 4 | zh_CN | comic |
-| DouJins | https://doujins.com | 5 | en_EN | comic |
+| Manhua Gui | https://www.manhuagui.com | 5 | zh_CN | comic |
+| DouJins | https://doujins.com | 6 | en_EN | comic |
 | Book QQ | https://book.qq.com | 2 | zh_CN | chinese_novel |
 | Myrics | https://www.myrics.com | 2 | zh_CN | chinese_novel |
-| Manga Read | https://www.mangaread.org | 2 | en_EN | comic |
+| Manga Read | https://www.mangaread.org | 3 | en_EN | comic |
 | SachHayOnline | https://www.sachhayonline.com/ | 3 | vi-VN | novel |
 | Novel Buddy | https://novelbuddy.me | 4 | vi-VN | novel |
 | Dingdian 【顶点】 | https://www.dingdian666.com | 2 | vi-VN | chinese_novel |
-| CiWeiMao 【刺猬猫】 | https://www.ciweimao.com | 3 | cn-CN | chinese_novel |
-| Wuxia World | https://www.wuxiaworld.com | 1 | en-EN | novel |
-| bFaloo | https://b.faloo.com | 5 | zh-CN | chinese_novel |
-| Tadu (塔读) | https://www.tadu.com | 2 | cn-CN | chinese_novel |
-| Royalroad | https://www.royalroad.com | 1 | en-EN | novel |
+| CiWeiMao 【刺猬猫】 | https://www.ciweimao.com | 4 | cn-CN | chinese_novel |
+| Wuxia World | https://www.wuxiaworld.com | 2 | en-EN | novel |
+| bFaloo | https://b.faloo.com | 6 | zh-CN | chinese_novel |
+| Tadu (塔读) | https://www.tadu.com | 3 | cn-CN | chinese_novel |
+| Royalroad | https://www.royalroad.com | 2 | en-EN | novel |
 | 69Shuba (69书吧) | https://www.69shuba.com | 4 | zh_CN | chinese_novel |
 | UUKanShu (UU看書) | https://uukanshu.cc | 2 | zh_TW | chinese_novel |
 
