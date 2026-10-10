@@ -5,17 +5,6 @@
   },
   "data": [
     {
-      "name": "Truyện GG",
-      "author": "Jokervtn94",
-      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/truyengg/plugin.zip",
-      "version": 1,
-      "source": "https://truyengg.com",
-      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/truyengg/icon.png",
-      "description": "Đọc truyện trên trang truyengg",
-      "type": "comic",
-      "locale": "vi_VN"
-    },
-    {
       "name": "ManhuaVN [Free Chap]",
       "author": "Jokervtn94",
       "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/manhuavn/plugin.zip",
@@ -24,17 +13,6 @@
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/manhuavn/icon.png",
       "description": "Đọc truyện trên trang manhuavn",
       "type": "comic",
-      "locale": "vi_VN"
-    },
-    {
-      "name": "LightNovel VN",
-      "author": "Jokervtn94",
-      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/lightnovel/plugin.zip",
-      "version": 5,
-      "source": "https://quykiep.com",
-      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/lightnovel/icon.png",
-      "description": "Đọc truyện trên trang lightnovel",
-      "type": "novel",
       "locale": "vi_VN"
     },
     {
@@ -105,17 +83,6 @@
       "locale": "vi_VN"
     },
     {
-      "name": "Bảo Tàng Truyện",
-      "author": "fusornat",
-      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/baotangtruyen/plugin.zip",
-      "version": 8,
-      "source": "https://baotangtruyen32.top",
-      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/baotangtruyen/icon.png",
-      "description": "Đọc truyện trên trang baotangtruyen14.com",
-      "type": "comic",
-      "locale": "vi_VN"
-    },
-    {
       "name": "Say Hentai",
       "author": "Jokervtn94",
       "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/sayhentai/plugin.zip",
@@ -169,17 +136,6 @@
       "source": "https://zingtruyen.store",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/zingtruyen/icon.png",
       "description": "Đọc truyện trên trang zingtruyen.store",
-      "type": "novel",
-      "locale": "vi_VN"
-    },
-    {
-      "name": "ST Truyện",
-      "author": "Jokervtn94",
-      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/sttruyen/plugin.zip",
-      "version": 7,
-      "source": "https://sttruyen.com",
-      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/sttruyen/icon.png",
-      "description": "Đọc truyện trên trang sttruyen.com",
       "type": "novel",
       "locale": "vi_VN"
     },
@@ -303,16 +259,6 @@
       "description": "Đọc truyện trên trang novelbuddy.com"
     },
     {
-      "name": "TsuMiNo",
-      "author": "Jokervtn94",
-      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/tsumino/plugin.zip",
-      "version": 1,
-      "source": "https://www.tsumino.com",
-      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/tsumino/icon.png",
-      "description": "Đọc truyện trên trang www.tsumino.com",
-      "tag": "nsfw"
-    },
-    {
       "name": "Dingdian 【顶点】",
       "author": "Jokervtn94",
       "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/dingdian/plugin.zip",
@@ -329,15 +275,6 @@
       "source": "https://www.ciweimao.com",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/ciweimao/icon.png",
       "description": "Đọc truyện trên trang www.ciweimao.com"
-    },
-    {
-      "name": "【VIP】Bạch Ngọc Sách",
-      "author": "Jokervtn94",
-      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/vipbns/plugin.zip",
-      "version": 21,
-      "source": "https://bnsvip.net",
-      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/vipbns/icon.png",
-      "description": "Đọc truyện trên trang bachngocsach"
     },
     {
       "name": "Wuxia World",
