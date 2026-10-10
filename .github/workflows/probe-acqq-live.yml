@@ -1,0 +1,49 @@
+name: Probe ACQQ live website
+on:
+  push:
+    branches: [master]
+    paths: ['.github/workflows/probe-acqq-live.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: python -m pip -q install requests beautifulsoup4
+      - name: Inspect Tencent comics domains
+        run: |
+          python - <<'PY'
+          import requests,re
+          from bs4 import BeautifulSoup
+          paths=[
+            ('desktop-list','https://ac.qq.com/Comic/all'),
+            ('desktop-detail','https://ac.qq.com/Comic/ComicInfo/id/650953'),
+            ('mobile-home','https://m.ac.qq.com/'),
+            ('mobile-category','https://m.ac.qq.com/category/index'),
+            ('mobile-category2','https://m.ac.qq.com/comic/category'),
+            ('mobile-ranking','https://m.ac.qq.com/rank/index'),
+            ('mobile-detail','https://m.ac.qq.com/comic/index/id/650953'),
+            ('mobile-chapter','https://m.ac.qq.com/chapter/index/id/650953/cid/1'),
+            ('desktop-chapter','https://ac.qq.com/ComicView/index/id/650953/cid/1'),
+          ]
+          s=requests.Session();s.headers.update({'User-Agent':'Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130 Mobile Safari/537.36','Accept-Language':'zh-CN,zh;q=0.9'})
+          sels=['a.mod-cover-list-thumb[href]','.mod-cover-list-thumb','.comic-pic-list img','a[href*="/comic/index/id/"]','a[href*="/Comic/ComicInfo/id/"]','a[href*="/chapter/index/id/"]','a[href*="/ComicView/index/id/"]','meta[property="og:image"]','h1','img[data-src]','img[data-original]','img','.chapter-list','.comic-list','.comic-item','.cate-list','.rank-list','a[href*="category"]','a[href*="/rank/"]','script']
+          for label,url in paths:
+            try:
+              r=s.get(url,timeout=14);d=BeautifulSoup(r.text,'html.parser')
+              title=d.title.get_text(' ',strip=True)[:90] if d.title else ''
+              print('PAGE',label,'STATUS',r.status_code,'FINAL',r.url,'BYTES',len(r.content),'TITLE',title,flush=True)
+              for sel in sels:
+                a=d.select(sel)
+                if a and (sel!='script' or label in ('mobile-detail','mobile-chapter')):print('  SEL',sel,len(a),'FIRST',str(a[0])[:500],flush=True)
+              for a in d.select('a[href]'):
+                href=a.get('href','')
+                if '/comic/index/id/' in href or '/chapter/index/id/' in href:
+                  print('  LINK',a.get_text(' ',strip=True)[:55],href[:180],flush=True)
+                  if sum(1 for _ in d.select('a[href*="/comic/index/id/"]'))>45:break
+              print('  HTML',re.sub(r'\s+',' ',r.text[:280]),flush=True)
+            except Exception as e:print('ERROR',label,type(e).__name__,str(e)[:250],flush=True)
+          PY
