@@ -1,0 +1,42 @@
+name: Build ManhuaVN cover v5
+on:
+  push:
+    branches: [fix/manhuavn-cover-v5-20261010]
+    paths:
+      - '.github/workflows/build-manhuavn-v5.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/manhuavn-cover-v5-20261010
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check crawler JavaScript syntax
+        run: find manhuavn/src -name '*.js' -print0 | xargs -0 -n1 node --check
+      - name: Test cover URLs and chapter regressions
+        run: |
+          node tests/test_manhuavn_covers.js
+          node tests/test_vbook_regressions.js
+      - name: Package ManhuaVN v5
+        run: python tools/build_extensions.py manhuavn --apply
+      - name: Validate package and registry
+        run: |
+          python tools/check_package_sync.py manhuavn
+          python tools/audit_structure.py
+          python tools/validate_extensions.py
+          python main.py --check
+      - name: Commit updated distribution ZIP
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- manhuavn/plugin.zip
+          if ! git diff --cached --quiet; then
+            git commit -m "build: package ManhuaVN v5 repaired covers [skip ci]"
+            git push origin HEAD:fix/manhuavn-cover-v5-20261010
+          fi
