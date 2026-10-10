@@ -49,3 +49,37 @@ for name, url, selectors in SITES:
         print("CANDIDATES",repr(candidates),flush=True)
     except Exception as err:
         print("UNVERIFIED",type(err).__name__,str(err)[:170],flush=True)
+
+
+DETAILS = [
+    ("tranh18_detail", "https://tranh18.cc/comic/toi-yeu-ban-rat-nhieu",[
+      ".cover img","p.content",".subtitle","ul#detail-list-select li a",
+      "a[href*='/chapter/']","a[href*='/chap/']",".chapter-list a",
+      "h1",".chap-list a","img"]),
+    ("novelbuddy_detail", "https://novelbuddy.me/what-do-you-mean-i-have-to-comprehend-dao-as-a-mortal-god",[
+      ".name h1", "h1", ".img-cover img", ".meta p", ".chapter-list li",
+      "a[href*='/chapter-']", "a[href*='/chapter/']", ".chapter-item",
+      "#chapters", "article", "img"]),
+    ("manhuavn_chap", "https://manhuavn2.com/doc-truyen/dai-quan-gia-la-ma-hoang-chapter-915.html",[
+      "h1", ".reading-detail img", ".chapter-content img", "#chapter-content img",
+      ".page-chapter img", "img"])
+]
+for name,url,selectors in DETAILS:
+    print("DETAIL",name,url,flush=True)
+    try:
+        r=session.get(url,timeout=14)
+        s=BeautifulSoup(r.text,"html.parser")
+        print("HTTP",r.status_code,"CHARS",len(r.text),"TITLE",
+              s.title.get_text(" ",strip=True)[:90] if s.title else "",flush=True)
+        for css in selectors:
+            els=s.select(css)
+            print("SEL",css,len(els),repr(str(els[0])[:420]) if els else "",flush=True)
+        chapter_links=[(a.get_text(" ",strip=True)[:45],a.get("href"))
+                for a in s.select("a[href]")
+                if "chap" in a.get("href","").lower()]
+        print("CHAPTER_LINKS",repr(chapter_links[:8]),flush=True)
+        classes=[(e.name,e.get("class"),e.get("id")) for e in s.find_all(["div","section","ul"],class_=True)
+                 if any(key in " ".join(e.get("class",[])).lower() for key in ["detail","novel","chapter","story","book","content"])]
+        print("CLASSES",repr(classes[:24]),flush=True)
+    except Exception as exc:
+        print("UNVERIFIED",repr(exc),flush=True)
