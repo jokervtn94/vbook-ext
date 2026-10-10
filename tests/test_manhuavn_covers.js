@@ -54,5 +54,6 @@ assert.strictEqual(fallback.data[0].cover,websiteHost+'dai-quan-gia-la-ma-hoang.
 assert.strictEqual(fallback.data[0].name,'Đại Quản Gia Là Ma Hoàng');
 
 const manifest = JSON.parse(fs.readFileSync(path.join(root,'manhuavn/plugin.json')));
-assert.strictEqual(manifest.metadata.version,5);
-console.log('PASS ManhuaVN v5 cover regressions: API listing, genre listing, web lazy image fallback, host and URL normalization.');
+assert.ok(Number.isInteger(manifest.metadata.version) && manifest.metadata.version >= 5);
+assert.strictEqual(manifest.metadata.author,'Jokervtn94');
+console.log('PASS ManhuaVN v'+manifest.metadata.version+' cover regressions: API listing, genre listing, web lazy image fallback, host and URL normalization.');
