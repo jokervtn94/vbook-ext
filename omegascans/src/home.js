@@ -1,5 +1,3 @@
 function execute() {
-    return Response.success([
-        { title: "Latest", input: "latest", script: "gen.js" },
-    ]);
+    return Response.success([{title:'Latest updates', input:'home', script:'gen.js'}]);
 }
