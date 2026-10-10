@@ -87,10 +87,10 @@
       "name": "Manhua Gui",
       "author": "Jokervtn94",
       "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/manhuagui/plugin.zip",
-      "version": 7,
+      "version": 8,
       "source": "https://www.manhuagui.com",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/manhuagui/icon.png",
-      "description": "Manhua Gui v7: sửa lỗi trang chi tiết mobile, ảnh bìa và mục lục; bảo vệ dữ liệu null.",
+      "description": "Manhua Gui v8: sửa lỗi map undefined khi đọc chương; tương thích cả SMH.reader mobile và SMH.imgData desktop.",
       "type": "comic",
       "locale": "zh_CN"
     },

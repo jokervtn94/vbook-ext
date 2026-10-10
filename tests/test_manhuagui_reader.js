@@ -101,5 +101,5 @@ run=boot("toc.js",()=>({ok:true,html:()=>doc()}));
 res=run.execute(full);
 assert.equal(res.ok,false);assert.match(res.error,/không có chương/);
 const metadata=JSON.parse(fs.readFileSync(path.join(root,"..","plugin.json"),"utf8")).metadata;
-assert.equal(metadata.version,7);assert.equal(metadata.author,"Jokervtn94");
-console.log("PASS ManhuaGui v7 detail and TOC: mobile/desktop, metadata, covers, null nodes, missing HTTP, 403, deduped chapter names.");
+assert.equal(metadata.version,8);assert.equal(metadata.author,"Jokervtn94");
+console.log("PASS ManhuaGui v8 detail and TOC: mobile/desktop, metadata, covers, null nodes, missing HTTP, 403, deduped chapter names.");

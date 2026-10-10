@@ -2,10 +2,10 @@
   "metadata": {
     "name": "Manhua Gui",
     "author": "Jokervtn94",
-    "version": 7,
+    "version": 8,
     "source": "https://www.manhuagui.com",
     "regexp": "(www.)?(m.)?(manhuagui||mhgui).com/comic/\\d+/?",
-    "description": "Manhua Gui v7: sửa lỗi null.html() ở trang chi tiết khi chuyển sang mobile, bổ sung bộ đọc hai giao diện và tên chương.",
+    "description": "Manhua Gui v8: đọc ảnh chương trên cả desktop (files) và mobile (images), hỗ trợ chữ ký CDN và báo lỗi rõ ràng.",
     "locale": "zh-CN",
     "language": "javascript",
     "type": "comic"
