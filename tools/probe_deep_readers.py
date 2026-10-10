@@ -19,6 +19,8 @@ URLS={
 "doujins_home":"https://doujins.com/",
 "sachhay_category":"https://www.sachhayonline.com/danh-muc/van-hoc-viet-nam",
 "sachhay_detail":"https://www.sachhayonline.com/tua-sach/ai-tinh-mieu",
+"sachhay_chapter":"https://www.sachhayonline.com/tua-sach/ai-tinh-mieu/chuong-1/601",
+"sachhay_chapter_old_suffix":"https://www.sachhayonline.com/tua-sach/ai-tinh-mieu/chuong-1/601.html",
 "dingdian_detail":"https://www.dingdian666.com/xiaoshuo/087827/",
 "dingdian_list":"https://www.dingdian666.com/sort/1_1/",
 "acqq_detail":"https://ac.qq.com/Comic/ComicInfo/id/656723",
@@ -63,6 +65,8 @@ def inspect(arg):
         if "sayhentai" in name:
             res["taglines"]=[str(x)[:350] for x in doc.select(".summary_image img,ul.box-list-chapter li,div.chapter")[:3]]
             res["chaps"]=[x.get("href") for x in doc.select("a[href]") if "chap" in x.get("href","")][:10]
+        if name.startswith("sachhay_chapter"):
+            res["content_elements"]=[str(x)[:500] for x in doc.select(".reading-white,.reading-white p,.content,.chapter-content")[:3]]
         if name=="sachhay_detail":
             res["list_items"]=[str(x)[:900] for x in doc.select("ul.default li")[:5]]
             res["headers"]=[str(x)[:550] for x in doc.select(".inner,.row .image,.reading-white")[:3]]
@@ -79,6 +83,7 @@ def inspect(arg):
             res["comic_classes"]=[(x.get("class"),str(x)[:270]) for x in doc.select('img')[:8]]
             res["cover_parent"]=[str(x.parent.parent)[:1050] for x in doc.select("img.lazy")[:3]]
             res["chapters"]=[str(x)[:550] for x in doc.select(".chapter,.chapter-list,.chapter-list ul li,.chapter-list a,li.chapter")[:6]]
+            res["issue_chapter_link_count"]=len([a for a in doc.select("a[href]") if "/ComicView/index/id/656723/cid/" in a.get("href","")])
             res["chapter_links"]=[str(x)[:380] for x in doc.select("a[href*=chapter],a[href*=ComicView]")[:5]]
         if "doujins" in name:
             res["img_wrappers"]=[str(x)[:400] for x in doc.select('a:has(img)')[:8]]
