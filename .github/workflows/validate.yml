@@ -1,0 +1,28 @@
+name: Validate extension catalog
+
+on:
+  push:
+    branches:
+      - main
+      - 'maintenance/**'
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  catalog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check Python syntax
+        run: python -m py_compile main.py clean.py tools/validate_extensions.py
+      - name: Validate catalog assets
+        run: python tools/validate_extensions.py
+      - name: Validate generated README
+        run: python main.py --check
