@@ -66,3 +66,24 @@ jobs:
                   print('COVER',r.status_code,r.url,len(r.content),r.headers.get('Content-Type'),r.content[:10],flush=True)
               except Exception as e:print('COVER ERROR',str(e)[:180],flush=True)
           PY
+
+      - name: Inspect masked image payload
+        run: |
+          python - <<'PY'
+          import requests
+          s=requests.Session()
+          urls=[
+            'https://www.dingdian666.com/files/article/image/152/152799/152799s.jpg',
+            'https://www.dingdian666.com/files/article/image/160/160605/160605s.jpg',
+            'https://www.dingdian666.com/files/article/image/000.jpg',
+            'https://m.dingdian666.com/files/article/image/2/2639/2639s.jpg',
+          ]
+          for url in urls:
+            for referer in ['', 'https://www.dingdian666.com/xiaoshuo/537816/']:
+              try:
+                headers={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/129 Safari/537.36','Accept':'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8'}
+                if referer:headers['Referer']=referer
+                r=s.get(url,headers=headers,timeout=12)
+                print('IMAGE',url,'REFERER',bool(referer),'HTTP',r.status_code,'MIME',r.headers.get('Content-Type'),'BYTES',len(r.content),'BODY',repr(r.content[:650]),flush=True)
+              except Exception as e:print('ERROR',str(e)[:250],flush=True)
+          PY
