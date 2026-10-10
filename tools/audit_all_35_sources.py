@@ -74,3 +74,32 @@ for e in data:
        "scripts":sorted(manifest.get("script",{})),
        "metadata_fields":sorted(manifest.get("metadata",{}))
     },ensure_ascii=False),flush=True)
+
+print("=== TARGETED MANAGED DOMAINS ===",flush=True)
+for url in [
+ "https://monkeyd.net.vn/truyen-moi.html?page=1",
+ "https://monkeyd.vn/truyen-moi.html?page=1",
+ "https://www.monkeydd.com/",
+ "https://www.monkeydd.com/truyen-moi.html?page=1",
+ "https://www.monkeydd.com/tim-kiem?search=nhan&page=1",
+ "https://docsachhay.net/",
+ "https://www.docsachhay.net/",
+ "https://giangthe.com/"
+]:
+    try:
+        response=requests.get(url,timeout=8,headers=UA,allow_redirects=True)
+        doc=BeautifulSoup(response.text,"html.parser")
+        selectors={}
+        for key in [".product-grid .card",".list-chapters .episode-title a",".content-container p",
+                    ".dropdown-menu a.dropdown-item", ".card","a[href*='/truyen/']",
+                    "a[href$='.html']","[data-src]", "a[href]"]:
+            elems=doc.select(key);selectors[key]=len(elems)
+        examples=[]
+        for a in doc.select(".product-grid .card a[href],a[href*='/truyen/']")[:3]:
+            examples.append((a.get("href"),a.get_text(" ",strip=True)[:45]))
+        summary={"url":url,"status":response.status_code,"final":response.url,"title":(doc.title.text.strip()[:90] if doc.title else ""), "selectors":selectors,"examples":examples}
+        if "docsachhay" in url:
+            summary["heading"]=[x.get_text(" ",strip=True)[:100] for x in doc.select("h1,h2")[:4]]
+            summary["body_prefix"]=doc.get_text(" ",strip=True)[:320]
+        print("TARGET",json.dumps(summary,ensure_ascii=False),flush=True)
+    except Exception as e:print("TARGET",json.dumps({"url":url,"error":type(e).__name__+": "+str(e)[:130]},ensure_ascii=False),flush=True)
