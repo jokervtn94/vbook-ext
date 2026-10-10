@@ -102,3 +102,16 @@ try:
                 locs=list(re.finditer(re.escape(term),txt,re.IGNORECASE))[:4]
                 for loc in locs: print("PAGE_MATCH",term,repr(txt[max(0,loc.start()-220):loc.start()+300]),flush=True)
 except Exception as err: print("CHAPTER_ERR",str(err),flush=True)
+
+print("=== API PATH DISCOVERY ===",flush=True)
+try:
+    r=s.get(base,timeout=15); doc=BeautifulSoup(r.text,"html.parser")
+    candidates=[u.get("src") for u in doc.select("script[src]") if "/_next/" in u.get("src","") and u.get("src","").endswith(".js")]
+    for uri in candidates:
+        content=s.get(urljoin(base,uri),timeout=18).text
+        for pattern in [r'chapters:\{.{0,430}',r'chapters:\s*\{.{0,430}',r'getChaptersList:async.{0,400}',r'getChaptersList\s*\(',r'chapters\.list',r'list:"[^"]{0,130}:mangaId',r'chapter[s]?/:[a-zA-Z]+']:
+            matches=list(re.finditer(pattern,content))
+            if matches:
+                print("MATCHFILE",uri,"PATTERN",pattern,"COUNT",len(matches),flush=True)
+                for m in matches[:2]:print("PATH_CONTEXT",repr(content[max(0,m.start()-260):m.end()+250])[:1050],flush=True)
+except Exception as e:print("PATH_ERR",str(e)[:160],flush=True)
