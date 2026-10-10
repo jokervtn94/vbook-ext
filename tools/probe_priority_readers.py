@@ -54,7 +54,7 @@ PROBES = [
     ("uukanshu_chapter", "GET", "https://uukanshu.cc/book/25044/16039379.html", {}, None),
 ]
 SELECTORS = {
-    "wuxiaworld_novel": [".novel-body h2", "ul.list-chapters li", "#chapter-content", "#__NEXT_DATA__", "h1", "h2", "meta[property=og:image]", "meta[name=description]", "a[href*=\'/novel/coiling-dragon/\']", "[class*=synopsis]", "[class*=Synopsis]"],
+    "wuxiaworld_novel": [".novel-body h2", "ul.list-chapters li", "#chapter-content", "#__NEXT_DATA__", "h1", "h2", "meta[property="og:image"]", "meta[name=description]", "a[href*="/novel/coiling-dragon/"]", "[class*=synopsis]", "[class*=Synopsis]"],
     "sayhentai_chapter": ["#chapter_content img[id^=image]", "#chapter_content img", "img[data-src]"],
     "ciweimao_vip": [".chapter-content", ".chapter-content p", "#chapter_content"],
     "mangaread_detail": [".summary_image img", ".post-content .post-content_item", ".chapter-item"],
