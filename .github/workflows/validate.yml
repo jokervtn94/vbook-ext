@@ -23,7 +23,11 @@ jobs:
         with:
           python-version: '3.11'
       - name: Check Python syntax
-        run: python -m py_compile main.py clean.py tools/validate_extensions.py tools/audit_structure.py tools/inspect_packages.py
+        run: python -m py_compile main.py clean.py tools/validate_extensions.py tools/audit_structure.py tools/inspect_packages.py tools/check_package_sync.py
+      - name: Validate migrated JavaScript syntax
+        run: find manhuavn/src tranh18/src novelbuddy/src sayhentai/src -name '*.js' -print0 | xargs -0 -n1 node --check
+      - name: Verify repaired ZIP contents match source
+        run: python tools/check_package_sync.py manhuavn tranh18 novelbuddy sayhentai
       - name: Validate catalog assets
         run: python tools/validate_extensions.py
       - name: Validate generated README

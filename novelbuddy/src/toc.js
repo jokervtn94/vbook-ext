@@ -1,15 +1,16 @@
 function execute(url) {
-    var sid = fetch(url).text().match(/var\s+bookId\s*=\s*(\d+)/)[1];
-    var doc = fetch(`https://novelbuddy.com/api/manga/${sid}/chapters?source=detail`).html();
-    var el = doc.select(".chapter-list li")
-    const data = [];
-    for (var i = 0;i < el.size(); i++) {
-        var e = el.get(i);
-        data.push({
-            name: e.select('.chapter-title').text(),
-            url: e.select('a').attr("href"),
-            host: "https://novelbuddy.com"
-        })
-    }
+    var response = fetch(url);
+    if (!response.ok) return null;
+    var doc = response.html();
+    var data=[], seen={};
+    doc.select('a[href*="/chapter-"]').forEach(function(e) {
+        var href=e.attr('href');
+        var title=e.text();
+        if (!title || !href || seen[href]) return;
+        seen[href] = true;
+        data.push({name:title,url:href,host:'https://novelbuddy.me'});
+    });
+    // New website renders a limited first batch of chapters in HTML.
+    // Do not rely on the obsolete /api/manga/.../chapters endpoint.
     return Response.success(data.reverse());
 }

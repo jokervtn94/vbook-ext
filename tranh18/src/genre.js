@@ -1,17 +1,18 @@
-load('config.js')
+load('config.js');
 function execute() {
-    let response = fetch(`https://tranh18.com/comics`)
-    if (response.ok){
-        let el = response.html().select('.cat-list a')
-        let data = []
-        for (var i = 1; i < el.size(); i++) {
-            var e = el.get(i);
-            data.push({
-            title: e.text(),
-            input: e.text(),
-            script: 'source.js'
-            });
-        }
-        return Response.success(data)
-    }
+    var response = fetch(BASE_URL + '/comics');
+    if (!response.ok) return null;
+    var data = [];
+    var seen = {};
+    response.html().select('a[href*="tag="]').forEach(function(e) {
+        var href = e.attr('href');
+        var match = href.match(/[?&]tag=([^&]+)/);
+        if (!match) return;
+        var id = decodeURIComponent(match[1].replace(/\+/g, ' '));
+        if (seen[id]) return;
+        seen[id] = true;
+        var title = e.text() || id;
+        data.push({title:title, input:id, script:'source.js'});
+    });
+    return Response.success(data);
 }

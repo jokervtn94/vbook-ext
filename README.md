@@ -12,22 +12,18 @@ https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/plugin.json
 
 | Name | Source | Version | Lang | Type |
 |------|--------|---------|------|------|
-| Truyện GG | https://truyengg.com | 1 | vi_VN | comic |
-| ManhuaVN [Free Chap] | https://manhuavn.top | 2 | vi_VN | comic |
-| LightNovel VN | https://quykiep.com | 5 | vi_VN | novel |
+| ManhuaVN [Free Chap] | https://manhuavn2.com | 3 | vi_VN | comic |
 | MonkeyD VN | https://monkeyd.net.vn | 6 | vi_VN | novel |
 | Omega Scans | https://omegascans.org | 1 | en_EN | comic |
 | 123 Truyện | https://123truyen.vn | 13 | vi_VN | novel |
 | Tiên Vực | https://tienvuc.me | 13 | vi_VN | novel |
 | Truyện Convert | https://truyenconvert.net | 3 | vi_VN | novel |
 | Đọc Sách Hay | https://docsachhay.net | 1 | vi_VN | novel |
-| Bảo Tàng Truyện | https://baotangtruyen32.top | 8 | vi_VN | comic |
-| Say Hentai | https://sayhentai.one | 9 | vi_VN | comic |
-| Tranh 18 | https://tranh18.com | 1 | vi_VN | comic |
+| Say Hentai | https://sayhentai.cx | 10 | vi_VN | comic |
+| Tranh 18 | https://tranh18.cc | 2 | vi_VN | comic |
 | Giáng Thế | https://giangthe.com | 3 | vi_VN | novel |
 | Hố Truyện | https://hotruyen1.com | 5 | vi_VN | novel |
 | Zing Truyện | https://zingtruyen.store | 7 | vi_VN | novel |
-| ST Truyện | https://sttruyen.com | 7 | vi_VN | novel |
 | Qimao | https://www.qimao.com | 2 | zh_CN | chinese_novel |
 | AC QQ | https://m.ac.qq.com | 1 | zh_CN | comic |
 | Manhua Gui | https://www.manhuagui.com | 4 | zh_CN | comic |
@@ -38,11 +34,9 @@ https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/plugin.json
 | 20xs | https://www.20xs.org | 3 | zh_CN | chinese_novel |
 | Manga Read | https://www.mangaread.org | 2 | en_EN | comic |
 | SachHayOnline | https://www.sachhayonline.com/ | 2 | - | - |
-| Novel Buddy | https://novelbuddy.com | 2 | - | - |
-| TsuMiNo | https://www.tsumino.com | 1 | - | - |
+| Novel Buddy | https://novelbuddy.me | 3 | - | - |
 | Dingdian 【顶点】 | https://www.dingdian666.com | 1 | - | - |
 | CiWeiMao 【刺猬猫】 | https://www.ciweimao.com | 3 | - | - |
-| 【VIP】Bạch Ngọc Sách | https://bnsvip.net | 21 | - | - |
 | Wuxia World | https://www.wuxiaworld.com | 1 | - | - |
 | KissLove (Raw) | https://klz9.com | 4 | en_EN | comic |
 | ManhwaHentai | https://manhwahentai.me | 3 | en_EN | comic |

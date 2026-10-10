@@ -1,25 +1,36 @@
-load("config.js");
+load('config.js');
 function execute(url) {
-    if(url.indexOf('manhuavn.top') > 0){
-        var sid = fetch(url).text().match(/setuprate\('([0-9a-f]{24})',\d+(\.\d+)?\);/)[1]
-    }else{
-        var sid = url.split('/').pop()
+    var id = '';
+    if (url.indexOf(BASE_API) === 0) id=url.split('/').pop();
+    else {
+        try {
+            var match=fetch(url).text().match(/setuprate\('([0-9a-f]{24})'/);
+            if (match) id=match[1];
+        } catch(e) {}
     }
-    let response = fetch(`https://mhvn.truyensieuhay.com/api/android/getlistchapterandroid`,{
-        method: 'POST',
-        body: {storyid: sid, ipage: '1', ipagesize: '10000', sort: '0'}
-    });
-    if (response.ok) {
-        let chapters = [];
-        response.json().data.list_chap.forEach(item => {
-            chapters.push({
-                name: item.Name,
-                url : `${BASE_API}/${item.Id}`,
-                pay : item.iChapVip === 1
+    if (id) {
+        try {
+            var response=fetch(BASE_API+'/api/android/getlistchapterandroid',{
+                method:'POST',body:{storyid:id,ipage:'1',ipagesize:'10000',sort:'0'}
             });
-        });
-        return Response.success(chapters.reverse());
+            if (response.ok) {
+                var data=[], chapters=response.json().data.list_chap;
+                chapters.forEach(function(ch) {
+                    data.push({name:ch.Name,url:BASE_API+'/'+ch.Id,pay:ch.iChapVip===1});
+                });
+                return Response.success(data.reverse());
+            }
+        } catch(e) {}
     }
-    return null;
-
+    // Public HTML exposes the newest chapters, not necessarily all chapters.
+    var page=fetch(url);
+    if (!page.ok) return null;
+    var list=[],seen={};
+    page.html().select('a[href^="/doc-truyen/"]').forEach(function(e) {
+        var href=e.attr('href'), title=e.text();
+        if (!title || !href || seen[href]) return;
+        seen[href]=true;
+        list.push({name:title,url:href,host:BASE_URL});
+    });
+    return Response.success(list.reverse());
 }

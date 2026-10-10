@@ -1,12 +1,18 @@
 function execute(url) {
-    const doc = Http.get(url).html()
+    var response = fetch(url);
+    if (!response.ok) return null;
+    var doc = response.html();
+    var name = doc.select('h1').first().text();
+    var img = doc.select('img[src*="/covers/"]').first();
+    var cover = img.attr('src') || '';
+    if (cover.indexOf('//') === 0) cover = 'https:' + cover;
+    else if (cover.charAt(0) === '/') cover = 'https://novelbuddy.me' + cover;
     return Response.success({
-        name: doc.select(".name h1").text(),
-        cover: doc.select(".img-cover img").first().attr('data-src').replace('//','https://'),
-        author: doc.select(".meta p > a").first().text(),
-        description: doc.select("#info .content").text(),
-        detail: doc.select(".meta p").html(),
-        category: doc.select(".meta p").html(),
-        host: "https://novelbuddy.com"
+        name:name,
+        cover:cover,
+        author:doc.select('a[href*="/authors/"]').first().text() || 'Unknown',
+        description:doc.select('meta[name=description]').attr('content') || '',
+        detail:doc.select('meta[name=description]').attr('content') || '',
+        host:'https://novelbuddy.me'
     });
 }

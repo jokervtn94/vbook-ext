@@ -2,9 +2,9 @@
   "metadata": {
     "name": "Novel Buddy",
     "author": "Nhocconsr",
-    "version": 2,
-    "source": "https://novelbuddy.com",
-    "regexp": "(www.)?novelbuddy.com/[0-9a-z-]+/?$",
+    "version": 3,
+    "source": "https://novelbuddy.me",
+    "regexp": "(www\\.)?novelbuddy\\.(me|com)/[0-9a-z-]+/?$",
     "description": "Mô tả",
     "locale": "vi-VN",
     "language": "javascript",
@@ -12,9 +12,7 @@
   },
   "script": {
     "home": "home.js",
-    "genre": "genre.js",
     "detail": "detail.js",
-    "search": "search.js",
     "toc": "toc.js",
     "chap": "chap.js"
   }
