@@ -36,7 +36,11 @@ for item in items:
     manifest=json.loads((ROOT/folder/"plugin.json").read_text(encoding="utf-8"))
     locale=item["locale"].lower().replace("_","-")
     actual=manifest["metadata"]["locale"].lower().replace("_","-")
-    assert locale==actual, f"{folder}: locale mismatch {locale} != {actual}"
+    # Historic Vbook extensions use cn-CN and zh-CN for the same language.
+    normalize=lambda value: "zh-"+value.split("-",1)[1] if value.startswith("cn-") else value
+    assert normalize(locale)==normalize(actual), (
+        f"{folder}: locale mismatch {locale} != {actual}"
+    )
     if folder in VIETNAMESE:
         assert locale.startswith("vi-"), f"{folder}: expected Vietnamese, got {locale}"
     else:
