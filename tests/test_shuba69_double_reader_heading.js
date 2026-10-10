@@ -80,4 +80,12 @@ read = chapter('<p>牧尘刚刚回家。</p><p>第1418章 不想这么多</p>');
 assert.match(read, /牧尘刚刚回家/);
 assert.match(read, /第1418章 不想这么多/);
 
+// Page H1 can itself be garbled, while VBook's TOC still has the right title.
+// The number survives the mojibake and must still be sufficient for cleanup.
+const garbledH1 = chapter('<h2>��1418�� 错误</h2>' +
+                         '<p>第1418章 不想这么多</p><p>牧尘回到住处。</p>',
+                         "��1418��");
+assert.doesNotMatch(garbledH1, /�|第1418章|错误/);
+assert.match(garbledH1, /牧尘回到住处/);
+
 console.log("PASS: 69Shuba v11 double (garbled and readable) chapter headings removed, prose retained");
