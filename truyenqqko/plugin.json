@@ -2,10 +2,10 @@
   "metadata": {
     "name": "TruyenQQKO",
     "author": "Jokervtn94",
-    "version": 1,
+    "version": 2,
     "source": "https://truyenqqko.com/doc-truyen",
     "regexp": "https?://(?:www\\.)?truyenqqko\\.com/truyen-tranh/(?![^/?#]*-chap-[0-9.-]+(?:\\.html)?(?:[?#]|$))[a-z0-9-]+(?:\\.html)?/?(?:\\?.*)?$",
-    "description": "Truyện tranh tiếng Việt trên TruyenQQKO. Danh mục, tìm kiếm AJAX, mục lục, ảnh chương và cảnh báo Cloudflare.",
+    "description": "TruyenQQKO v2: sửa ảnh bìa danh sách và chi tiết; bỏ ảnh default, ưu tiên src và hỗ trợ lazy-load.",
     "locale": "vi_VN",
     "language": "javascript",
     "type": "comic"

@@ -208,10 +208,10 @@
       "name": "TruyenQQKO",
       "author": "Jokervtn94",
       "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/truyenqqko/plugin.zip",
-      "version": 1,
+      "version": 2,
       "source": "https://truyenqqko.com/doc-truyen",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/truyenqqko/icon.png",
-      "description": "Truyện tranh tiếng Việt, tìm kiếm AJAX, thể loại, danh sách chương và ảnh truyện.",
+      "description": "Sửa ảnh bìa mặc định của TruyenQQKO: ưu tiên URL bìa thật, lọc placeholder và đồng bộ trang chi tiết.",
       "type": "comic",
       "locale": "vi_VN"
     }

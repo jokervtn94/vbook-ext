@@ -4,10 +4,12 @@ function execute(url){
   return qqWithDoc(target,function(doc){
     var name=qqText(doc,["h1.title-detail","h1.title","h1[itemprop=name]",".story-info h1","h1"]);
     if(!name)return Response.error("TruyenQQKO: không tìm thấy tên truyện.");
-    var cover=qqAbs(qqAttr(doc,["meta[property='og:image']"],"content"));
+    // Cover shown on TruyenQQ is the rendered book_avatar "src".
+    // Social/OpenGraph images may use the global placeholder.
+    var cover=qqCardCover(doc);
     if(!cover){
-      var imgs=qqNodes(doc,[".book_avatar img",".story-info img",".story-detail img"]);
-      cover=imgs?qqImg(imgs.first()):"";
+      var og=qqAbs(qqAttr(doc,["meta[property='og:image']"],"content"));
+      cover=og&&!qqIsPlaceholderCover(og)?og:"";
     }
     var author=qqText(doc,["li.author p:last-child","li.author a",".story-info .author p",".author a"]);
     if(!author)author="Đang cập nhật";

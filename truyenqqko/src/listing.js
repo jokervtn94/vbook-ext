@@ -10,8 +10,7 @@ function qqListing(doc,page){
     var name=String(anchor.attr("title")||anchor.text()||"").replace(/\s+/g," ").trim();
     if(!name||name.length>180)name=qqText(card,["p.name",".book_name","h3",".title"]);
     if(!name||name.length>180)return;
-    var imgs=qqNodes(card,[".book_avatar img","img"]);
-    var cover=imgs?qqImg(imgs.first()):"";
+    var cover=qqCardCover(card);
     var description=qqText(card,[".chapter","p.chapter",".last_chapter",".book_info",".author"]);
     seen[link]=true;
     data.push({name:name,link:link,cover:cover,description:description,host:QQ_HOST});

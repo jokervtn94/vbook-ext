@@ -39,6 +39,47 @@ function qqImg(node){
   }
   return "";
 }
+
+function qqIsPlaceholderCover(url){
+  var value=String(url||"").split(/[?#]/)[0].toLowerCase();
+  var name=value.substring(value.lastIndexOf("/")+1);
+  if(!name)return true;
+  // Actual cover paths can contain "default" in a novel title; match only known fallback filenames.
+  return /^(?:default(?:[-_](?:cover|book|image|avatar|thumb|comic))?|(?:no|not)[-_]?(?:cover|image|photo|thumb)|nocover|noimage|placeholder|loading|spinner|blank|fallback|error|404|no[-_]?pic)(?:[-_]?\d*)?\.(?:png|jpe?g|gif|webp|svg)$/i.test(name);
+}
+function qqCover(node){
+  if(!node)return "";
+  // TruyenQQ's book_avatar renders the working cover in "src".
+  // Unlike chapter pages, lazy-load attributes may contain only fallback/default graphics.
+  var attributes=["src","data-src","data-original","data-lazy-src","data-fb","data-cdn","data-image","data-thumb"];
+  for(var i=0;i<attributes.length;i++){
+    var raw=String(node.attr(attributes[i])||"").trim();
+    if(!raw||/^(?:data:|blob:|javascript:|about:)/i.test(raw))continue;
+    var url=qqAbs(raw);
+    if(url&&!qqIsPlaceholderCover(url))return url;
+  }
+  var srcset=String(node.attr("srcset")||node.attr("data-srcset")||"");
+  if(srcset){
+    var entries=srcset.split(",");
+    for(var j=0;j<entries.length;j++){
+      var candidate=String(entries[j]||"").trim().split(/\s+/)[0];
+      var link=qqAbs(candidate);
+      if(link&&!qqIsPlaceholderCover(link))return link;
+    }
+  }
+  return "";
+}
+function qqCardCover(card){
+  var images=qqNodes(card,[".book_avatar img",".book-cover img",".cover img",".story-cover img","img"]);
+  if(images){
+    for(var i=0;i<images.size();i++){
+      var url=qqCover(images.get(i));
+      if(url)return url;
+    }
+  }
+  return "";
+}
+
 function qqIsChallenge(doc){
   if(!doc||typeof doc.select!=="function")return false;
   var marks=doc.select("#challenge-form, #cf-challenge-running, .cf-turnstile");
