@@ -45,3 +45,31 @@ with concurrent.futures.ThreadPoolExecutor(max_workers=8) as ex:
 for row in rows:
  if row.get("hits") or row.get("error"):print("BUNDLE",row,flush=True)
 print("SCANNED",len(rows),"WITH-HITS",sum(bool(r.get("hits")) for r in rows),flush=True)
+
+# Probe the public Connect RPC endpoint referenced by the current website bundle.
+# Never send login credentials or request paid chapter content.
+api="https://api2.wuxiaworld.com/wuxiaworld.api.v2.Chapters/GetChapterList"
+for group in [318, 3]:
+ body={"novelId":6,"filter":{"chapterGroupId":{"value":group}}}
+ for use_connect_header in [False, True]:
+  hdr={"Content-Type":"application/json",
+       "Origin":"https://www.wuxiaworld.com",
+       "Referer":"https://www.wuxiaworld.com/"}
+  if use_connect_header:hdr["Connect-Protocol-Version"]="1"
+  try:
+   rr=S.post(api,json=body,headers=hdr,timeout=(5,15))
+   shape={"group":group,"connect":use_connect_header,"status":rr.status_code,
+          "type":rr.headers.get("Content-Type",""),"bytes":len(rr.content)}
+   try:
+    parsed=rr.json()
+    shape["keys"]=list(parsed)[:12] if isinstance(parsed,dict) else []
+    if isinstance(parsed,dict):
+     groups=parsed.get("items",[])
+     shape["groups"]=len(groups)
+     shape["chapters"]=sum(len(g.get("chapterList",[])) for g in groups)
+     shape["first_chapter"]=(groups[0].get("chapterList") or [{}])[0].get("slug") if groups else None
+     shape["error_code"]=parsed.get("code")
+     shape["error_message"]=str(parsed.get("message",""))[:120]
+   except ValueError:shape["preview"]=rr.text[:150]
+   print("CONNECT_PROBE",shape,flush=True)
+  except requests.RequestException as exc:print("CONNECT_PROBE",{"group":group,"error":type(exc).__name__},flush=True)
