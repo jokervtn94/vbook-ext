@@ -1,9 +1,11 @@
 function execute(url) {
     const idBook = url.match(/\d+(?=\D*$)/).pop();
     const doc = Http.get('https://www.dingdian666.com/xiaoshuo/'+idBook+'/').html();
+    var cover = doc.select(".border_left a img").attr("src") || "";
+    if (cover.charAt(0) === '/') cover = 'https://www.dingdian666.com' + cover;
     return Response.success({
         name: doc.select("meta[property=og:novel:book_name]").attr('content'),
-        cover: doc.select(".border_left a img").attr("src"),
+        cover: cover,
         author: doc.select("meta[property=og:novel:author]").attr('content'),
         description: doc.select(".hang_3").text(),
         detail: doc.select(".hang_1").first().html()+'<br>'+doc.select("meta[property=og:novel:author]").attr('content'),

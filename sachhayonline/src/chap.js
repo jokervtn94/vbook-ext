@@ -1,7 +1,12 @@
 function execute(url) {
-    var doc = Http.get(url + ".html").html();
-    var content = doc.select(".reading-white").select("p").html();
-    content = content.replace(/\n/g,'<br>')
-    content = content.replace(/&nbsp;/g,'')
-    return Response.success(content); 
+    var response = fetch(url);
+    if (!response.ok) return null;
+    var doc = response.html(), paragraphs = [];
+    doc.select('.chapter-content .reading-white p').forEach(function(p) {
+        var html = p.html() || '';
+        if (html.trim()) paragraphs.push(html);
+    });
+    return paragraphs.length ?
+        Response.success(paragraphs.join('<br><br>')) :
+        Response.error('Không tìm thấy nội dung chương sách');
 }

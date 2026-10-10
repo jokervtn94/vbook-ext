@@ -19,6 +19,6 @@ function execute(url) {
         description: detail.long_summary,
         detail: detail.category+'<br>Views : '+detail.view_count,
         ongoing : ongoing,
-        host: "https://tienvuc.vn"
+        host: "https://www.myrics.com"
     });
 }

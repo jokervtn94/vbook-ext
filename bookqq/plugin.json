@@ -2,7 +2,7 @@
   "metadata": {
     "name": "Book QQ [阅读]",
     "author": "Nhocconsr",
-    "version": 1,
+    "version": 2,
     "source": "https://book.qq.com",
     "regexp": "(www.)?(ubook.reader|book).qq.com/book-detail/\\d+/?$",
     "description": "Book QQ",

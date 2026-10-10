@@ -10,8 +10,10 @@ function execute(url) {
     });
     if (response.ok) {
         let json = response.json();
-        if(json.data.chapterPrice > 0) let content = 'Chương VIP. Đăng nhập bằng trình duyệt vbook để đăng nhập và mua nhé ^^!'
-        else content = json.data.content;
+        if (json.data.chapterPrice > 0) {
+            return Response.success('Chương VIP, cần đăng nhập và mua hợp lệ trên website.');
+        }
+        let content = json.data.content || '';
         content = content
             //.replace(/<a[^>]*>([^<]+)<\/a>/g,'')
             .replace(/\r\n/g,'<br>')

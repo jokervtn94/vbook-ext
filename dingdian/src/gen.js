@@ -10,7 +10,7 @@ function execute(url, page) {
         data.push({
             name: e.select(".name a").first().text(),
             link: link,
-            cover: 'https://www.dingdian666.com/files/article/image/86/86066/86066s.jpg',
+            cover: '', // Site's category list has no covers; avoid assigning one unrelated cover to every book.
             description: e.select(".zuo").first().text(),
             host: 'https://www.dingdian666.com',
         })

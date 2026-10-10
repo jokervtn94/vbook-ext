@@ -1,18 +1,12 @@
 function execute(url) {
-    var doc = fetch(url).text();
-    const urlPattern = /images\\":\[(.*?)?\]/g;
-    const arrayMatch = urlPattern.exec(doc);
-    if (arrayMatch) {
-        const urlsString = arrayMatch[1];
-        // Trích xuất từng URL từ mảng đã tìm được
-        const urlRegex = /"([^"]+)"/g;
-        let urlMatch;
-        const urls = [];
-        while ((urlMatch = urlRegex.exec(urlsString)) !== null) {
-            urls.push(urlMatch[1].replace("\\",""));
-        }
-        return Response.success(urls);
-    }else{
-        return Response.error("Lỗi không xác định!");
-    }
+    var response = fetch(url);
+    if (!response.ok) return null;
+    var doc = response.html(), imgs = [], seen = {};
+    doc.select('img[data-fallback-index][src]').forEach(function(el) {
+        var src = (el.attr('src') || '').trim();
+        if (src.indexOf('//') === 0) src = 'https:' + src;
+        if (!/^https:\/\//i.test(src) || seen[src]) return;
+        seen[src] = true; imgs.push(src);
+    });
+    return imgs.length ? Response.success(imgs) : Response.error('No public chapter images found');
 }

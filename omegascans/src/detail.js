@@ -1,13 +1,17 @@
-load('config.js')
+load('config.js');
 function execute(url) {
-    const doc = fetch(url).html()
+    var response = fetch(url);
+    if (!response.ok) return null;
+    var doc = response.html();
+    var meta = doc.select('.space-y-2 .flex').text() || '';
+    var cover = omegaCover(doc.select('.gap-y-2 img').first().attr('src') || '');
     return Response.success({
-        name: doc.select("h1").text(),
-        cover: decodeURIComponent(doc.select(".gap-y-2 img").attr('src').replace('/_next/image?url=',"").replace('&w=1920&q=75',"")),
-        description: doc.select(".text-muted-foreground p").text(),
-        author:  doc.select(".space-y-2 .flex:contains(Author) span").last().text(),
-        detail: doc.select('.space-y-2 .flex').html().replace(/\n/g,"<br>"),
-        ongoing: doc.select(".flex").html().indexOf("Ongoing") != -1,
-        host: BASE_URL
+        name:doc.select('h1').first().text(),
+        cover:cover,
+        author:doc.select('.space-y-2 .flex:contains(Author) span').last().text() || 'Unknown',
+        description:doc.select('meta[name=description]').attr('content') || '',
+        detail:meta,
+        ongoing:meta.toLowerCase().indexOf('ongoing') !== -1,
+        host:BASE_URL
     });
 }

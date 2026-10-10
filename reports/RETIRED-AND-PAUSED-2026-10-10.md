@@ -1,5 +1,7 @@
 # Retired and paused Vbook extensions — 2026-10-10
 
+> **2026-10-10 update:** `manhwahentai` later confirmed to be an AI single-image gallery instead of its former multi-chapter WordPress reader. It was retired in [Reader audit & repair](READER-AUDIT-AND-REPAIRS-2026-10-10.md). Original text below is kept as historical domain-health evidence only.
+
 The public registry has been reduced to **35 entries**. No active package is deleted by an HTTP timeout alone.
 
 ## Deleted from working tree (recoverable from Git history)

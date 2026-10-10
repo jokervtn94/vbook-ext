@@ -2,7 +2,7 @@
   "metadata": {
     "name": "Myrics",
     "author": "Nhocconsr",
-    "version": 1,
+    "version": 2,
     "source": "https://www.myrics.com",
     "regexp": "(www.)?myrics.com/novels/\\d+",
     "description": "Đọc truyện myrics.com",

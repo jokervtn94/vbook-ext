@@ -10,7 +10,7 @@ function execute(url, page) {
     });
     if (response.ok){
         let data = response.json();
-        const allPage = Math.floor(data.totalDocs/10) + 1;
+        const allPage = Math.ceil(Number(data.totalDocs || 0)/10);
         if (parseInt(page) < allPage){
             var next = parseInt(page) + 1;
         }
@@ -27,6 +27,6 @@ function execute(url, page) {
                 host: BASE_URL,
             })
         });
-        return Response.success(list, next.toString())
+        return Response.success(list, next == null ? null : String(next))
     }
 }

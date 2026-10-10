@@ -1,15 +1,13 @@
 function execute(url) {
-    var doc = Http.get(url).html();
-    var el =doc.select("ul.default li");
-    const data = [];
-    for (var i = 0; i < el.size();i++ ) {
-        var e = el.get(i);
-        data.push({
-            name: e.text(),
-            url: "/" + e.select('a' ).attr("href"),
-            host: "https://sachhayonline.com/tua-sach"
-        })
-    }
-
-    return Response.success(data); 
+    var response = fetch(url);
+    if (!response.ok) return null;
+    var data = [], seen = {};
+    response.html().select('ul.default li a[href]').forEach(function(a) {
+        var href = a.attr('href') || '';
+        if (!href || seen[href] || href.indexOf('/chuong-') === -1) return;
+        if (href.charAt(0) === '/') href = 'https://www.sachhayonline.com' + href;
+        seen[href] = true;
+        data.push({name:a.text() || a.attr('title'),url:href,host:'https://www.sachhayonline.com'});
+    });
+    return Response.success(data);
 }

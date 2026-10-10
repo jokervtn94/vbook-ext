@@ -1,5 +1,7 @@
 # Vbook-Ext — full active-source audit (2026-10-10)
 
+> **ĐÍNH CHÍNH MỚI:** Kiểm tra chi tiết cho thấy `manhwahentai.me` hiện là thư viện ảnh AI với route `/post/`, không còn cấu trúc truyện WordPress của extension. Extension ManhwaHentai đã ngừng phát hành trong [Reader audit & repair](READER-AUDIT-AND-REPAIRS-2026-10-10.md). Nhận định HTTP 200 trong báo cáo cũ không chứng minh crawler hoạt động.
+
 > **Bản cập nhật ngày 10/10/2026:** Theo yêu cầu chủ repository, các nguồn chỉ có lỗi timeout, Cloudflare 403, DNS/SSL cũng được **loại khỏi danh mục phát hành**, dù chưa có bằng chứng website đóng cửa vĩnh viễn. Bản kiểm tra và quyết định mới: [PRUNE-UNREACHABLE-2026-10-10.md](PRUNE-UNREACHABLE-2026-10-10.md). Dữ liệu kiểm tra bên dưới là ảnh chụp lịch sử khi còn 35 extension.
 
 ## Scope and evidence

@@ -2,10 +2,10 @@
   "metadata": {
     "name": "AC QQ 腾讯动漫",
     "author": "Nhocconsr",
-    "version": 1,
-    "source": "https://m.ac.qq.com",
-    "regexp": "(www.)?(m.)?ac.qq.com/comic/index/id/\\d+",
-    "description": "Nếu có lỗi bạn có thể liên hệ tới Email: phamgiavang@gmail.com hoặc Discord",
+    "version": 2,
+    "source": "https://ac.qq.com",
+    "regexp": "(www\\.)?ac\\.qq\\.com/Comic/[Cc]omicInfo/id/\\d+/?$",
+    "description": "Sửa danh sách/bìa trên Tencent Comics; một số chương yêu cầu Javascript hoặc tài khoản.",
     "locale": "cn-CN",
     "language": "javascript",
     "type": "comic"
