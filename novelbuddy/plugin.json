@@ -2,10 +2,10 @@
   "metadata": {
     "name": "Novel Buddy",
     "author": "Nhocconsr",
-    "version": 3,
+    "version": 4,
     "source": "https://novelbuddy.me",
     "regexp": "(www\\.)?novelbuddy\\.(me|com)/[0-9a-z-]+/?$",
-    "description": "Mô tả",
+    "description": "Đọc NovelBuddy, mục lục đầy đủ qua API chính thức của website.",
     "locale": "vi-VN",
     "language": "javascript",
     "type": "novel"
