@@ -1,0 +1,43 @@
+name: Build Vbook v4 chapter fixes
+on:
+  push:
+    branches: [fix/novelbuddy-toc-manhuavn-20261010]
+    paths:
+      - 'novelbuddy/**'
+      - 'manhuavn/**'
+      - 'tests/test_vbook_regressions.js'
+      - '.github/workflows/build-v4.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/novelbuddy-toc-manhuavn-20261010
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check JavaScript syntax
+        run: find novelbuddy/src manhuavn/src -name '*.js' -print0 | xargs -0 -n1 node --check
+      - name: Test Vbook chapter logic
+        run: node tests/test_vbook_regressions.js
+      - name: Rebuild updated ZIP files
+        run: python tools/build_extensions.py novelbuddy manhuavn --apply
+      - name: Validate ZIP and manifests
+        run: |
+          python tools/check_package_sync.py novelbuddy manhuavn
+          python tools/audit_structure.py
+          python tools/validate_extensions.py
+          python main.py --check
+      - name: Commit v4 distribution archives
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add novelbuddy/plugin.zip manhuavn/plugin.zip
+          if ! git diff --cached --quiet; then
+            git commit -m "build: ship NovelBuddy and ManhuaVN v4 [skip ci]"
+            git push origin HEAD:fix/novelbuddy-toc-manhuavn-20261010
+          fi
