@@ -115,3 +115,36 @@ try:
                 print("MATCHFILE",uri,"PATTERN",pattern,"COUNT",len(matches),flush=True)
                 for m in matches[:2]:print("PATH_CONTEXT",repr(content[max(0,m.start()-260):m.end()+250])[:1050],flush=True)
 except Exception as e:print("PATH_ERR",str(e)[:160],flush=True)
+
+print("=== PUBLIC CHAPTER ENDPOINT ===",flush=True)
+for url in [
+ "https://api.novelbuddy.me/titles/Z8aOvlDd/chapters",
+ "https://api.novelbuddy.me/api/titles/Z8aOvlDd/chapters",
+ "https://api.novelbuddy.me/v1/titles/Z8aOvlDd/chapters",
+ "https://novelbuddy.me/api/titles/Z8aOvlDd/chapters"
+]:
+    try:
+        r=s.get(url,timeout=12,headers={"Origin":"https://novelbuddy.me","Referer":base})
+        print("API_CHECK",r.status_code,r.url,r.headers.get("content-type"),"CHARS",len(r.content),flush=True)
+        if "json" in r.headers.get("content-type","").lower():
+            j=r.json()
+            print("API_FIELDS",list(j.keys())[:20] if isinstance(j,dict) else type(j).__name__,flush=True)
+            if isinstance(j,dict):
+                data=j.get("data",j)
+                print("API_DATA_FIELDS",list(data.keys())[:20] if isinstance(data,dict) else type(data).__name__,flush=True)
+                if isinstance(data,dict):
+                    ch=data.get("chapters")
+                    if isinstance(ch,list):print("API_CHAPTERS",len(ch),"FIRST",repr(ch[:1])[:400],"LAST",repr(ch[-1:])[:400],flush=True)
+                elif isinstance(data,list):print("API_LENGTH",len(data),flush=True)
+        else:print("API_PREFIX",repr(r.text[:120]),flush=True)
+    except Exception as err:print("API_ERR",type(err).__name__,str(err)[:130],flush=True)
+print("=== MANHUA PAGE LOCK CHECK ===",flush=True)
+for number in [1,2,100,915,920]:
+    u="https://manhuavn2.com/doc-truyen/dai-quan-gia-la-ma-hoang-chapter-%s.html"%number
+    try:
+        response=s.get(u,timeout=12);dom=BeautifulSoup(response.text,"html.parser")
+        chapter=dom.select_one("#chapcontent")
+        locked=bool(chapter and chapter.select_one(".vip-lock"))
+        imgs=chapter.select("img") if chapter else []
+        print("PUBLIC_CHAP",number,response.status_code,"locked",locked,"images",len(imgs),"title",dom.title.get_text(" ",strip=True)[:90] if dom.title else "",flush=True)
+    except Exception as err:print("PUBLIC_ERR",number,str(err)[:140],flush=True)
