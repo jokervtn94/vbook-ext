@@ -12,7 +12,7 @@ https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/plugin.json
 
 | Name | Source | Version | Lang | Type |
 |------|--------|---------|------|------|
-| ManhuaVN [Free Chap] | https://manhuavn2.com | 4 | vi_VN | comic |
+| ManhuaVN [Free Chap] | https://manhuavn2.com | 5 | vi_VN | comic |
 | MonkeyD VN | https://monkeyd.net.vn | 6 | vi_VN | novel |
 | Omega Scans | https://omegascans.org | 1 | en_EN | comic |
 | 123 Truyện | https://123truyen.vn | 13 | vi_VN | novel |
