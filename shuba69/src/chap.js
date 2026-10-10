@@ -1,3 +1,4 @@
+load("charset.js");
 function shubaContentRoot(doc) {
     if (!doc || typeof doc.select !== "function") return null;
     var selectors = [".txtnav", "#content", "#txt"];
@@ -35,8 +36,8 @@ function execute(url) {
         var response = fetch(url);
         status = response.status || 0;
         if (response.ok) {
-            // Chapter text is GBK, WebView (when needed) uses page charset itself.
-            doc = response.html("gbk");
+            // Decode chapter by actual charset; WebView uses the browser encoding.
+            doc = shubaDocument(response,"chap");
             root = shubaContentRoot(doc);
             challenged = shubaIsChallenge(doc);
         } else if (status !== 403 && status !== 429) {

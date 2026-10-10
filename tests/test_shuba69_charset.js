@@ -1,91 +1,86 @@
-const assert=require("node:assert/strict");
-const fs=require("node:fs"),path=require("node:path"),vm=require("node:vm");
-const base=path.resolve(__dirname,"..","shuba69","src");
-const host="https://www.69shuba.com",url=host+"/book/29590.htm";
-const broken="\uFFFD\uFFFD\uFFFD\uFFFD";
-function nodes(items){return {
- size:()=>items.length,first:()=>items[0]||null,get:i=>items[i]||null,
- text:()=>items.map(i=>i.text()).join(" ")
-};}
-function el(attrs={},text="",html="",selectors={}){return{
- attr:k=>attrs[k]||"",text:()=>text,html:()=>html,
- select:key=>nodes(selectors[key]||[])
-};}
-function doc(sel={}){return {select:key=>nodes(sel[key]||[])};}
-const title=el({content:"诡秘之主"});
-const author=el({content:"爱潜水的乌贼"});
-const desc=el({content:"蒸汽与机械的浪潮中，谁能触及非凡？"});
-const image=el({content:"//cdn.cdnshu.com/files/article/image/29/29590/29590s.jpg"});
-const details=doc({
- "meta[property='og:novel:book_name']":[title],
- "meta[property='og:novel:author']":[author],
- "meta[property='og:description']":[desc],
- "meta[property='og:image']":[image],
- "meta[property='og:novel:status']":[el({content:"全本"})],
- "meta[property='og:novel:category']":[el({content:"玄幻魔法"})],
- ".booknav2":[el({},"玄幻魔法 爱潜水的乌贼 全本")]
-});
-const bookLink=el({href:url},"诡秘之主");
-const listCard=el({},"","",{
- "h3 a[href*='/book/'], h4 a[href*='/book/'], a[href*='/book/']":[bookLink],
- "img":[el({src:"//cdn.cdnshu.com/book.jpg"})],
- ".intro, .desc, .author, .update, p":[el({},"爱潜水的乌贼")]
-});
-const listing=doc({
- ".bookbox, .newbox ul li, .mybox li, .booklist li":[listCard],
- "h3 a[href*='/book/'], h4 a[href*='/book/'], .bookbox a[href*='/book/']":[bookLink],
- ".newbox ul li h3 a, .bookbox h3 a, h3 a[href*='/book/'], h4 a[href*='/book/']":[bookLink]
-});
-const toc=doc({
- "#catalog li a[href*='/txt/'], #catalog ul li a":[
- el({href:"/txt/29590/25167831"},"1417.新书已发"),
- el({href:"/txt/29590/25167830"},"1416.不是诈尸")
-]});
-const chapter=doc({
- ".txtnav":[el({},"","<h1>1417.新书已发</h1><p>新书已发，《长夜余火》。</p>")]
-});
-const mapping={"detail.js":details,"gen.js":listing,"search.js":listing,
- "toc.js":toc,"chap.js":chapter};
-function run(script,input){
- const charsets=[];
- const sandbox={Response:{
-  success:(value,next)=>({ok:true,value,next}),error:error=>({ok:false,error})
- },fetch:()=>({
-  ok:true,status:200,
-  html:charset=>{
-   charsets.push(charset===undefined?"auto":charset);
-   if(String(charset).toLowerCase()!=="gbk"){
-    return doc({"meta[property='og:novel:book_name']":[el({content:broken})]});
-   }
-   return mapping[script];
-  }
- }),encodeURIComponent};
- const source=fs.readFileSync(path.join(base,script),"utf8");
- vm.runInNewContext(source,sandbox,{filename:script});
- const result=script==="gen.js"||script==="search.js"?
-   sandbox.execute(input,"1"):sandbox.execute(input);
- assert.equal(result.ok,true,script+": "+result.error);
- assert.deepEqual(charsets,["gbk"],script+" must use supported VBook html(charset) API");
- return result.value;
+const assert=require("node:assert/strict"),fs=require("node:fs"),vm=require("node:vm"),path=require("node:path");
+const base=path.join(__dirname,"..","shuba69","src");
+const host="https://www.69shuba.com",book=host+"/book/29590.htm";
+function col(items){return {size:()=>items.length,first:()=>items[0]||null,get:i=>items[i]||null,text:()=>items.map(e=>e.text()).join(" ")};}
+function elem(attributes={},label="",html="",sub={}){return {attr:k=>attributes[k]||"",text:()=>label,html:()=>html,select:k=>col(sub[k]||[])};}
+function document(selectors={}){return {select:k=>col(selectors[k]||[])};}
+function fixtures(good){
+ const title=good?"诡秘之主":"� � � �之主";
+ const author=good?"爱潜水的乌贼":"� �潜水� �";
+ const description=good?"蒸汽与机械的浪潮中，谁能触及非凡？":"蒸�与�械�浪�中";
+ const chapter=good?"第1418章 不想这么多":"��1418�� � �";
+ const link=elem({href:book},title);
+ const card=elem({},"","",{
+  "h3 a[href*='/book/'], h4 a[href*='/book/'], a[href*='/book/']":[link],
+  "img":[elem({src:"//cdn.cdnshu.com/test.jpg"})],
+  ".intro, .desc, .author, .update, p":[elem({},author)]
+ });
+ const list=document({
+   ".bookbox, .newbox ul li, .mybox li, .booklist li":[card],
+   "h3 a[href*='/book/'], h4 a[href*='/book/'], .bookbox a[href*='/book/']":[link],
+   ".newbox ul li h3 a, .bookbox h3 a, h3 a[href*='/book/'], h4 a[href*='/book/']":[link]
+ });
+ const detail=document({
+   "meta[property='og:novel:book_name']":[elem({content:title})],
+   "meta[property='og:novel:author']":[elem({content:author})],
+   "meta[property='og:description']":[elem({content:description})],
+   "meta[property='og:image']":[elem({content:"//cdn.cdnshu.com/cover.jpg"})],
+   "meta[property='og:novel:status']":[elem({content:"连载"})],
+   ".booknav2":[elem({},title+" 作者："+author)]
+ });
+ const toc=document({
+   "#catalog li a[href*='/txt/'], #catalog ul li a":[
+     elem({href:"/txt/29590/25167831"},chapter),
+     elem({href:"/txt/29590/25167832"},good?"第1419章 新起点":"��1419�� ���")
+   ]
+ });
+ const chap=document({
+   ".txtnav":[elem({},chapter,"<h1>"+chapter+"</h1><p>"+(good?"牧尘回到家中，想了很多。":"牧�回�家�，想�很�。")+"</p>")]
+ });
+ return {"detail.js":detail,"gen.js":list,"search.js":list,"toc.js":toc,"chap.js":chap};
 }
-let data=run("detail.js",url);
-assert.equal(data.name,"诡秘之主");
-assert.equal(data.author,"爱潜水的乌贼");
-assert.match(data.description,/蒸汽与机械/);
-assert.match(data.detail,/玄幻魔法/);
-assert.equal(data.ongoing,false);
-assert.doesNotMatch(JSON.stringify(data),/\uFFFD/);
-for(const s of ["gen.js","search.js"]){
- const results=run(s,s==="gen.js"?"0":"诡秘之主");
- assert.equal(results.length,1);
- assert.equal(results[0].name,"诡秘之主");
- assert.equal(results[0].description,"爱潜水的乌贼");
+function run(file,charset,missingOther=false){
+ const good=fixtures(true),bad=fixtures(false),calls=[];
+ const context=vm.createContext({
+    fetch:()=>({ok:true,status:200,html:code=>{
+       calls.push(code);
+       if(missingOther&&code!==charset)throw Error("Only one charset supported");
+       return (code===charset?good:bad)[file];
+    }}),
+    Response:{success:(value,next)=>({ok:true,value,next}),error:error=>({ok:false,error})},
+    encodeURIComponent
+ });
+ context.load=name=>vm.runInContext(fs.readFileSync(path.join(base,name),"utf8"),context,{filename:name});
+ vm.runInContext(fs.readFileSync(path.join(base,file),"utf8"),context,{filename:file});
+ const input=file==="gen.js"?"0":file==="search.js"?"诡秘之主":
+   file==="chap.js"?host+"/txt/29590/25167831":book;
+ const result=file==="gen.js"||file==="search.js"?context.execute(input,"1"):context.execute(input);
+ assert.equal(result.ok,true,file+" "+charset+": "+result.error);
+ if(charset==="utf-8")assert.deepEqual(calls,["utf-8"]);
+ else assert.deepEqual(calls,["utf-8","gbk"]);
+ const value=result.value;
+ let actual="";
+ if(file==="detail.js"){
+   actual=value.name+" "+value.author+" "+value.description;
+   assert.equal(value.name,"诡秘之主");
+   assert.equal(value.author,"爱潜水的乌贼");
+ }else if(file==="chap.js"){
+   actual=value;
+   assert.match(value,/牧尘回到家中/);
+ }else if(file==="toc.js"){
+   actual=value.map(i=>i.name).join(" ");
+   assert.ok(value.some(i=>i.name==="第1418章 不想这么多"));
+ }else{
+   actual=value.map(i=>i.name).join(" ");
+   assert.equal(value[0].name,"诡秘之主");
+ }
+ assert.doesNotMatch(actual,/\uFFFD/,"Do not return replacement chars in "+file);
 }
-const chapters=run("toc.js",url);
-assert.equal(chapters.length,2);
-assert.match(chapters[0].name,/不是诈尸/);
-const text=run("chap.js",host+"/txt/29590/25167831");
-assert.match(text,/长夜余火/);
-const meta=JSON.parse(fs.readFileSync(path.resolve(base,"..","plugin.json"),"utf8")).metadata;
-assert.equal(meta.version,5);assert.equal(meta.author,"Jokervtn94");
-console.log("PASS 69Shuba v5: VBook GBK HTML decode in detail, lists, search, TOC and chapter; Chinese preserved.");
+for(const charset of ["utf-8","gbk"]){
+ for(const file of ["detail.js","gen.js","search.js","toc.js","chap.js"])
+   run(file,charset);
+}
+const manifest=JSON.parse(fs.readFileSync(path.join(base,"..","plugin.json"),"utf8")).metadata;
+assert.equal(manifest.version,6);
+assert.equal(manifest.author,"Jokervtn94");
+console.log("PASS 69Shuba v6: mixed UTF-8/GBK decoding, repaired novel titles, TOC chapter 1418, metadata and chapter body.");

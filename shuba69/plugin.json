@@ -2,10 +2,10 @@
   "metadata": {
     "name": "69Shuba (69书吧)",
     "author": "Jokervtn94",
-    "version": 5,
+    "version": 6,
     "source": "https://www.69shuba.com",
     "regexp": "https?://(?:www\\.)?69shuba\\.com/(?:book/\\d+(?:\\.htm|/)?|txt/\\d+/\\d+(?:\\.html?)?)",
-    "description": "69Shuba v5: sửa lỗi chữ Trung Quốc bị � do GBK ở danh sách, tìm kiếm, chi tiết, mục lục và chương.",
+    "description": "69Shuba v6: tự xác định UTF-8 hoặc GBK từ văn bản thực tế; sửa tên truyện, tên chương bị � và nội dung chi tiết.",
     "locale": "zh_CN",
     "language": "javascript",
     "type": "chinese_novel"

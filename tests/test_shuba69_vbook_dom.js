@@ -35,6 +35,7 @@ for(const file of ['gen.js','search.js']) {
     Response:{success:(items,next)=>({items,next}),error:error=>({error})},
     encodeURIComponent
   };
+  sandbox.load = name => vm.runInNewContext(fs.readFileSync(path.join(__dirname,'..','shuba69','src',name),'utf8'),sandbox,{filename:name});
   vm.runInNewContext(script,sandbox,{filename:file});
   const output=sandbox.execute(file==='gen.js'?'0':'诡秘之主','1');
   assert.equal(output.error,undefined,output.error);

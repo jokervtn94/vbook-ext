@@ -1,3 +1,4 @@
+load("charset.js");
 function execute(category, page) {
     var host = "https://www.69shuba.com";
     var p = parseInt(page || "1", 10);
@@ -7,7 +8,7 @@ function execute(category, page) {
     try {
         var response = fetch(url);
         if (!response.ok) return Response.error("69Shuba HTTP " + response.status + ": " + url);
-        var doc = response.html("gbk");
+        var doc = shubaDocument(response,"gen");
         var cards = doc.select(".bookbox, .newbox ul li, .mybox li, .booklist li");
         var cardById = {};
         for (var j = 0; j < cards.size(); j++) {

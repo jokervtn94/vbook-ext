@@ -1,3 +1,4 @@
+load("charset.js");
 function execute(key, page) {
     var host = "https://www.69shuba.com", p = parseInt(page || "1", 10);
     if (!p || p < 1) p = 1;
@@ -11,7 +12,7 @@ function execute(key, page) {
             });
         }
         if (!response.ok) return Response.error("69Shuba tìm kiếm HTTP " + response.status);
-        var doc = response.html("gbk");
+        var doc = shubaDocument(response,"search");
         var cards = doc.select(".bookbox, .newbox ul li, .mybox li, .booklist li");
         var cardById = {};
         for (var j = 0; j < cards.size(); j++) {

@@ -30,6 +30,7 @@ function invoke(script, url, doc, code=200) {
     fetch: u => { urls.push(u); return {ok:code===200, status:code, html:()=>doc}; },
     Response: {success: value => ({ok:true,value}),error: error => ({ok:false,error})}
   };
+  globals.load = name => vm.runInNewContext(fs.readFileSync(path.join(__dirname,"..","shuba69","src",name),"utf8"), globals, {filename:name});
   vm.runInNewContext(source, globals, {filename:script});
   return {result:globals.execute(url),urls};
 }

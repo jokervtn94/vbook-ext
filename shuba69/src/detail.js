@@ -1,3 +1,4 @@
+load("charset.js");
 function shubaText(doc, selector) {
     var nodes = doc.select(selector);
     if (!nodes || !nodes.size()) return "";
@@ -18,11 +19,10 @@ function execute(url) {
             return Response.error("69Shuba chi tiết HTTP " + response.status +
                 (response.status == 403 ? ": website yêu cầu xác minh Cloudflare" : ""));
         }
-        // 69Shuba pages declare GBK; VBook default UTF-8 decoding turns
-        // Chinese characters into replacement glyphs (U+FFFD).
-        var doc = response.html("gbk");
+        // Select UTF-8 or GBK by actual text quality; a GBK meta label may be stale.
+        var doc = shubaDocument(response,"detail");
         if (!doc || typeof doc.select !== "function")
-            return Response.error("69Shuba: không giải mã được HTML chi tiết (GBK)");
+            return Response.error("69Shuba: không giải mã được HTML chi tiết (UTF-8/GBK)");
         // 69Shuba publishes stable OpenGraph metadata even when its visual layout changes.
         var name = shubaAttr(doc, "meta[property='og:novel:book_name']", "content") ||
                    shubaAttr(doc, "meta[property='og:title']", "content") ||

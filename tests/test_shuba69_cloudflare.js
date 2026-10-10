@@ -48,6 +48,7 @@ function run(status, httpDoc, browserDoc, settings={}) {
   }
   const source=fs.readFileSync(path.join(__dirname,'..','shuba69','src','chap.js'),'utf8');
   assert.doesNotMatch(source,/\.parent\s*\(|\.remove\s*\(/,'Unsupported DOM mutation');
+  context.load = name => vm.runInNewContext(fs.readFileSync(path.join(__dirname,'..','shuba69','src',name),'utf8'),context,{filename:name});
   vm.runInNewContext(source,context,{filename:'chap.js'});
   return {output:context.execute(chapterUrl),opens,closes,urls};
 }
