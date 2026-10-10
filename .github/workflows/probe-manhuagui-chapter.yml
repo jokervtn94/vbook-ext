@@ -90,3 +90,37 @@ jobs:
           }
           JS
           node /tmp/mg_analysis.cjs
+
+      - name: Inspect mobile image URL assembly and sample availability
+        run: |
+          python - <<'PY'
+          import requests
+          for mode,url,ua in [
+              ('mobile','https://m.manhuagui.com/comic/26729/346817.html','Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 Chrome/130 Mobile Safari/537.36'),
+              ('desktop','https://www.manhuagui.com/comic/26729/346817.html','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/130 Safari/537.36')
+          ]:
+              r=requests.get(url,headers={'User-Agent':ua},timeout=16)
+              open('/tmp/mg_'+mode+'.html','w').write(r.text)
+          PY
+          cat > /tmp/mg_shapes.cjs <<'JS'
+          const fs=require('fs'),vm=require('vm');
+          for(const mode of ['mobile','desktop']){
+             let html=fs.readFileSync('/tmp/mg_'+mode+'.html','utf8');
+             const x=html.match(/\(function\(p,a,c,k,e,d\)[\s\S]*?0,\{\}\)\)/);
+             const ctx=vm.createContext({});
+             vm.runInContext(fs.readFileSync('manhuagui/src/chap.js','utf8'),ctx);
+             const packed=x&&x[0],marks=["p;}('","'['\\x73\\x70\\x6c\\x69\\x63']","SMH.imgData(",").preInit();"];
+             const block=packed.substring(packed.indexOf(marks[0])+marks[0].length,packed.indexOf(marks[1]));
+             const a=block.indexOf("',"),b=block.indexOf(",",a+2),c=block.indexOf(",'");
+             const compressed=block.substring(c+2);
+             let unpacked=ctx.unPacker(block.substring(0,a),parseInt(block.substring(a+2,b)),parseInt(block.substring(b+1,c)),ctx.LZString.decompressFromBase64(compressed).split('|'),0,{});
+             console.log('UNPACKED',mode,unpacked.slice(0,180),unpacked.slice(-100));
+             const start=unpacked.indexOf(marks[2])+marks[2].length;
+             const end=unpacked.indexOf(marks[3]);
+             const data=JSON.parse(unpacked.slice(start,end));
+             const imgs=data.images||data.files||[];
+             console.log('SHAPE',mode,JSON.stringify({keys:Object.keys(data),images:imgs.slice(0,3),path:data.path||null,slKeys:Object.keys(data.sl||{}),slElen:String(data.sl?.e||'').length,slMlen:String(data.sl?.m||'').length}));
+             console.log('IMAGE0',mode,typeof imgs[0],String(imgs[0]||'').slice(0,240));
+          }
+          JS
+          node /tmp/mg_shapes.cjs
