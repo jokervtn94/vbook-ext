@@ -73,13 +73,13 @@
       "locale": "zh_CN"
     },
     {
-      "name": "AC QQ",
+      "name": "AC QQ 腾讯动漫",
       "author": "Jokervtn94",
       "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/acqq/plugin.zip",
       "version": 5,
       "source": "https://m.ac.qq.com",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/acqq/icon.png",
-      "description": "AC QQ v5: sửa lỗi URL danh mục VBook và các liên kết desktop cũ, giữ các chức năng truyện mobile.",
+      "description": "AC QQ v5: sửa danh mục bị từ chối trong VBook; đồng bộ tên nguồn với extension đã cài; hỗ trợ đường dẫn mobile và desktop cũ.",
       "type": "comic",
       "locale": "zh_CN"
     },

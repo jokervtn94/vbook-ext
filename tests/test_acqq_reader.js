@@ -98,6 +98,15 @@ for(const [input,expected] of vbookCatalogCases){
 }
 
 const manifest=JSON.parse(fs.readFileSync(path.join(dir,"..","plugin.json"),"utf8"));
+const catalog=JSON.parse(fs.readFileSync(path.join(dir,"..","..","plugin.json"),"utf8"));
+const published=catalog.data.find(e=>e.path.endsWith("/acqq/plugin.zip"));
+assert.ok(published,"AC QQ must be present in the distribution catalog");
+assert.equal(published.name,manifest.metadata.name,"Catalog name must match installed VBook extension");
+assert.equal(published.version,manifest.metadata.version,"App update version must match package");
+assert.equal(published.source,manifest.metadata.source,"Catalog and ZIP source must be identical");
+assert.equal(published.source,"https://m.ac.qq.com","Preserve source identity of the installed AC QQ v4");
+assert.equal(published.author,manifest.metadata.author);
+
 assert.equal(manifest.metadata.version,5);
 assert.equal(manifest.script.search,"search.js");
 for(const x of ["config.js","gen.js","genre.js","detail.js","toc.js","chap.js","search.js"]){
