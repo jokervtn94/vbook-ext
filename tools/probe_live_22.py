@@ -3,7 +3,7 @@
 
 The output is triage evidence and never a claim that all Vbook scripts execute.
 """
-import concurrent.futures, json, re, time
+import concurrent.futures, json, re, time, subprocess
 from urllib.parse import urlparse, urljoin
 from pathlib import Path
 import requests
@@ -95,3 +95,12 @@ def probe_catalog(item):
 with concurrent.futures.ThreadPoolExecutor(max_workers=12) as pool:
     for result in pool.map(probe_catalog,catalog):
         print("CHECK "+json.dumps(result,ensure_ascii=False),flush=True)
+
+print("=== ALL PUBLISHED JAVASCRIPT SYNTAX ===",flush=True)
+for entry in catalog:
+    folder=entry["path"].rsplit("/",2)[-2]
+    for f in sorted((ROOT/folder/"src").rglob("*.js")):
+        check=subprocess.run(["node","--check",str(f)],capture_output=True,text=True)
+        if check.returncode:
+            print("SYNTAX "+json.dumps({"path":str(f.relative_to(ROOT)),"stderr":check.stderr[-650:]},ensure_ascii=False),flush=True)
+print("SYNTAX_SCAN_COMPLETE",flush=True)
