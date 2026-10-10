@@ -9,6 +9,8 @@ function execute(url) {
         });
         if (!response.ok) return Response.error("Book QQ: chương HTTP " + response.status);
         var payload = response.json();
+        if (payload && payload.code != null && Number(payload.code) !== 0)
+            return Response.error("Book QQ: " + String(payload.msg || ("API error " + payload.code)));
         var data = payload && payload.data;
         if (!data) return Response.error("Book QQ: API không trả dữ liệu chương");
         if (Number(data.chapterPrice || 0) > 0)

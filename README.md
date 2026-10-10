@@ -22,7 +22,7 @@ https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/plugin.json
 | AC QQ | https://ac.qq.com | 2 | zh_CN | comic |
 | Manhua Gui | https://www.manhuagui.com | 5 | zh_CN | comic |
 | DouJins | https://doujins.com | 6 | en_EN | comic |
-| Book QQ | https://book.qq.com | 3 | zh_CN | chinese_novel |
+| Book QQ | https://book.qq.com | 4 | zh_CN | chinese_novel |
 | Myrics | https://www.myrics.com | 2 | zh_CN | chinese_novel |
 | Manga Read | https://www.mangaread.org | 3 | en_EN | comic |
 | SachHayOnline | https://www.sachhayonline.com/ | 3 | vi-VN | novel |

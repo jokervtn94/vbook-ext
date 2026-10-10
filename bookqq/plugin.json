@@ -2,10 +2,10 @@
   "metadata": {
     "name": "Book QQ [阅读]",
     "author": "Nhocconsr",
-    "version": 3,
+    "version": 4,
     "source": "https://book.qq.com",
     "regexp": "https?://(?:www\\.)?(?:ubook\\.reader|book)\\.qq\\.com/(?:book-detail|book-read)/\\d+(?:/\\d+)?/?(?:[?#].*)?$",
-    "description": "Book QQ: sửa URL chương, ID sách/chương, mục lục và xử lý chương VIP.",
+    "description": "Book QQ: sửa URL chương, nhận biết sách đã gỡ, cập nhật chương mẫu đang hoạt động.",
     "locale": "zh-CN",
     "language": "javascript",
     "type": "chinese_novel"

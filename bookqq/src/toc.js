@@ -7,7 +7,10 @@ function execute(url) {
             method: "GET", queries: {bid: bid}
         });
         if (!response.ok) return Response.error("Book QQ: mục lục HTTP " + response.status);
-        var payload = response.json(), chapters = payload && payload.data;
+        var payload = response.json();
+        if (payload && payload.code != null && Number(payload.code) !== 0)
+            return Response.error("Book QQ mục lục: " + String(payload.msg || ("API error " + payload.code)));
+        var chapters = payload && payload.data;
         if (!chapters || !Array.isArray(chapters))
             return Response.error("Book QQ: API mục lục không hợp lệ");
         var list = [], seen = {};

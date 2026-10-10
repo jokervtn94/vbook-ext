@@ -40,4 +40,12 @@ assert.match(c.result.error,/403/);
 c=run('chap.js','https://book.qq.com/book-read/38504732',{data:{}});
 assert.equal(c.result.ok,false);
 assert.equal(c.requests.length,0);
-console.log('PASS Book QQ ID parsing, chapter URLs, free and VIP handling');
+c=run('chap.js','https://book.qq.com/book-read/38504732/5',{
+ code:-3001,msg:'书籍已下架',data:null
+});
+assert.equal(c.result.ok,false);
+assert.match(c.result.error,/书籍已下架/);
+const removedToc=run('toc.js',book,{code:-3001,msg:'书籍已下架'});
+assert.equal(removedToc.result.ok,false);
+assert.match(removedToc.result.error,/书籍已下架/);
+console.log('PASS Book QQ ID parsing, valid chapter URLs, API errors, free and VIP handling');
