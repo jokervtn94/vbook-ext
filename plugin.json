@@ -8,10 +8,10 @@
       "name": "ManhuaVN [Free Chap]",
       "author": "Jokervtn94",
       "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/manhuavn/plugin.zip",
-      "version": 4,
+      "version": 5,
       "source": "https://manhuavn2.com",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/manhuavn/icon.png",
-      "description": "Đọc truyện trên trang manhuavn",
+      "description": "ManhuaVN - sửa ảnh bìa danh sách, chi tiết; đọc chương miễn phí.",
       "type": "comic",
       "locale": "vi_VN"
     },

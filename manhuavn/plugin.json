@@ -2,10 +2,10 @@
   "metadata": {
     "name": "ManhuaVN [Free]",
     "author": "Nhocconsr",
-    "version": 4,
+    "version": 5,
     "source": "https://manhuavn2.com",
     "regexp": "(www\\.)?(manhuavn2\\.com|manhuavn\\.top|mhvn\\.truyensieuhay\\.com)/[0-9a-z-]+(\\.html)?",
-    "description": "Hỗ trợ chương miễn phí trên web và API; các chương chỉ đọc bằng app sẽ báo giới hạn.",
+    "description": "Sửa đường dẫn ảnh bìa ở trang chủ, danh sách thể loại và chi tiết; hỗ trợ đọc chương miễn phí.",
     "locale": "vi_VN",
     "language": "javascript",
     "type": "comic"

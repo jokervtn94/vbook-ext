@@ -17,7 +17,7 @@ function execute(url) {
                     genres.push({title:e.TenTheLoai,input:e.Id,script:'source.js'});
                 });
                 return Response.success({
-                    name:story.StoryName,cover:BASE_IMAGE+story.StoryImage,
+                    name:story.StoryName,cover:getCoverUrl(story.StoryImage),
                     author:story.author,description:story.StoryDescription,
                     genres:genres,detail:story.StoryTitleLastChap||'',
                     ongoing:story.IsFull===0,host:BASE_URL
@@ -35,7 +35,7 @@ function execute(url) {
     else if (cover.charAt(0)==='/') cover=BASE_URL+cover;
     return Response.success({
         name:doc.select('h1.title').text() || doc.select('h1').first().text(),
-        cover:cover,author:'Không rõ',
+        cover:getCoverUrl(cover),author:'Không rõ',
         description:doc.select('meta[name=description]').attr('content') || '',
         detail:doc.select('meta[name=description]').attr('content') || '',
         host:BASE_URL
