@@ -1,0 +1,46 @@
+name: Probe ManhuaGui chapter payload
+on:
+  push:
+    branches: [master]
+    paths: ['.github/workflows/probe-manhuagui-chapter.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: python -m pip -q install requests beautifulsoup4
+      - name: Analyze first chapter payloads without printing protected content
+        shell: bash
+        run: |
+          python - <<'PY'
+          import requests,re
+          from bs4 import BeautifulSoup
+          targets=[
+            'https://www.manhuagui.com/comic/26729/346817.html',
+            'https://m.manhuagui.com/comic/26729/346817.html',
+            'https://www.manhuagui.com/comic/26729/906818.html',
+            'https://www.manhuagui.com/comic/17359/']
+          agents={'mobile':'Mozilla/5.0 (Linux; Android 14; Mobile) AppleWebKit/537.36 Chrome/130 Mobile Safari/537.36',
+                  'desktop':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/130 Safari/537.36'}
+          for mode,ua in agents.items():
+            for url in targets:
+              try:
+                r=requests.get(url,headers={'User-Agent':ua},timeout=18)
+                d=BeautifulSoup(r.text,'html.parser')
+                print('PAGE',mode,url,'HTTP',r.status_code,'FINAL',r.url,'LEN',len(r.content),'TITLE',d.title.get_text(' ',strip=True)[:85] if d.title else '',flush=True)
+                for pattern in ['SMH.imgData','SMH.reader','chapterData','imgData','files:', 'path:', '"files"', '"path"','eval(function(p,a,c,k,e,d)', '0,{}))','chapterImages', 'data-src','chapter-list','__VIEWSTATE','<iframe','iframe','pages','chapterPage','comic-read','imglist']:
+                  print(' TOKEN',pattern,r.text.find(pattern),r.text.count(pattern),flush=True)
+                for q in ['.chapter-images img','.chapter-content img','.comic-page img','.read-comic img','#chapter img','#images img','#comicContain img','img[data-src]','iframe','script[src]','img[src]']:
+                  nodes=d.select(q)
+                  print(' CSS',q,len(nodes),'FIRST',str(nodes[0])[:330] if nodes else '',flush=True)
+                for k,sc in enumerate(d.select('script')):
+                  t=sc.get_text(' ',strip=False)
+                  if any(key in t for key in ['SMH.imgData','eval(function(p,a,c,k,e,d)','chapterData','imgData','SMH.reader']):
+                    print(' SCRIPT',k,'LEN',len(t),'HEAD',t[:550].replace('\n',' '),'TAIL',t[-350:].replace('\n',' '),flush=True)
+                print(' HDR',r.headers.get('content-type'),r.history and [x.status_code for x in r.history],flush=True)
+              except Exception as exc:print('ERROR',mode,url,type(exc).__name__,str(exc)[:170],flush=True)
+          PY
