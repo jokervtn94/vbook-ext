@@ -46,6 +46,8 @@ jobs:
         run: node tests/test_sayhentai_reader.js
       - name: Validate CiWeiMao API decryption inputs and access controls
         run: node tests/test_ciweimao_chap.js
+      - name: Validate ManhuaGui v7 desktop/mobile detail and chapters
+        run: node tests/test_manhuagui_reader.js
       - name: Validate Tencent AC QQ v5 VBook catalogue inputs and reader
         run: node tests/test_acqq_reader.js
       - name: Validate Book QQ reading contracts

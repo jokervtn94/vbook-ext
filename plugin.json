@@ -87,10 +87,10 @@
       "name": "Manhua Gui",
       "author": "Jokervtn94",
       "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/manhuagui/plugin.zip",
-      "version": 6,
+      "version": 7,
       "source": "https://www.manhuagui.com",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/manhuagui/icon.png",
-      "description": "Đọc truyện trên trang manhuagui.com",
+      "description": "Manhua Gui v7: sửa lỗi trang chi tiết mobile, ảnh bìa và mục lục; bảo vệ dữ liệu null.",
       "type": "comic",
       "locale": "zh_CN"
     },

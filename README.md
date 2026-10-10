@@ -21,7 +21,7 @@ https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/plugin.json
 | Hố Truyện | https://hotruyen1.com | 8 | vi_VN | novel |
 | Qimao | https://www.qimao.com | 6 | zh_CN | chinese_novel |
 | AC QQ 腾讯动漫 | https://m.ac.qq.com | 5 | zh_CN | comic |
-| Manhua Gui | https://www.manhuagui.com | 6 | zh_CN | comic |
+| Manhua Gui | https://www.manhuagui.com | 7 | zh_CN | comic |
 | Book QQ | https://book.qq.com | 5 | zh_CN | chinese_novel |
 | Myrics | https://www.myrics.com | 3 | zh_CN | chinese_novel |
 | SachHayOnline | https://www.sachhayonline.com/ | 4 | vi-VN | novel |
