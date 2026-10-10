@@ -92,3 +92,11 @@ Mục *WuxiaWorld mục lục còn thiếu* ở các phần trên là tình tr�
 - Việc chạy trên phiên bản Vbook/thiết bị Android của người dùng chưa được xác nhận sau bản v5.
 
 Tình trạng còn cần kiểm tra trong ứng dụng: chương bị khóa/đăng nhập và khác biệt giữa môi trường Vbook Android với Node.js.
+
+## Cập nhật Say Hentai v11 — đường dẫn và ảnh chương
+
+- Search trước v11 gọi cứng `https://sayhentai.one/search` trong khi nguồn phát hành hiện là `https://sayhentai.cx`. Đã sửa dùng chung `BASE_URL` từ `src/config.js`.
+- Chuẩn hóa liên kết truyện ở kết quả tìm kiếm về domain đang cấu hình; ưu tiên thuộc tính ảnh lazy-load `data-original` / `data-src` trước `src`.
+- Script chương loại bỏ URL ảnh trùng/placeholder và trả lỗi rõ khi HTTP 403/Cloudflare hoặc HTML không có ảnh; không đánh dấu thành công với danh sách ảnh rỗng.
+- Kiểm thử mock DOM và HTTP 403 đã được thêm vào CI; hành vi Cloudflare phụ thuộc phiên/IP trên Vbook nên **chưa thể xác nhận đọc được trên ứng dụng**.
+- Bản phát hành hiện tại: `sayhentai/plugin.zip` v11.
