@@ -119,6 +119,42 @@ def one(entry):
                         result["data_list_count"] = len(inner)
                     if isinstance(data.get("items"), list):
                         result["item_count"] = len(data["items"])
+                    if name == "wuxiaworld_catalog_500" and isinstance(data.get("items"), list) and data["items"]:
+                        original = data["items"]
+                        result["catalog_first_id"] = original[0].get("id")
+                        result["catalog_last_id"] = original[-1].get("id")
+                        result["catalog_total"] = data.get("total")
+                        payload0 = {
+                            "title": "", "tags": [], "language": "Any", "genres": [],
+                            "active": None, "sortType": "Name", "sortAsc": True,
+                            "count": 100
+                        }
+                        candidates = {
+                            "lastName": original[-1].get("name"),
+                            "lastId": original[-1].get("id"),
+                            "offset100": 100,
+                            "lastSlug": original[-1].get("slug")
+                        }
+                        original_ids = set(item.get("id") for item in original)
+                        result["cursor_probes"] = {}
+                        for label, cursor in candidates.items():
+                            try:
+                                later = requests.post(
+                                    "https://www.wuxiaworld.com/api/novels/search",
+                                    headers={**BASE_HEADERS, "Content-Type": "application/json"},
+                                    json={**payload0, "searchAfter":cursor},
+                                    timeout=(4, 12)
+                                )
+                                next_data = later.json() if later.ok else {}
+                                next_items = next_data.get("items", [])
+                                result["cursor_probes"][label] = {
+                                    "http": later.status_code,
+                                    "count": len(next_items),
+                                    "first_id": next_items[0].get("id") if next_items else None,
+                                    "overlap": sum(item.get("id") in original_ids for item in next_items)
+                                }
+                            except (requests.RequestException, ValueError, AttributeError) as exc:
+                                result["cursor_probes"][label] = {"error":type(exc).__name__}
                     if name.startswith("wuxiaworld_old_search") and isinstance(data.get("items"), list):
                         result["first_item_id"] = data["items"][0].get("id") if data["items"] else None
                         result["last_item_id"] = data["items"][-1].get("id") if data["items"] else None
