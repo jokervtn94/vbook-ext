@@ -17,6 +17,10 @@ URLS={
 "acqq_gen":"https://m.ac.qq.com/category/listAll/type/all/rank/upt",
 "qimao_list":"https://www.qimao.com/shuku/a-a-a-a-a-update_time-1/",
 "doujins_home":"https://doujins.com/",
+"sachhay_category":"https://www.sachhayonline.com/danh-muc/van-hoc-viet-nam",
+"dingdian_list":"https://www.dingdian666.com/sort/1_1/",
+"acqq_detail":"https://ac.qq.com/Comic/ComicInfo/id/656723",
+"acqq_category":"https://ac.qq.com/Comic/all",
 "novelbuddy_latest":"https://novelbuddy.me/latest",
 "hotruyen_toc":"https://hotruyen1.com/muc-luc-sv/toan-dan-chuyen-chuc-ngu-long-su-ta-co-the-chem-than-323131373837382D32373437353936",
 "sayhentai_chapter":"https://sayhentai.cx/truyen-tu-phe-vat-thanh-ke-bao-thu-mua-1/chuong-20",
@@ -57,6 +61,15 @@ def inspect(arg):
         if "sayhentai" in name:
             res["taglines"]=[str(x)[:350] for x in doc.select(".summary_image img,ul.box-list-chapter li,div.chapter")[:3]]
             res["chaps"]=[x.get("href") for x in doc.select("a[href]") if "chap" in x.get("href","")][:10]
+        if name=="sachhay_category":
+            res["list_items"]=[str(x)[:750] for x in doc.select("ul.default > li")[:3]]
+            res["link_samples"]=[str(x)[:340] for x in doc.select("ul.default a")[:6]]
+        if name=="dingdian_list":
+            res["list_items"]=[str(x)[:600] for x in doc.select(".lastupdate ul li")[:3]]
+        if name.startswith("acqq_"):
+            res["comic_links"]=[str(x)[:430] for x in doc.select('a[href*="/Comic/ComicInfo/id/"]')[:6]]
+            res["comic_classes"]=[(x.get("class"),str(x)[:270]) for x in doc.select('img')[:8]]
+            res["chapter_links"]=[str(x)[:380] for x in doc.select("a[href*=chapter],a[href*=ComicView]")[:5]]
         if "doujins" in name:
             res["img_wrappers"]=[str(x)[:400] for x in doc.select('a:has(img)')[:8]]
         return res
