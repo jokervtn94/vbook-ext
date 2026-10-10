@@ -3,10 +3,12 @@ name: Validate extension catalog
 on:
   push:
     branches:
+      - master
       - main
       - 'maintenance/**'
   pull_request:
     branches:
+      - master
       - main
   workflow_dispatch:
 
