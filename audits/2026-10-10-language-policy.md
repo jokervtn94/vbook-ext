@@ -15,3 +15,16 @@ CiWeiMao v5: bổ sung kiểm tra `chapter_access_key`, `chapter_content`, `encr
 CI thêm `tools/validate_language_policy.py` để kiểm tra 17 nguồn được duyệt, metadata, và không tồn tại lại thư mục 6 nguồn đã xóa.
 
 **Bổ sung:** Repo còn hai thư mục chưa phát hành là Knoxt (`en-EN`) và WebNovel (website cung cấp truyện tiếng Anh dù metadata ghi `vi-VN`); đã loại bỏ nốt cùng với 6 nguồn tiếng Anh đang phát hành. Tổng cộng xóa **8 thư mục nguồn không đạt tiêu chí**, nhưng chỉ **6 extension** bị gỡ khỏi catalog công khai.
+
+## Xác minh thực tế CiWeiMao v5
+
+Kiểm tra chương mẫu công khai `https://www.ciweimao.com/chapter/111827220`:
+
+- Trang HTML hiển thị CAPTCHA, nhưng API `ajax_get_session_code` trả `code=100000` và `chapter_access_key`.
+- API `get_book_chapter_detail_info` trả `code=100000`, `chapter_content` cùng **11 phần tử `encryt_keys`**.
+- Chạy **chính `ciweimao/src/chap.js` v5** trên hai phản hồi thật, cùng các thư viện `crypto.js`/`base64.js` của repo, giải mã **thành công 5.268 ký tự HTML**, có nội dung tiếng Trung.
+- Chỉ kiểm thử chương miễn phí; không lấy hoặc giải mã chương VIP. Không ghi nội dung truyện, cookie hoặc khóa vào GitHub logs.
+- Kết quả live: https://github.com/jokervtn94/vbook-ext/actions/runs/38041678916
+- Kiểm thử CI 17/17 gói đồng bộ, chính sách nguồn 6 Việt + 11 Trung: https://github.com/jokervtn94/vbook-ext/actions/runs/38041531483
+
+Các lần tải khác có thể vẫn cần xác minh CAPTCHA/phiên hợp lệ. Cần xác nhận trải nghiệm trực tiếp trong Vbook Android.
