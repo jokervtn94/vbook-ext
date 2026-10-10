@@ -1,56 +1,77 @@
-import os
+"""Non-destructive audit of local Vbook extensions.
+
+This tool NEVER deletes source folders or rewrites plugin.json.
+Run with --online to also probe websites (network failures are inconclusive).
+"""
+
+import argparse
 import json
-import requests
-import shutil
+from pathlib import Path
+from urllib.error import HTTPError, URLError
+from urllib.parse import urlsplit
+from urllib.request import Request, urlopen
 
-# Đường dẫn tới file plugin.json tổng hợp
-PLUGIN_JSON_PATH = 'plugin.json'
+ROOT = Path(__file__).resolve().parent
 
-# Đọc file plugin.json tổng hợp
-with open(PLUGIN_JSON_PATH, 'r', encoding='utf-8') as f:
-    data = json.load(f)
 
-# Lưu lại các extension còn sống
-alive_extensions = []
+def probe(url, timeout):
+    """Try HEAD, then GET for servers that reject HEAD."""
+    for method in ("HEAD", "GET"):
+        try:
+            req = Request(url, method=method, headers={"User-Agent": "Mozilla/5.0"})
+            with urlopen(req, timeout=timeout) as response:
+                return f"HTTP {response.status}"
+        except (HTTPError, URLError, TimeoutError, ValueError) as exc:
+            last_error = exc
+    return f"UNCONFIRMED ({last_error})"
 
-for ext in data['data']:
-    # Lấy tên thư mục extension từ path
-    ext_path = ext['path']
-    # Ví dụ: 'https://raw.githubusercontent.com/nhocconsr/vbook-ext/master/knoxt/plugin.zip'
-    # => thư mục là 'knoxt'
-    folder = ext_path.split('/')[-2]
-    plugin_json_file = os.path.join(folder, 'plugin.json')
-    if not os.path.exists(plugin_json_file):
-        print(f"Không tìm thấy {plugin_json_file}, bỏ qua.")
-        continue
 
-    # Đọc file plugin.json của extension
-    with open(plugin_json_file, 'r', encoding='utf-8') as f:
-        ext_data = json.load(f)
-    source = ext_data.get('metadata', {}).get('source')
-    if not source:
-        print(f"{folder} không có trường source, bỏ qua.")
-        continue
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--online", action="store_true",
+                        help="Probe website sources; no files will be modified")
+    parser.add_argument("--timeout", type=float, default=8.0,
+                        help="Timeout per HTTP request in seconds (default: 8)")
+    args = parser.parse_args()
+    if args.timeout <= 0:
+        parser.error("--timeout must be positive")
 
-    # Kiểm tra website còn sống không
-    try:
-        resp = requests.head(source, timeout=10, allow_redirects=True)
-        if resp.status_code < 400:
-            print(f"{folder}: {source} OK")
-            alive_extensions.append(ext)
+    catalog = json.loads((ROOT / "plugin.json").read_text(encoding="utf-8"))
+    errors = 0
+    for entry in catalog["data"]:
+        asset_url = entry.get("path", "")
+        parts = urlsplit(asset_url).path.strip("/").split("/")
+        folder = parts[-2] if len(parts) >= 2 else ""
+        if not folder or folder in (".", ".."):
+            print(f"[ERROR] Invalid asset path: {asset_url}")
+            errors += 1
             continue
-        else:
-            print(f"{folder}: {source} lỗi status {resp.status_code}")
-    except Exception as e:
-        print(f"{folder}: {source} lỗi {e}")
 
-    # Nếu tới đây là web chết, xóa thư mục
-    print(f"Xóa thư mục {folder}")
-    shutil.rmtree(folder, ignore_errors=True)
+        plugin_file = ROOT / folder / "plugin.json"
+        zip_file = ROOT / folder / "plugin.zip"
+        if not plugin_file.is_file() or not zip_file.is_file():
+            print(f"[ERROR] Missing plugin.json or plugin.zip: {folder}")
+            errors += 1
+            continue
+        try:
+            metadata = json.loads(plugin_file.read_text(encoding="utf-8")).get(
+                "metadata", {}
+            )
+        except (OSError, ValueError) as exc:
+            print(f"[ERROR] {plugin_file}: {exc}")
+            errors += 1
+            continue
 
-# Ghi lại file plugin.json tổng hợp chỉ với các extension còn sống
-data['data'] = alive_extensions
-with open(PLUGIN_JSON_PATH, 'w', encoding='utf-8') as f:
-    json.dump(data, f, ensure_ascii=False, indent=2)
+        source = metadata.get("source")
+        if not source:
+            print(f"[WARN] {folder}: no source website")
+            continue
+        status = probe(source, args.timeout) if args.online else "not checked"
+        print(f"[OK] {folder}: {source} ({status})")
 
-print("Hoàn thành!")
+    print(f"Audit complete. {errors} local problem(s). No files were changed.")
+    return 1 if errors else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
