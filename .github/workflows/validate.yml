@@ -49,9 +49,17 @@ jobs:
           from tools.check_package_sync import check
           with open('plugin.json', encoding='utf-8') as stream:
               entries = json.load(stream)['data']
+          mismatches = []
           for entry in entries:
-              check(entry['path'].split('/')[-2])
-          print('PASS:', len(entries), 'published plugin ZIPs match their source')
+              folder = entry['path'].split('/')[-2]
+              try:
+                  check(folder)
+              except (ValueError, OSError) as exc:
+                  mismatches.append(f'{folder}: {exc}')
+                  print('MISMATCH:', mismatches[-1], flush=True)
+          print('SYNC STATUS:', len(entries)-len(mismatches), 'matching of', len(entries))
+          if mismatches:
+              raise SystemExit('Out-of-sync ZIPs: ' + ', '.join(mismatches))
           PY
       - name: Verify repaired ZIP contents match source
         run: python tools/check_package_sync.py manhuavn tranh18 novelbuddy sayhentai omegascans acqq bookqq tienvuc myrics sachhayonline dingdian
