@@ -1,11 +1,20 @@
-function execute(url) {
-    const doc = Http.get(url).html();
-    return Response.success({
-        name: doc.select("h1").first().text(),
-        cover: doc.select("meta[property=og:image]").first().attr('content'),
-        author: doc.select(".works-intro-digi .first em").first().text() || 'Unknown',
-        description: doc.select(".head-info-desc").html(),
-        detail: doc.select(".info-member-rate").text()+'<br>作者： '+doc.select(".author-wr").text(),
-        host: "https://m.ac.qq.com",
+load("config.js");
+function execute(value){
+    var target=acBook(value);
+    if(!target)return Response.error("AC QQ: ID truyện không hợp lệ");
+    return acGet(target,function(doc){
+        var name=acText(doc,"h1.top-title")||acText(doc,"h1");
+        if(!name)return Response.error("AC QQ: không tìm thấy tên truyện trên trang chi tiết");
+        var image=acAbs(acAttr(doc,"meta[property='og:image']","content"))||
+                  acCover(doc);
+        var author=acText(doc,".head-info-author")||acText(doc,".author-name")||
+                   acText(doc,".works-intro-digi .first em")||"Đang cập nhật";
+        var desc=acText(doc,".head-info-desc");
+        var status=acText(doc,".chapter-info")||acText(doc,".chapter-count");
+        return Response.success({
+            name:name,cover:image,author:author,description:desc,
+            detail:status,ongoing:!/完结|完本|已完结/.test(status),
+            host:AC_HOST
+        });
     });
 }

@@ -2,10 +2,10 @@
   "metadata": {
     "name": "AC QQ 腾讯动漫",
     "author": "Jokervtn94",
-    "version": 3,
-    "source": "https://ac.qq.com",
-    "regexp": "(www\\.)?ac\\.qq\\.com/Comic/[Cc]omicInfo/id/\\d+/?$",
-    "description": "Sửa danh sách/bìa trên Tencent Comics; một số chương yêu cầu Javascript hoặc tài khoản.",
+    "version": 4,
+    "source": "https://m.ac.qq.com",
+    "regexp": "https?://(?:m\\.ac\\.qq\\.com\\/comic\\/index\\/id\\/|(?:m\\.)?ac\\.qq\\.com\\/Comic\\/[Cc]omicInfo\\/id\\/)\\d+/?(?:\\?.*)?$",
+    "description": "AC QQ v4: chuyển sang HTML mobile hiện tại; sửa trang chủ, thể loại, tìm kiếm, chi tiết, mục lục, ảnh bìa và thông báo chương bị hạn chế.",
     "locale": "cn-CN",
     "language": "javascript",
     "type": "comic"
@@ -15,6 +15,7 @@
     "genre": "genre.js",
     "detail": "detail.js",
     "toc": "toc.js",
-    "chap": "chap.js"
+    "chap": "chap.js",
+    "search": "search.js"
   }
 }

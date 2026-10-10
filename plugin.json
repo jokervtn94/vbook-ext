@@ -76,10 +76,10 @@
       "name": "AC QQ",
       "author": "Jokervtn94",
       "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/acqq/plugin.zip",
-      "version": 3,
-      "source": "https://ac.qq.com",
+      "version": 4,
+      "source": "https://m.ac.qq.com",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/acqq/icon.png",
-      "description": "Đọc truyện trên trang m.ac.qq.com",
+      "description": "AC QQ v4: sửa lỗi không tải dữ liệu do giao diện cũ, hỗ trợ mobile, thể loại, tìm kiếm và mục lục.",
       "type": "comic",
       "locale": "zh_CN"
     },

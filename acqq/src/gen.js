@@ -1,22 +1,15 @@
-function execute(category, page) {
-    if (page && parseInt(page, 10) > 1) return Response.success([], null);
-    var url = category && /^https?:\/\//i.test(category) ?
-        category : 'https://ac.qq.com/Comic/all';
-    var response = fetch(url);
-    if (!response.ok) return null;
-    var list = [], seen = {};
-    response.html().select('a.mod-cover-list-thumb[href]').forEach(function(a) {
-        var href = a.attr('href') || '';
-        if (!href || seen[href]) return;
-        var img = a.select('img').first();
-        var cover = img.attr('data-original') || img.attr('src') || '';
-        if (cover.indexOf('//') === 0) cover = 'https:' + cover;
-        else if (cover.charAt(0) === '/') cover = 'https://ac.qq.com' + cover;
-        var name = a.attr('title') || img.attr('alt') || a.text();
-        if (!name || !cover) return;
-        if (href.charAt(0) === '/') href = 'https://ac.qq.com' + href;
-        seen[href] = true;
-        list.push({name:name,link:href,cover:cover,description:'',host:'https://ac.qq.com'});
+load("config.js");
+function execute(input,page){
+    var p=parseInt(page||"1",10);if(!(p>=1))p=1;
+    var url=acAbs(input||AC_HOST+"/");
+    if(url.indexOf(AC_HOST+"/")!==0 && url!==AC_HOST+"/")
+       return Response.error("AC QQ: danh mục không thuộc Tencent Comics");
+    // Tencent's mobile page renders its first server-side catalog page.
+    // Never claim further pages when server-side pagination is not confirmed.
+    if(p>1)return Response.success([],null);
+    return acGet(url,function(doc){
+        var data=acCards(doc);
+        if(!data.length)return Response.error("AC QQ: trang chưa trả danh sách truyện trong HTML (có thể chỉ tải bằng JavaScript).");
+        return Response.success(data,null);
     });
-    return Response.success(list, null);
 }
