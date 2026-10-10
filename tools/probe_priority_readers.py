@@ -135,6 +135,18 @@ def one(entry):
                     ["__NEXT_DATA__", "__NUXT__", "__INITIAL_STATE__",
                      "chapterGroups", "chapterList", '"chapterCount"']
                 }
+                result["state_excerpt"] = {}
+                for tag in ['chapterGroups', 'chapterList', 'window.__', 'window.__remixContext',
+                            'window.__reactRouterContext', 'window.__INITIAL_STATE__']:
+                    i = r.text.find(tag)
+                    if i >= 0:
+                        result["state_excerpt"][tag] = r.text[max(0, i-90):i+160]
+                result["state_scripts"] = [
+                    {"id":tag.get("id"), "type":tag.get("type"),
+                     "chars":len(tag.string or tag.get_text()),
+                     "has_chapters":"chapterGroups" in tag.get_text()}
+                    for tag in soup.select("script") if "chapterGroups" in tag.get_text()
+                ][:3]
             result["challenge"] = bool(
                 soup.select_one("#challenge-form, .cf-turnstile")
                 or "just a moment" in result["title"].lower()
