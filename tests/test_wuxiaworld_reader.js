@@ -3,7 +3,7 @@ const ROOT=path.join(__dirname,'..','wuxiaworld','src');
 function coll(a){return {size:()=>a.length,first:()=>a[0]||{text:()=>'',html:()=>'',attr:()=>''},get:i=>a[i],text:()=>a.map(x=>x.text?.()||'').join(' '),attr:k=>(a[0]?.attr?.(k)||'')};}
 function node(text='',attrs={},html=''){return {text:()=>text,attr:key=>attrs[key]||'',html:()=>html,select:()=>({remove:()=>{}})}}
 function boot(file,fetcher,engine){
-  const sandbox={fetch:fetcher,Response:{success:x=>({ok:true,data:x}),error:x=>({ok:false,error:x})},Engine:engine};
+  const sandbox={fetch:fetcher,Response:{success:(x,next)=>({ok:true,data:x,next:next==null?null:next}),error:x=>({ok:false,error:x})},Engine:engine};
   vm.runInNewContext(fs.readFileSync(path.join(ROOT,file),'utf8'),sandbox,{filename:file});
   return sandbox.execute;
 }
