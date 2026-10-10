@@ -83,3 +83,32 @@ jobs:
                 print(' IMAGE_ELEMENTS',[str(x)[:480] for x in d.find_all('img')[:10]],flush=True)
             except Exception as e:print('ERROR',name,type(e).__name__,str(e)[:220],flush=True)
           PY
+
+      - name: Inspect category list and mobile search semantics
+        run: |
+          python - <<'PY'
+          import requests,re
+          from bs4 import BeautifulSoup
+          s=requests.Session();s.headers.update({'User-Agent':'Mozilla/5.0 (Linux; Android 13; Pixel 7) Chrome/130 Mobile Safari/537.36'})
+          urls=[
+            'https://m.ac.qq.com/category/listAll?type=xh&rank=pgv',
+            'https://m.ac.qq.com/category/listAll?type=rx&rank=pgv',
+            'https://m.ac.qq.com/category/listAll?type=tm&rank=upt',
+            'https://m.ac.qq.com/search/index',
+            'https://m.ac.qq.com/search/index?key=%E4%BA%BA',
+            'https://m.ac.qq.com/search/index?word=%E4%BA%BA',
+          ]
+          for url in urls:
+            try:
+              r=s.get(url,timeout=14);d=BeautifulSoup(r.text,'html.parser')
+              print('ROUTE',url,'STATUS',r.status_code,'FINAL',r.url,'LEN',len(r.content),'TITLE',d.title.get_text(' ',strip=True)[:95] if d.title else '',flush=True)
+              for q in ['.comic-item','.comic-link','.comic-cover','.comic-list li','.list-item','.comic-book','.item-cover','.item-title','a[href*="/comic/index/id/"]','input[name]','form[action]']:
+                v=d.select(q)
+                if v:print(' CSS',q,len(v),'FIRST',str(v[0])[:620].replace('\n',' '),flush=True)
+              for tag in d.select('script'):
+                txt=tag.get_text()
+                for word in ['searchComic','keyWord','searchKeyword','searchResult','typeId','listAll']:
+                  i=txt.find(word)
+                  if i>=0:print(' JS',word,txt[max(0,i-180):i+300].replace('\n',' ')[:480],flush=True)
+            except Exception as e:print('ERROR',str(e)[:200],flush=True)
+          PY
