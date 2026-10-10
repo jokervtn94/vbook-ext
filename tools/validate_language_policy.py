@@ -9,11 +9,12 @@ ROOT=Path(__file__).resolve().parent.parent
 catalog=json.loads((ROOT/"plugin.json").read_text(encoding="utf-8"))
 items=catalog["data"]
 RETIRED={
-    "omegascans","doujins","mangaread","novelbuddy","wuxiaworld","royalroad"
+    "omegascans","doujins","mangaread","novelbuddy","wuxiaworld","royalroad",
+    "knoxt","webnovel"
 }
 RETIRED_HOSTS={
     "omegascans.org","doujins.com","mangaread.org","novelbuddy.me",
-    "wuxiaworld.com","royalroad.com"
+    "wuxiaworld.com","royalroad.com","knoxt.space","webnovel.com"
 }
 CHINESE={
     "qimao","acqq","manhuagui","bookqq","myrics","dingdian",

@@ -13,3 +13,5 @@ NovelBuddy từng ghi `vi-VN` nhưng website phát hành nội dung tiếng Anh;
 CiWeiMao v5: bổ sung kiểm tra `chapter_access_key`, `chapter_content`, `encryt_keys` trước khi giải mã; không truy cập `.length` trên dữ liệu thiếu, trả lỗi CAPTCHA/đăng nhập nếu không có dữ liệu.
 
 CI thêm `tools/validate_language_policy.py` để kiểm tra 17 nguồn được duyệt, metadata, và không tồn tại lại thư mục 6 nguồn đã xóa.
+
+**Bổ sung:** Repo còn hai thư mục chưa phát hành là Knoxt (`en-EN`) và WebNovel (website cung cấp truyện tiếng Anh dù metadata ghi `vi-VN`); đã loại bỏ nốt cùng với 6 nguồn tiếng Anh đang phát hành. Tổng cộng xóa **8 thư mục nguồn không đạt tiêu chí**, nhưng chỉ **6 extension** bị gỡ khỏi catalog công khai.

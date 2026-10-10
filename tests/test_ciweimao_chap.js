@@ -7,7 +7,7 @@ function run(session,chapter,config={}){
  const calls=[];
  const ctx={
     load:()=>{},
-    CryptoJS:{format:{OpenSSL:{parse:s=>s}},enc:{Base64:{parse:s=>s},Utf8:"Utf8",Base64:"Base64"},
+    CryptoJS:{format:{OpenSSL:{parse:s=>s}},enc:{Base64:{parse:s=>s},Utf8:"Utf8"},
       AES:{decrypt:()=>({toString:encoding=>encoding==="Utf8"?"中文章节内容":"dGVzdA=="})}},
     base64:()=>({decode:s=>Buffer.from("1234567890abcdef"+"payload","ascii").toString("ascii"),encode:s=>s}),
     fetch:(url,opt)=>{

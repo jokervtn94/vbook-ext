@@ -20,7 +20,7 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install requests beautifulsoup4
-      - name: Probe 23 published source and sample URLs
+      - name: Probe current published Vietnamese/Chinese source and sample URLs
         run: python tools/audit_live_catalog.py
       - name: Publish complete diagnostic artifact
         if: always()
