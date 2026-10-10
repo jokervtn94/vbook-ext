@@ -72,17 +72,6 @@
       "locale": "vi_VN"
     },
     {
-      "name": "Đọc Sách Hay",
-      "author": "Jokervtn94",
-      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/docsachhay/plugin.zip",
-      "version": 1,
-      "source": "https://docsachhay.net",
-      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/docsachhay/icon.png",
-      "description": "Đọc truyện trên trang docsachhay.net",
-      "type": "novel",
-      "locale": "vi_VN"
-    },
-    {
       "name": "Say Hentai",
       "author": "Jokervtn94",
       "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/sayhentai/plugin.zip",
@@ -105,17 +94,6 @@
       "type": "comic",
       "locale": "vi_VN",
       "tag": "nsfw"
-    },
-    {
-      "name": "Giáng Thế",
-      "author": "Jokervtn94",
-      "path": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/giangthe/plugin.zip",
-      "version": 3,
-      "source": "https://giangthe.com",
-      "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/giangthe/icon.png",
-      "description": "Đọc truyện trên trang giangthe.com",
-      "type": "novel",
-      "locale": "vi_VN"
     },
     {
       "name": "Hố Truyện",
@@ -247,7 +225,9 @@
       "version": 2,
       "source": "https://www.sachhayonline.com/",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/sachhayonline/icon.png",
-      "description": "Đọc truyện trên trang sachhayonline.com"
+      "description": "Đọc truyện trên trang sachhayonline.com",
+      "type": "novel",
+      "locale": "vi-VN"
     },
     {
       "name": "Novel Buddy",
@@ -256,7 +236,9 @@
       "version": 4,
       "source": "https://novelbuddy.me",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/novelbuddy/icon.png",
-      "description": "Đọc truyện trên trang novelbuddy.com"
+      "description": "Đọc truyện trên trang novelbuddy.com",
+      "type": "novel",
+      "locale": "vi-VN"
     },
     {
       "name": "Dingdian 【顶点】",
@@ -265,7 +247,9 @@
       "version": 1,
       "source": "https://www.dingdian666.com",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/dingdian/icon.png",
-      "description": "Đọc truyện trên trang www.dingdian666.com"
+      "description": "Đọc truyện trên trang www.dingdian666.com",
+      "type": "chinese_novel",
+      "locale": "vi-VN"
     },
     {
       "name": "CiWeiMao 【刺猬猫】",
@@ -274,7 +258,9 @@
       "version": 3,
       "source": "https://www.ciweimao.com",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/ciweimao/icon.png",
-      "description": "Đọc truyện trên trang www.ciweimao.com"
+      "description": "Đọc truyện trên trang www.ciweimao.com",
+      "type": "chinese_novel",
+      "locale": "cn-CN"
     },
     {
       "name": "Wuxia World",
@@ -283,7 +269,9 @@
       "version": 1,
       "source": "https://www.wuxiaworld.com",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/wuxiaworld/icon.png",
-      "description": "Đọc truyện trên trang www.wuxiaworld.com"
+      "description": "Đọc truyện trên trang www.wuxiaworld.com",
+      "type": "novel",
+      "locale": "en-EN"
     },
     {
       "name": "KissLove (Raw)",
@@ -315,7 +303,9 @@
       "version": 5,
       "source": "https://b.faloo.com",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/bfaloo/icon.png",
-      "description": "Đọc truyện trên trang b.faloo.com"
+      "description": "Đọc truyện trên trang b.faloo.com",
+      "type": "chinese_novel",
+      "locale": "zh-CN"
     },
     {
       "name": "Tadu (塔读)",
@@ -324,7 +314,9 @@
       "version": 2,
       "source": "https://www.tadu.com",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/tadu/icon.png",
-      "description": "Đọc truyện trên trang www.tadu.com"
+      "description": "Đọc truyện trên trang www.tadu.com",
+      "type": "chinese_novel",
+      "locale": "cn-CN"
     },
     {
       "name": "Royalroad",
@@ -333,7 +325,9 @@
       "version": 1,
       "source": "https://www.royalroad.com",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/royalroad/icon.png",
-      "description": "Royal Road® is the home of web novels and fan fictions! In our amazing community, you can find various talented individuals who write as a hobby or even professionally, artists who create art for them, and many, many readers who provide valuable feedback and encouragement."
+      "description": "Royal Road® is the home of web novels and fan fictions! In our amazing community, you can find various talented individuals who write as a hobby or even professionally, artists who create art for them, and many, many readers who provide valuable feedback and encouragement.",
+      "type": "novel",
+      "locale": "en-EN"
     },
     {
       "name": "zTruyện",
@@ -342,7 +336,9 @@
       "version": 5,
       "source": "https://ztruyen.vn",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/ztruyen/icon.png",
-      "description": "zTruyen.vn"
+      "description": "zTruyen.vn",
+      "type": "novel",
+      "locale": "vi-VN"
     },
     {
       "name": "docsach24",
@@ -351,7 +347,9 @@
       "version": 1,
       "source": "https://docsach24.co",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/docsach24/icon.png",
-      "description": "Docsach24."
+      "description": "Docsach24.",
+      "type": "novel",
+      "locale": "vi-VN"
     },
     {
       "name": "8ternal",
@@ -360,7 +358,9 @@
       "version": 2,
       "source": "https://comic.8ternal.com",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/8ternal/icon.png",
-      "description": "8ternal tổng hợp truyện dịch từ nhiều nguồn khác nhau, hỗ trợ các bạn đọc comics theo đúng timeline của các sự kiện chính. Hoặc đọc truyện theo timeline nhân vật mà các bạn yêu thích.."
+      "description": "8ternal tổng hợp truyện dịch từ nhiều nguồn khác nhau, hỗ trợ các bạn đọc comics theo đúng timeline của các sự kiện chính. Hoặc đọc truyện theo timeline nhân vật mà các bạn yêu thích..",
+      "type": "comic",
+      "locale": "vi-VN"
     },
     {
       "name": "Vozer",
@@ -369,7 +369,9 @@
       "version": 5,
       "source": "https://vozer.vn",
       "icon": "https://raw.githubusercontent.com/jokervtn94/vbook-ext/master/vozer/icon.png",
-      "description": "Truyện Voz."
+      "description": "Truyện Voz.",
+      "type": "novel",
+      "locale": "vi_VN"
     }
   ]
 }
