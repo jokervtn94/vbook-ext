@@ -40,7 +40,7 @@ jobs:
         run: node tests/test_reader_repair_batch.js
       - name: Test ManhuaVN chapter regressions
         run: node tests/test_vbook_regressions.js
-      - name: Validate Qimao author metadata
+      - name: Validate Qimao v6 full reader pipeline
         run: node tests/test_qimao_detail.js
       - name: Validate Say Hentai domain and chapter handling
         run: node tests/test_sayhentai_reader.js

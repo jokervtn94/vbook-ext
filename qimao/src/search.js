@@ -1,30 +1,32 @@
-load('crypto.js');
-function execute(key, page) {     
-    if(!page) page = '1';
-    let sign = CryptoJS.MD5(`wd=${key}d3dGiJc651gSQ8w1`)
-    let response = fetch(`https://api-bc.wtzw.com/api/v7/search/words?wd=${encodeURI(key)}&sign=${sign}`, {
-        method: "GET", // GET, POST, PUT, DELETE, PATCH
-        headers: {
-            "platform": "android",
-            "app-version": "71900",
-            'application-id': 'com.kmxs.reader',
-            'sign': `${CryptoJS.MD5("app-version=71900application-id=com.kmxs.readerplatform=androidd3dGiJc651gSQ8w1")}`,
-            'user-agent': 'webviewversion/0'
-        },
-    })
-    let data = []
-    let $ = response.json()
-    $.data.books.filter($ => $.show_type != 4 && $.show_type != 2).forEach(($) => {
-    data.push({
-        name: $.original_title,
-        link: $.id,
-        cover: $.image_link,
-        description: $.original_author,
-        host: 'https://api-bc.wtzw.com',
-        })
-    })
-    return Response.success(data)
+load("crypto.js");
+load("config.js");
+function execute(key, page) {
+    var query = String(key || "").trim();
+    if (!query) return Response.success([], null);
+    try {
+        var wd = encodeURIComponent(query);
+        var sign = String(CryptoJS.MD5("wd=" + query + QM_SALT));
+        var url = QM_BC + "/api/v7/search/words?wd=" + wd + "&sign=" + sign;
+        var info = qmApi(url);
+        var books = info.books || [];
+        if (!Array.isArray(books)) throw new Error("API tìm kiếm đổi định dạng books");
+        var data = [], seen = {};
+        books.forEach(function(book) {
+            if (!book || Number(book.show_type) === 4 || Number(book.show_type) === 2) return;
+            var link = qmBookUrl(book.id || book.book_id);
+            var name = qmSearchName(book.original_title || book.title || book.book_name);
+            if (!link || !name || seen[link]) return;
+            seen[link] = true;
+            data.push({
+                name:name, link:link,
+                cover:qmAbsolute(book.image_link || book.thumb_image_link || ""),
+                description:qmSearchName(book.original_author || book.author || ""),
+                host:QM_WEB
+            });
+        });
+        // This v7 endpoint returns ranked results, not the VBook page cursor.
+        return Response.success(data, null);
+    } catch (e) {
+        return Response.error("Qimao tìm kiếm: " + (e && e.message ? e.message : e));
+    }
 }
-
-
-

@@ -1,33 +1,35 @@
-load('crypto.js');
-function execute(url) {
-    let nurl = url.replace('https://api-bc.wtzw.com/','');
-    let sign = CryptoJS.MD5(`${nurl.replace("&","")}d3dGiJc651gSQ8w1`)
-    let response = fetch(`https://api-ks.wtzw.com/api/v1/chapter/content?${nurl}&sign=${sign}`, {
-        method: "GET", // GET, POST, PUT, DELETE, PATCH
-        headers: {
-            "platform": "android",
-            "app-version": "71900",
-            'application-id': 'com.kmxs.reader',
-            'sign': `${CryptoJS.MD5("app-version=71900application-id=com.kmxs.readerplatform=androidd3dGiJc651gSQ8w1")}`,
-            'user-agent': 'webviewversion/0'
-        },
-    })
-    let $ = response.json()
-    let txt = CryptoJS.enc.Base64.parse($.data.content).toString()
-    let iv = txt.slice(0,32)
-    let content = decrypt(txt.slice(32),iv).trim()
-        .replace(/\n/g,'<br>')
-    return Response.success(content);
+load("crypto.js");
+load("config.js");
+function qmDecrypt(hexData, iv) {
+    var key = CryptoJS.enc.Hex.parse("32343263636238323330643730396531");
+    var ivBytes = CryptoJS.enc.Hex.parse(iv);
+    var bytes = CryptoJS.enc.Hex.parse(hexData);
+    var ciphertext = CryptoJS.enc.Base64.stringify(bytes);
+    var result = CryptoJS.AES.decrypt(ciphertext, key, {
+        iv:ivBytes, mode:CryptoJS.mode.CBC, padding:CryptoJS.pad.Pkcs7
+    });
+    return result.toString(CryptoJS.enc.Utf8);
 }
-const decrypt = function (data,iv) {
-    let key = CryptoJS.enc.Hex.parse('32343263636238323330643730396531')
-    iv = CryptoJS.enc.Hex.parse(iv)
-    let HexStr = CryptoJS.enc.Hex.parse(data)
-    let Base64Str = CryptoJS.enc.Base64.stringify(HexStr)
-    let decrypted = CryptoJS.AES.decrypt(Base64Str, key, {
-    iv: iv,
-    mode: CryptoJS.mode.CBC,
-    padding: CryptoJS.pad.Pkcs7
-    })
-    return decrypted.toString(CryptoJS.enc.Utf8)
+function execute(url) {
+    var text = String(url || "");
+    var chapter = text.match(/(?:^|[?&/])chapterId=(\d+)/i);
+    var book = text.match(/(?:^|[?&])id=(\d+)/i);
+    if (!chapter || !book) return Response.error("Qimao: thiếu chapterId hoặc id trong URL chương");
+    try {
+        var query = "chapterId=" + chapter[1] + "&id=" + book[1];
+        var sign = String(CryptoJS.MD5("chapterId=" + chapter[1] + "id=" + book[1] + QM_SALT));
+        var result = qmApi(QM_KS + "/api/v1/chapter/content?" + query + "&sign=" + sign);
+        if (!result.content) return Response.error("Qimao: chương chưa có nội dung công khai.");
+        // Official response: base64( 16-byte IV + AES-CBC ciphertext ).
+        var hex = CryptoJS.enc.Base64.parse(String(result.content)).toString(CryptoJS.enc.Hex);
+        if (hex.length < 64) return Response.error("Qimao: dữ liệu chương bị thiếu.");
+        var plain = qmDecrypt(hex.slice(32), hex.slice(0,32));
+        if (!plain || !plain.trim()) return Response.error(
+            "Qimao: không giải mã được nội dung chương hoặc chương yêu cầu quyền đọc.");
+        return Response.success(plain.trim()
+            .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+            .replace(/\r?\n/g,"<br>"));
+    } catch (e) {
+        return Response.error("Qimao đọc chương: " + (e && e.message ? e.message : e));
+    }
 }

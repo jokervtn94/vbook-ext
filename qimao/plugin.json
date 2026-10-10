@@ -2,10 +2,10 @@
   "metadata": {
     "name": "Qimao (七猫文化)",
     "author": "Jokervtn94",
-    "version": 5,
+    "version": 6,
     "source": "https://www.qimao.com",
-    "regexp": "(www.)?(qimao.com/shuku/\\d+/?)|(api-bc.wtzw.com/.*)",
-    "description": "Qimao: sửa trường tác giả theo API hiện tại, kiểm tra lỗi thông tin truyện.",
+    "regexp": "(?:https?://)?(?:www\\.)?qimao\\.com/shuku/\\d+/?(?:\\?.*)?$|(?:https?://)?api-bc\\.wtzw\\.com/.*",
+    "description": "Qimao v6: sửa danh sách truyện 2026, tìm kiếm, ID chi tiết, mục lục và đọc chương; báo lỗi rõ ràng.",
     "locale": "zh-CN",
     "language": "javascript",
     "type": "chinese_novel"
