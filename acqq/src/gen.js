@@ -1,9 +1,7 @@
 load("config.js");
 function execute(input,page){
     var p=parseInt(page||"1",10);if(!(p>=1))p=1;
-    var url=acAbs(input||AC_HOST+"/");
-    if(url.indexOf(AC_HOST+"/")!==0 && url!==AC_HOST+"/")
-       return Response.error("AC QQ: danh mục không thuộc Tencent Comics");
+    var url=acCatalogUrl(input);
     // Tencent's mobile page renders its first server-side catalog page.
     // Never claim further pages when server-side pagination is not confirmed.
     if(p>1)return Response.success([],null);

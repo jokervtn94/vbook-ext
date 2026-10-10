@@ -23,6 +23,32 @@ function acAbs(value){
     if(s[0]==="/")return AC_HOST+s;
     return AC_HOST+"/"+s.replace(/^(?:\.\.\/|\.\/)+/,"");
 }
+
+function acCatalogUrl(input){
+  var v=input;
+  if(v&&typeof v==="object")v=v.input||v.url||v.link||v.category||"";
+  var s=String(v||"").trim().replace(/&amp;/g,"&");
+  if(!s||s==="null"||s==="undefined")return AC_HOST+"/";
+  if(s.slice(0,2)==="//")s="https:"+s;
+  var repeated=s.match(/^https?:\/\/(?:m\.|www\.)?ac\.qq\.com\/(https?:\/\/(?:m\.|www\.)?ac\.qq\.com\/.*)$/i);
+  if(repeated)s=repeated[1];
+  var path="";
+  if(/^https?:\/\//i.test(s)){
+    var parts=s.match(/^https?:\/\/([^/?#]+)(\/[^?#]*)?(\?[^#]*)?/i);
+    // Never follow arbitrary external hosts when VBook sends unexpected inputs.
+    if(!parts||!/^(?:m\.|www\.)?ac\.qq\.com$/i.test(parts[1]))return AC_HOST+"/";
+    path=(parts[2]||"/")+(parts[3]||"");
+  }else path="/"+s.replace(/^\/+/,"");
+  path=path.replace(/#.*$/,"");
+  if(!path||path==="/")return AC_HOST+"/";
+  // Desktop /Comic/all redirects to a category landing page without novel cards.
+  if(/^\/Comic\/all(?:\/.*)?(?:\?.*)?$/i.test(path))return AC_HOST+"/";
+  if(/^\/(?:category\/index|rank\/index)\/?(?:\?.*)?$/i.test(path))
+    return path.toLowerCase().indexOf("/rank/")===0?AC_HOST+"/rank/biaosheng":AC_HOST+"/";
+  if(/^\/(?:category\/(?:listAll(?:\?.*)?|[a-z0-9_-]+(?:\?.*)?)|rank\/[a-z0-9_-]+(?:\?.*)?)$/i.test(path))return AC_HOST+path;
+  return AC_HOST+"/";
+}
+
 function acSelect(root,selector){
     if(!root||typeof root.select!=="function")return null;
     var x=root.select(selector);

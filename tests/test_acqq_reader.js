@@ -74,11 +74,34 @@ result=run.execute(chapter);assert.equal(result.ok,false);assert.match(result.er
 result=run.execute("not-a-chapter");assert.equal(result.ok,false);assert.match(result.error,/không hợp lệ/);
 run=boot("gen.js",()=>({ok:false,status:403}));
 result=run.execute(host+"/","1");assert.equal(result.ok,false);assert.match(result.error,/HTTP 403/);
+
+const vbookCatalogCases=[
+ [host+"/",host+"/"],[host,host+"/"],
+ ["https://ac.qq.com/Comic/all",host+"/"],
+ ["https://www.ac.qq.com/Comic/all",host+"/"],
+ ["http://ac.qq.com/Comic/all",host+"/"],
+ ["https://ac.qq.com/",host+"/"],
+ ["//m.ac.qq.com/",host+"/"],
+ ["/",host+"/"],["",host+"/"],[undefined,host+"/"],
+ [{input:host+"/"},host+"/"],
+ ["https://example.com/path",host+"/"],
+ ["https://m.ac.qq.com/category/index",host+"/"],
+ ["https://m.ac.qq.com/https://m.ac.qq.com/",host+"/"],
+ ["/rank/biaosheng",host+"/rank/biaosheng"],
+ ["https://ac.qq.com/category/listAll?type=xh&rank=pgv",host+"/category/listAll?type=xh&rank=pgv"]
+];
+for(const [input,expected] of vbookCatalogCases){
+ const b=boot("gen.js",url=>{assert.equal(url,expected);return http(feed);});
+ const got=b.execute(input,"1");
+ assert.equal(got.ok,true,"VBook input "+String(input)+": "+got.error);
+ assert.equal(got.data.length,1,"List must work after URL normalization");
+}
+
 const manifest=JSON.parse(fs.readFileSync(path.join(dir,"..","plugin.json"),"utf8"));
-assert.equal(manifest.metadata.version,4);
+assert.equal(manifest.metadata.version,5);
 assert.equal(manifest.script.search,"search.js");
 for(const x of ["config.js","gen.js","genre.js","detail.js","toc.js","chap.js","search.js"]){
  const src=fs.readFileSync(path.join(dir,x),"utf8");
  assert.doesNotMatch(src,/\.parent\s*\(|\.remove\s*\(/);
 }
-console.log("PASS AC QQ v4: mobile home, categories, search, list/cards, covers, desktop links, details, chapter TOC, WebView and explicit errors");
+console.log("PASS AC QQ v5: mobile home, categories, search, list/cards, covers, desktop links, details, chapter TOC, WebView and explicit errors");

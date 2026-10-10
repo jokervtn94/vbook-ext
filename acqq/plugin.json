@@ -2,10 +2,10 @@
   "metadata": {
     "name": "AC QQ 腾讯动漫",
     "author": "Jokervtn94",
-    "version": 4,
+    "version": 5,
     "source": "https://m.ac.qq.com",
     "regexp": "https?://(?:m\\.ac\\.qq\\.com\\/comic\\/index\\/id\\/|(?:m\\.)?ac\\.qq\\.com\\/Comic\\/[Cc]omicInfo\\/id\\/)\\d+/?(?:\\?.*)?$",
-    "description": "AC QQ v4: chuyển sang HTML mobile hiện tại; sửa trang chủ, thể loại, tìm kiếm, chi tiết, mục lục, ảnh bìa và thông báo chương bị hạn chế.",
+    "description": "AC QQ v5: sửa danh mục bị từ chối trong VBook, hỗ trợ URL mobile/desktop cũ và đường dẫn phân loại.",
     "locale": "cn-CN",
     "language": "javascript",
     "type": "comic"
