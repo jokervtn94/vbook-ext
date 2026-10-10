@@ -83,3 +83,40 @@ for name,url,selectors in DETAILS:
         print("CLASSES",repr(classes[:24]),flush=True)
     except Exception as exc:
         print("UNVERIFIED",repr(exc),flush=True)
+
+
+print("=== TARGETED STRUCTURE ===",flush=True)
+for name, url in [
+ ("novelbuddy_chap","https://novelbuddy.me/what-do-you-mean-i-have-to-comprehend-dao-as-a-mortal-god/chapter-285-hes-a-mutant"),
+ ("tranh18_chap","https://tranh18.cc/toi-yeu-ban-rat-nhieu/chapter/1028858"),
+ ("novelbuddy_latest","https://novelbuddy.me/latest"),
+ ("novelbuddy_detail","https://novelbuddy.me/what-do-you-mean-i-have-to-comprehend-dao-as-a-mortal-god"),
+ ("tranh18_index","https://tranh18.cc/comics"),
+]:
+    print("STRUCT",name,flush=True)
+    try:
+        r=session.get(url,timeout=15)
+        soup=BeautifulSoup(r.text,"html.parser")
+        if name=="novelbuddy_latest":
+            node=soup.select_one("article")
+            print("ARTICLE_HTML",str(node)[:1800] if node else "N/A",flush=True)
+        if name=="novelbuddy_detail":
+            n=soup.select_one("h1")
+            print("H1_PARENT",str(n.parent)[:1400] if n else "",flush=True)
+            imgs=soup.select("img")
+            print("IMAGES", [(i.get("alt"),i.get("src"),i.get("data-src")) for i in imgs[:10]],flush=True)
+            print("TEXT_PARENT", str(soup.find(string=lambda x: x and "Author:" in x).parent)[:600] if soup.find(string=lambda x: x and "Author:" in x) else "",flush=True)
+        if name=="novelbuddy_chap":
+            for css in ["main","article",".chapter-content","#chapter-content",".prose","[class*=reader]","p"]:
+                els=soup.select(css)
+                print("CHAPTER_SELECT",css,len(els),str(els[0])[:450] if els else "",flush=True)
+        if name=="tranh18_chap":
+            for css in [".comicpage img",".chapter-content img",".comicpage",".content img","img[data-original]","img[data-src]"]:
+                els=soup.select(css)
+                print("IMAGE_SELECT",css,len(els),str(els[0])[:450] if els else "",flush=True)
+        if name=="tranh18_index":
+            for css in [".cat-list a","a[href*='tag=']","a[href*='/category/']","a[href*='/genre/']",".pagination a"]:
+                els=soup.select(css)
+                print("GENRE_SELECT",css,len(els),str(els[0])[:430] if els else "",flush=True)
+    except Exception as ex:
+        print("UNVERIFIED",str(ex)[:140],flush=True)
