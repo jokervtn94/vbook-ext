@@ -69,6 +69,8 @@ def inspect(arg):
         if name.startswith("acqq_"):
             res["comic_links"]=[str(x)[:430] for x in doc.select('a[href*="/Comic/ComicInfo/id/"]')[:6]]
             res["comic_classes"]=[(x.get("class"),str(x)[:270]) for x in doc.select('img')[:8]]
+            res["cover_parent"]=[str(x.parent.parent)[:1050] for x in doc.select("img.lazy")[:3]]
+            res["chapters"]=[str(x)[:550] for x in doc.select(".chapter,.chapter-list,.chapter-list ul li,.chapter-list a,li.chapter")[:6]]
             res["chapter_links"]=[str(x)[:380] for x in doc.select("a[href*=chapter],a[href*=ComicView]")[:5]]
         if "doujins" in name:
             res["img_wrappers"]=[str(x)[:400] for x in doc.select('a:has(img)')[:8]]
