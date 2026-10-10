@@ -9,6 +9,7 @@ on:
       - 'manhuavn/**'
       - 'tranh18/**'
       - 'novelbuddy/**'
+      - 'sayhentai/**'
       - 'plugin.json'
   workflow_dispatch:
 
@@ -29,11 +30,11 @@ jobs:
           python-version: '3.11'
       - name: Check JavaScript syntax
         run: |
-          find manhuavn/src tranh18/src novelbuddy/src -name '*.js' -print0 | xargs -0 -n1 node --check
+          find manhuavn/src tranh18/src novelbuddy/src sayhentai/src -name '*.js' -print0 | xargs -0 -n1 node --check
       - name: Rebuild three migrated ZIPs
-        run: python tools/build_extensions.py manhuavn tranh18 novelbuddy --apply
+        run: python tools/build_extensions.py manhuavn tranh18 novelbuddy sayhentai --apply
       - name: Inspect built distributions
-        run: python tools/inspect_packages.py manhuavn tranh18 novelbuddy
+        run: python tools/inspect_packages.py manhuavn tranh18 novelbuddy sayhentai
       - name: Validate catalog assets
         run: python tools/validate_extensions.py
       - name: Verify README
@@ -44,7 +45,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- manhuavn/plugin.zip tranh18/plugin.zip novelbuddy/plugin.zip
+          git add -- manhuavn/plugin.zip tranh18/plugin.zip novelbuddy/plugin.zip sayhentai/plugin.zip
           if ! git diff --cached --quiet; then
             git commit -m "build: distribute migrated crawlers v3/v2 [skip ci]"
             git push origin HEAD:fix/active-sources-prune-20261010
