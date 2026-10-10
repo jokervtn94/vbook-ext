@@ -3,6 +3,8 @@ on:
   push:
     branches: [master]
     paths:
+      - 'wuxiaworld/src/toc.js'
+      - 'wuxiaworld/plugin.json'
       - 'tools/live_wuxiaworld_toc.py'
       - 'tests/test_wuxiaworld_live_toc.js'
       - '.github/workflows/live-wuxiaworld-toc.yml'

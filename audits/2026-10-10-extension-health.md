@@ -78,3 +78,17 @@ Nguồn phát hành: `master`, catalog: `https://raw.githubusercontent.com/joker
 - Chương Book QQ miễn phí: https://github.com/jokervtn94/vbook-ext/actions/runs/38035365957
 
 Báo cáo chỉ ghi nhận những kiểm chứng có bằng chứng. Không suy diễn quyền truy cập chương trả phí hoặc khả năng vượt CAPTCHA.
+
+## Cập nhật WuxiaWorld v5 — xác minh mục lục đầy đủ
+
+Mục *WuxiaWorld mục lục còn thiếu* ở các phần trên là tình trạng **trước bản v5**, đã được khắc phục ngày 10/10/2026:
+
+- Đã tìm được dịch vụ chính thức `https://api2.wuxiaworld.com/wuxiaworld.api.v2.Chapters/GetChapterList`.
+- Dùng POST theo giao thức **gRPC-Web** (metadata chương công khai), không cần đăng nhập, không mở khóa nội dung trả phí.
+- Yêu cầu không lọc theo nhóm trả **807 chương thuộc 21 nhóm** của truyện *Coiling Dragon* bằng **một yêu cầu API**.
+- `wuxiaworld/src/toc.js` v5 dùng bộ giải mã protobuf/gRPC-Web, kiểm tra tổng chương, số chương từng nhóm, thứ tự và liên kết trùng.
+- Kiểm tra giả lập 807 chương: **đạt**; kiểm tra end-to-end trên phản hồi WuxiaWorld thực tế: **đạt**, đúng 807 chương và liên kết chương đầu.
+- Kiểm thử GitHub Actions: https://github.com/jokervtn94/vbook-ext/actions/runs/38038928312
+- Việc chạy trên phiên bản Vbook/thiết bị Android của người dùng chưa được xác nhận sau bản v5.
+
+Tình trạng còn cần kiểm tra trong ứng dụng: chương bị khóa/đăng nhập và khác biệt giữa môi trường Vbook Android với Node.js.
