@@ -41,6 +41,8 @@ jobs:
         run: node tests/test_reader_repair_batch.js
       - name: Test NovelBuddy TOC and ManhuaVN chapter regressions
         run: node tests/test_vbook_regressions.js
+      - name: Validate Qimao author metadata
+        run: node tests/test_qimao_detail.js
       - name: Validate WuxiaWorld current reading contracts
         run: node tests/test_wuxiaworld_reader.js
       - name: Validate Book QQ reading contracts
