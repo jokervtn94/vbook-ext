@@ -28,6 +28,27 @@ let list=boot('gen.js',apiFetch)('https://www.wuxiaworld.com/api/novels/search',
 assert.equal(list.ok,true,list.error);
 assert.equal(list.data.length,1);assert.equal(list.data[0].link,'https://www.wuxiaworld.com/novel/coiling-dragon');
 assert.equal(requests[0].opt.method,'POST');
+assert.equal(JSON.parse(requests[0].opt.body).count,100);
+function item(id){return {id,name:'Novel '+id,slug:'novel-'+id,coverUrl:'https://cdn.wuxiaworld.com/'+id+'.jpg',chapterCount:10};}
+const calls=[];
+const paginated=boot('gen.js',(url,opt)=>{
+ const payload=JSON.parse(opt.body);
+ calls.push(payload.searchAfter);
+ let start=payload.searchAfter===null?300:payload.searchAfter-1;
+ const size=payload.searchAfter===101?51:100;
+ const items=Array.from({length:size},(_,i)=>item(start-i));
+ return {ok:true,json:()=>({result:true,total:251,items})};
+});
+let p1=paginated('https://www.wuxiaworld.com/api/novels/search','1');
+assert.equal(p1.ok,true);assert.equal(p1.data.length,100);
+assert.equal(p1.next,'id:201');
+let p2=paginated('https://www.wuxiaworld.com/api/novels/search',p1.next);
+assert.equal(p2.data.length,100);assert.equal(p2.next,'id:101');
+let p3=paginated('https://www.wuxiaworld.com/api/novels/search',p2.next);
+assert.equal(p3.data.length,51);assert.equal(p3.next,null);
+assert.equal(calls.join(','),',201,101');
+const ids=new Set([...p1.data,...p2.data,...p3.data].map(x=>x.link));
+assert.equal(ids.size,251,'All 251 novels must have unique links');
 let found=boot('search.js',apiFetch)('dragon');
 assert.equal(found.ok,true);assert.equal(found.data.length,1);assert.equal(requests[1].opt.queries.query,'dragon');
 const incompleteDoc={select:key=>coll(key==='body'?[node('807 Chapters')]:key.includes('a[href*=')?[node('Start Reading',{href:'/novel/coiling-dragon/cd-book-1-chapter-1'})]:[])};

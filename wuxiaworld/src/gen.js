@@ -1,15 +1,23 @@
 function execute(url, page) {
     var host = "https://www.wuxiaworld.com";
-    var p = parseInt(page || "1", 10) || 1;
-    if (p > 1) return Response.success([]);
+    var token = String(page || "1");
+    var cursor = null;
+    if (token.indexOf("id:") === 0) {
+        if (!/^id:\d+$/.test(token)) return Response.error("WuxiaWorld: con trỏ trang không hợp lệ");
+        cursor = parseInt(token.slice(3), 10);
+    } else if (token !== "1" && token !== "0") {
+        if (!/^\d+$/.test(token)) return Response.error("WuxiaWorld: trang không hợp lệ");
+        cursor = parseInt(token, 10);
+    }
     try {
-        // The verified public endpoint returns the entire current catalog in one request.
+        // The public API caps output at 100 items, regardless of requested count.
+        // searchAfter is the numeric id of the last novel of the previous page.
         var response = fetch(host + "/api/novels/search", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
                 title: "", tags: [], language: "Any", genres: [], active: null,
-                sortType: "Name", sortAsc: true, searchAfter: null, count: 500
+                sortType: "Name", sortAsc: true, searchAfter: cursor, count: 100
             })
         });
         if (!response.ok) return Response.error("WuxiaWorld danh sách HTTP " + response.status);
@@ -29,7 +37,12 @@ function execute(url, page) {
                 host: host
             });
         }
-        return Response.success(list);
+        var last = json.items.length ? json.items[json.items.length - 1] : null;
+        var next = json.items.length >= 100 && last &&
+                   /^\d+$/.test(String(last.id)) ? "id:" + String(last.id) : null;
+        // Do not emit an identical cursor (would loop the same API page forever).
+        if (next && token === next) next = null;
+        return Response.success(list, next);
     } catch (e) {
         return Response.error("WuxiaWorld danh sách: " + e.message);
     }
